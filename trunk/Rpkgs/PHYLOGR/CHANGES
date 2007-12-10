@@ -1,0 +1,45 @@
+Version 1.0.6 2007/10/09
+- Removed obselete "\non_function" from some Rd and use "\docType{data}". 
+
+
+Version 1.0.5. 2007/09/25
+- Minor change in some help functions to prevent warnings in R-2.6 and
+  R-2.7.
+
+Version 1.0.4. 2005/04/31
+- Minor change to allow running in R-2.1.0 (devel)
+
+Version 1.0.3. 2004/03/29
+- Minor change to allow running in R-1.9.0 (devel)
+
+Version 1.0.2. 2003/07/28
+- Bug fixes to allow to run in R 1.7.1 and R 1.8.0 (devel)
+- Tidy up the code
+
+Version 1.0.1. 2001/12/22
+- Fixes in documentation (prompted by release 1.4.0 of R).
+
+Version 1.0.  2001/03/25 and 2001/04/30
+- Added read.phylip.data.
+- Modified read.sim.data to allow for PHYLIP formated files.
+- Added Examples.pdf and renamed paper-code.R to Examples-code.R.
+- Some benchmarking and further testing.
+- Tidying up of the code.
+
+Version 0.91. 2000/11/07
+- Fixed problem with ask=T in plot methods.
+- Fixed missing links in documentation. 
+
+Version 0.9.  2000/10/30
+- Changed to allow PHYLOGR to run under both R-1.1.1 and R-devel (the future R-1.2.0):
+	there were some scoping problems in lm.phylog with things that
+	worked under R-1.1.1 but not R-1.2.0.
+- Done more testing. Everything seems to work just fine; I think we are ready
+	for 1.0 (but being overly cautious...).
+
+Version 0.2.  2000/10/09
+- Changed files icfxx.fic, icfxx.pdi, icfxx.sim (log10 of clutch frequency).
+- Changed var-cov files (dsc and derived *.varcov); they are no longer scaled.
+- Documented all data files and a few previously undocumented functions (helper functions).
+- Changed paper-code.R to accomodate changes in ms.
+

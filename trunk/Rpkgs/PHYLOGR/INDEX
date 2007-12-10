@@ -1,0 +1,36 @@
+GarlandJanis.IC         Independet contrasts for Garland & Janis data
+                        set
+GarlandJanis.Original   Garland & Janis's 1993 data on mammalian
+                        running speed and limb length
+GarlandJanis.varcov     Phylogenetic variance-covariance matrix for
+                        Garland & Janis (1993).
+Lacertid.IC             Independet contrasts for Bauwens and
+                        Diaz-Uriarte (1997) lacertid data set
+Lacertid.Original       Bauwens and Diaz-Uriarte (1997) lacertid data
+Lacertid.varcov         Variance-covariance matrix for lacertids from
+                        Bauwens and Diaz-uriarte (1997)
+SimulExample            A simulated data set
+cancor.phylog           Canonical Correlation Analysis from Simulated
+                        Data Sets
+cor.origin              Correlation Through the Origin
+lm.phylog               Linear Models from Simulated Data Sets
+matrix.D                Produce the Matrix D of Garland and Ives (2000)
+                        for GLS
+num.sim.tips            Helper functions
+phylog.gls.fit          Phylogenetically-Based GLS Model Fitting
+plot.phylog.cancor      Plot a phylog.cancor object
+plot.phylog.lm          Plot a phylog.lm object
+plot.phylog.prcomp      Plot a phylog.prcomp object
+prcomp.phylog           Principal Components Analysis from Simulated
+                        Data Sets
+print.summary.phylog.lm
+                        Printing summaries of PHYLOGR statistical
+                        functions
+read.inp.data           Read Inp Data Files
+read.pdi.data           Read Pdi Data Files
+read.phylip.data        Read Phylip Infile Data Files
+read.phylog.matrix      Read a Phylogenetic Covariance Matrix
+read.sim.data           Read Sim Files From PDSIMUL
+summary.phylog.cancor   Summarize a phylog.cancor object
+summary.phylog.lm       Summarize a phylog.lm object
+summary.phylog.prcomp   Summarize a phylog.prcomp object

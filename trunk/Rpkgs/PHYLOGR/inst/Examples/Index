@@ -1,0 +1,28 @@
+49hmt.pdi		Inp file from Garland & Janis; hind limb length and MT/F ratio.
+49hmt.fic		The contrasts file from PDTREE
+49hmt.sim		Small simulation file (50 simulations).
+49lbr.inp		File from Garland et al., 1993 with body mass and home range data
+49lbr.fic		Ditto; the file with contrasts from PDTREE
+49lbr.pdi		Same as 49lbr.inp, but in pdi format
+49lbr.sim		A small simulation file (50 simulations) based on 49lbr.inp
+49ms.pdi		From Garland & Janis; mass and running speed
+49ms.fic		Contrasts file
+49ms.sim		Small simulation file (50 simulations)
+49ms.dsc		The phylog. varaince-covaraince from PDDIST
+icfxx.pdi		From Bauwens & Díaz-Uriarte; clutch frequency
+icfxx.fic		Contrasts
+icfxx.sim		Simulations (50)
+iclag.pdi		From Bauwens & Díaz-Uriarte; clutch size and age at maturity
+iclag.fic		Contrasts
+iclag.sim		Simulation
+ifsmi.pdi		From Bauwens & Díaz-Uriarte; SVL and minimum SVL (or SVL at maturity)
+ifsmi.fic		Contrasts
+ifsmi.sim		Simulations
+ihshw.pdi		From Bauwens & Díaz-Uriarte; hatchling SVl and hatchling mass
+ihshw.fic		Contrasts
+ihshw.sim		Simulations
+LacertidData.PhylipInfile From Bauwens & Díaz-Uriarte, in a format that will be accepted by PHYLIP as infile (contains all the traits above).
+LacertidData.PhylipIntree From Bauwens & Díaz-Uriarte, in a format that will be accepted by PHYLIP as intree.
+Examples-code.R		The R code for the examples of the Díaz-Uriarte & Garland, in review, paper (the paper that
+			describes the PHYLOGR library). The examples are in the file Examples.pdf.
+Examples.pdf		Examples on the use of PHYLOGR, with commented code and output.
