@@ -5,7 +5,7 @@
 	Fits macroevolutionary models to phylogenetic trees
 }
 \usage{
-fit.discrete(phy, data, data.names=NULL, lambda=FALSE, delta=FALSE, kappa=FALSE, linearchange=FALSE, exponentialchange=FALSE, tworate=FALSE, start.rate=1.0)
+fit.discrete(phy, data, data.names=NULL, lambda=FALSE, delta=FALSE, kappa=FALSE, linearchange=FALSE, exponentialchange=FALSE, tworate=FALSE, start.rate=0.01)
 }
 \arguments{
   \item{phy}{ object of type phylo }

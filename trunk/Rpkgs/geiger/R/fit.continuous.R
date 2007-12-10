@@ -67,12 +67,12 @@ function(phy, data, data.names=NULL, lambda=FALSE, kappa=FALSE, delta=FALSE, ou=
  			stop("Please specify user defined parameter bounds as a list()")
  		}else{
  			specified   <- !c(is.null(bounds$beta), is.null(bounds$lambda), 
- 							  is.null(bounds$kappa), is.null(bounds$delta),  is.null(bounds$alpha), is.null(bounds$r)
+ 							  is.null(bounds$kappa), is.null(bounds$delta),  is.null(bounds$alpha), is.null(bounds$a)
  							  )
- 			bounds.user <- matrix(c(bounds$beta, bounds$lambda, bounds$kappa, bounds$delta, bounds$alpha, bounds$endRate), 
+ 			bounds.user <- matrix(c(bounds$beta, bounds$lambda, bounds$kappa, bounds$delta, bounds$alpha, bounds$a), 
  								  nrow=sum(specified), ncol=2, byrow=TRUE
  								  )
- 			rownames(bounds.user) <- c("beta", "lambda", "kappa", "delta", "alpha", "endRate")[specified]
+ 			rownames(bounds.user) <- c("beta", "lambda", "kappa", "delta", "alpha", "a")[specified]
    	 		colnames(bounds.user) <- c("min", "max")
   
    	 		#----  SET FINAL SEARCH BOUNDS
@@ -104,7 +104,7 @@ function(ds, print=TRUE)
 {
 	bounds 	<- ds$bounds
 	model 	<- ds$model
-	np 		<- sum(model)
+	np 		<- sum(model)+1
 	n 		<- length(ds$data)
 	#--- INITIALIZE RESULTS MATRIX --
     results <- numeric(2+np)

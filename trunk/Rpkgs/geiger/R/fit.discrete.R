@@ -1,5 +1,5 @@
 `fit.discrete` <-
-function(phy, data, data.names=NULL, lambda=FALSE, delta=FALSE, kappa=FALSE, linearchange=FALSE, exponentialchange=FALSE, tworate=FALSE, start.rate=1.0)
+function(phy, data, data.names=NULL, lambda=FALSE, delta=FALSE, kappa=FALSE, linearchange=FALSE, exponentialchange=FALSE, tworate=FALSE, start.rate=0.01)
 {
 	td<-treedata(phy, data, data.names, sort=T)
 

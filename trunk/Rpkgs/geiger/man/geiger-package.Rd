@@ -20,7 +20,7 @@ License: \tab GPL version 2 or greater?\cr
 
 }
 \author{
-Luke J. Harmon, Jason Wier, Chad Brock, and Wendell Challenger
+Luke J. Harmon, Jason Weir, Chad Brock, and Wendell Challenger
 
 Maintainer: Luke Harmon <harmon@zoology.ubc.ca>
 }

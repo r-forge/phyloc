@@ -5,7 +5,7 @@
 	Simulates phylogenetic trees under a uniform birth-death process.
 }
 \usage{
-birthdeath.tree(b, d, time.stop = 0, taxa.stop = 0, seed = 0)
+birthdeath.tree(b, d, time.stop = 0, taxa.stop = 0, seed = 0, print.seed=FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -15,6 +15,7 @@ birthdeath.tree(b, d, time.stop = 0, taxa.stop = 0, seed = 0)
   \item{taxa.stop}{Maximum number of taxa}
   \item{seed}{Random number seed; if seed=0 (default) then random number 
               generator is seeded based on the clock}
+  \item{print.seed}{If T, prints out the random number seed associated with each tree}            
 }
 \details{
 	Starting from a root node - i.e., two living lineages - this function simulates the growth of a
@@ -29,7 +30,7 @@ birthdeath.tree(b, d, time.stop = 0, taxa.stop = 0, seed = 0)
 	prune.extinct.taxa can remove these lineages.
 }
 \references{Geiger}
-\author{Luke J. Harmon and Jason Wier}
+\author{Luke J. Harmon and Jason Weir}
 \note{ 
 	One note of caution: it is easy to set parameter values that result in tremendously HUGE trees.  If the
 	function seems to hang up, this could be the problem.

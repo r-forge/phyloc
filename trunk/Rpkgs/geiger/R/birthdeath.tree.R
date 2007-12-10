@@ -1,11 +1,11 @@
 `birthdeath.tree` <-
-function (b, d, time.stop=0, taxa.stop=0, seed=0){
+function (b, d, time.stop=0, taxa.stop=0, seed=0, print.seed=FALSE){
 
 # December 6 2005 Jason T. Weir
 # Modified by Luke J. Harmon
 # The following simulates Yule trees to a given time T
 
-if(seed==0) seed=set.seed.clock();
+if(seed==0) seed=set.seed.clock(print=print.seed);
 
 
 if(time.stop==0 & taxa.stop==0)
@@ -74,6 +74,7 @@ for(i in 1:max(edge)) {
     	obj <- list(edge = edge, edge.length = edge.length, tip.label=tip.label)
     	class(obj) <- "phylo"
     	obj<-old2new.phylo(obj)
+    	
     obj
 }
 
