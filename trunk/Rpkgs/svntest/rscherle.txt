@@ -1,6 +1,6 @@
 
 This is Ryan's test file.
 It contains some text.
-But it is really quite boring.
-So I'll make it less boring by saying "phyloinformatics".
+But it is quite boring.
+
 
