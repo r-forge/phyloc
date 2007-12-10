@@ -1,0 +1,38 @@
+Changes in apTreeshape 1.4.0
+============================
+
+improvements
+------------
+  o New function added: maxlik.betasplit
+
+bug fixes
+---------
+  o Minor bugs have been fixed. Improved compatibility with ape
+
+Changes in apTreeshape 1.1.0
+============================
+
+improvements
+------------
+
+  o  A new model can be simulated (Aldous' Branching model)
+
+  o  'plot.treeshape' has been changed to be more intuitive
+
+
+changes in behaviour
+--------------------
+
+  o  Only one tree generator has been kept ('rtreeshape'). The others have been declared internal.
+  
+  o  Only one fonction to connect to Internet databases has been kept, and its name is now 'dbtrees'
+
+  o  'dbtrees' defaults have been modified for argument 'class'
+
+  o  printed messages have been modified for the function 'dbtrees'
+
+
+bug fixes
+--------
+
+  o  compatibility between classes 'numeric' and 'integer' has been improved
