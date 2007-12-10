@@ -7,13 +7,13 @@
 \usage{
 evolve.brownian(phy, value = 0, var = 1)
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
   \item{phy}{ phylo object }
   \item{value}{ mean }
   \item{var}{ variance }
 }
 \value{
-  Data frame of trait values with row.names corresponding to phylo$tip.label
+  Vector of trait values with names corresponding to phylo tip.label
 }
-\author{ Steve Kembel <skembel@berkeley.edu }
+\author{ David Ackerly <dackerly@berkeley.edu> and Steve Kembel <skembel@berkeley.edu> }

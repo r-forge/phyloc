@@ -148,6 +148,8 @@ function(phy,
 	}
 	#print(phy$node.traits)
 	#print(phy$edge)
+	x <- as.vector(x[,1])
+	names(x) <- phy$tip.label
 	return(x)
 }
 

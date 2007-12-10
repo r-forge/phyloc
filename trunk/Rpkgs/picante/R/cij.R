@@ -5,4 +5,3 @@ function(x) {
 	cij <- dist(t(x),method="manhattan")
 	1 - (0.5 * cij)
 }
-

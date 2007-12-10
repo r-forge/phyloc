@@ -7,7 +7,7 @@
 \usage{
 mpd(samp, phy.dist)
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
   \item{samp}{ Community data matrix }
   \item{phy.dist}{ Cophenetic phylogenetic distance matrix }
@@ -18,5 +18,4 @@ mpd(samp, phy.dist)
 }
 \references{ Webb et al. 2002. ARES. }
 \author{ Steve Kembel <skembel@berkeley.edu> }
-\
 \seealso{ \code{\link{nri}}}
