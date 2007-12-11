@@ -5,7 +5,9 @@ setClass("phylo4",
          representation(edge="matrix",
                         edge.length="numeric",
                         Nnode="integer",
-                        tip.label="character"),
+                        tip.label="character",
+                        root.edge="integer"),
+##         prototype=
          validity=function(object) {
            ## browser()
            N <- nrow(object@edge)
@@ -15,6 +17,7 @@ setClass("phylo4",
              return("number of tip labels not consistent with number of edges and nodes")
            return(TRUE)
          })
+
 
 ## accessor functions for all internal bits
 setGeneric("nTips", function(x) {
@@ -30,6 +33,22 @@ setGeneric("nNodes", function(x) {
 setMethod("nNodes","phylo4", function(x) {
   x@Nnode
 })
+
+setGeneric("edges", function(x,order,...) {
+  standardGeneric("edges")
+})
+setMethod("edges","phylo4", function(x,order,...) {
+  x@edges
+})
+
+setGeneric("isRooted", function(x) {
+  standardGeneric("isRooted")
+})
+setMethod("isRooted","phylo4", function(x) {
+  !is.na(phy$root.edge) ||
+  tabulate(edges(phy)[, 1])[nTips(phy)+1] <= 2
+})
+
 
 ## labels exists already
 setMethod("labels","phylo4", function(object,...) {
@@ -69,7 +88,11 @@ as.phylo.phylo4 <- function(x) {
 
                 
 ## hack to allow access with $
-setMethod("$","phylo4",function(x,name) attr(x,name))
+setMethod("$","phylo4",function(x,name) {
+  attr(x,name)
+})
+
+
 
 
 printphylo <- function (x,printlen=6,...) {
@@ -106,14 +129,8 @@ printphylo <- function (x,printlen=6,...) {
 ## hack for print/show 
 ## from http://tolstoy.newcastle.edu.au/R/e2/devel/06/12/1363.html
 
-setGeneric("print", function(x,...) {
-  standardGeneric("print")
-})
+setGeneric("print")
 
-
-## Warning: New generic for "print" does not agree with implicit
-## generic from package "base"; a new generic will be assigned with
-## package ".GlobalEnv"  -- ???
 
 setMethod("print", "phylo4", printphylo)
 setMethod("show", "phylo4", function(object) printphylo(object))
@@ -139,7 +156,7 @@ setMethod("summary","phylo4",
 ## different classes, or just allow empty internal values?
 
 ## extend: phylo with data
-setClass("phylod4",
+setClass("phylo4d",
          representation(data="data.frame"),
          contains="phylo4")
                        
