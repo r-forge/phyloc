@@ -207,6 +207,95 @@ setMethod("print", "phylo4", printphylo)
 setMethod("show", "phylo4", function(object) printphylo(object))
 
 
+
+## this is still hacked
+setMethod("summary","phylo4", function (object, quiet=FALSE)
+          {
+            x <- object
+            res <- list()
+             
+            # build the result object
+            res$name <- deparse(substitute(object, sys.frame(-1)))
+            res$nb.tips <- length(x$tip.label)
+            res$nb.nodes <- x$Nnode
+              
+            if(!is.null(x$edge.length)){
+              res$mean.el <- mean(x$edge.length, na.rm=TRUE)
+              res$var.el <- var(x$edge.length, na.rm=TRUE)
+              res$sumry.el <- summary(x$edge.length)[-4]
+            } else{
+              res$mean.el <- NULL
+              res$var.el <- NULL
+              res$sumry.el <- NULL
+            }
+            
+            res$loglik <- attr(x, "loglik")
+            res$para <- attr(x, "para")
+            res$xi <- attr(x, "xi")
+            
+            # if quiet, stop here                                        
+            if(quiet) return(invisible(res))
+            
+            # now, print to screen is !quiet
+            cat("\nPhylogenetic tree:", res$name, "\n\n")
+            cat("  Number of tips:", res$nb.tips, "\n")
+            cat("  Number of nodes:", res$nb.nodes, "\n")
+            if(is.null(x$edge.length)) {
+              cat("  No branch lengths.\n")
+            } else {
+              cat("  Branch lengths:\n")
+              cat("    mean:", res$mean.el, "\n")
+              cat("    variance:", res$var.el, "\n")
+              cat("    distribution summary:\n")
+              print(res$sumry.el)
+            }
+            
+            if(!is.null(x$root.edge)){
+              cat("  Root edge:", x$root.edge, "\n")
+            } else {
+              cat("  No root edge.\n")
+            }
+            
+            if (res$nb.tips <= 10) {
+              cat("  Tip labels:", x$tip.label[1], "\n")
+              cat(paste("             ", x$tip.label[-1]), sep = "\n")
+            }
+            else {
+              cat("  First ten tip labels:", x$tip.label[1], "\n")
+              cat(paste("                       ", x$tip.label[2:10]), sep = "\n")
+            }
+            if(is.null(x$node.label)) {
+              cat("  No node labels.\n")
+            }
+            else {
+              if (nb.node <= 10) {
+                cat("  Node labels:", x$node.label[1], "\n")
+                cat(paste("              ", x$node.label[-1]),
+                sep = "\n")
+              } else {
+                cat("  First ten node labels:", x$node.label[1], "\n")
+                cat(paste("                        ", x$node.label[2:10]), sep = "\n")
+              }
+            }
+            if (!is.null(attr(x, "loglik"))) {
+              cat("Phylogeny estimated by maximum likelihood.\n")
+              cat("  log-likelihood:", attr(x, "loglik"), "\n\n")
+              npart <- length(attr(x, "para"))
+              for (i in 1:npart) {
+                cat("partition ", i, ":\n", sep = "")
+                print(attr(x, "para")[[i]])
+                if (i == 1)
+                  next
+                else cat("  contrast parameter (xi):", attr(x,"xi")[i - 1], "\n")
+              }
+            }
+            return(invisible(res))
+          } # end summary phylo4
+          ) # end setMethod summary phylo4
+
+
+
+
 ## S3 generic for conversion to S4
 as.phylo4 <- function (x, ...) 
 {
@@ -214,6 +303,7 @@ as.phylo4 <- function (x, ...)
       return(x)
     UseMethod("as.phylo4")
   }
+
 ###################################
 ## extensions
 
