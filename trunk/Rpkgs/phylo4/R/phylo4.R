@@ -207,8 +207,10 @@ setMethod("print", "phylo4", printphylo)
 setMethod("show", "phylo4", function(object) printphylo(object))
 
 
-
-## this is still hacked
+#################
+# summary phylo4
+#################
+## have to check that x$root.edge is NULL if missing
 setMethod("summary","phylo4", function (object, quiet=FALSE)
           {
             x <- object
@@ -314,6 +316,49 @@ setClass("phylo4d",
          contains="phylo4")
                        
 ## extend: phylo with model fit
+
+
+
+
+################
+# show phylo4d
+################
+#
+# waiting for data accessors to be defined - Tibo
+#
+#setMethod("show", "phylo4d", function(object){
+#  x <- object
+
+#  cat("\n\#\#Comparative data\#\#\n")
+  #  print tree
+#  cat("\n\#Tree\#\n")
+ # printphylo(x)
+
+  # print traits
+ # cat("\n\#Traits\#\n")
+  #cat("\nTips: data.frame with", nrow(...))
+  
+#}) # end summary phylo4d
+
+
+
+
+
+################
+# names methods
+################
+setMethod("names", signature(x = "phylo4"), function(x){
+  temp <- rev(names(attributes(x)))[-1]
+  return(rev(temp))
+})
+
+setMethod("names", signature(x = "phylo4d"), function(x){
+  temp <- rev(names(attributes(x)))[-1]
+  return(rev(temp))
+})
+
+
+
 
 ## extend: multiPhylo4
 
