@@ -2,6 +2,7 @@
 \docType{class}
 \alias{phylo4-class}
 \alias{phylo4d-class}
+\alias{multiPhylo4-class}
 \alias{$,phylo4-method}
 \alias{print,phylo4-method}
 \alias{show,phylo4-method}
@@ -20,7 +21,12 @@
     \item{\code{Nnode}:}{Integer: number of nodes}
     \item{\code{tip.label}:}{Character vector of tip labels}
     \item{\code{root.edge}:}{Integer: root edge (NA if none)}
-  }
+    \item{\code{tipdata}:}{(phylo4d) data frame for traits of tips}
+    \item{\code{nodedata}:}{(phylo4d) data frame for traits of internal
+      nodes}
+    \item{\code{edgedata}:}{(phylo4d) data frame for traits of edges}
+    \item{\code{phylolist}:}{list of phylogenetic trees (each of which
+    may be of type \code{phylo4d}, containing node and/or edge data)}
 }
 \methods{
   \describe{
@@ -29,7 +35,7 @@
     \item{show}{\code{signature(object = "phylo4")}: show method }
     \item{summary}{\code{signature(object = "phylo4")}: summary method}
     \item{names}{\code{signature(x = "genpop")}: gives the slots names}
-  }
+}
 }
 \usage{
     \S4method{print}{phylo4}(x,printlen,...)

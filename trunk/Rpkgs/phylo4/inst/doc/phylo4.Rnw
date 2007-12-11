@@ -22,12 +22,16 @@ the \code{phylo4} class are:
 \begin{description}
 \item[edge]{an $N \times 2$ matrix of integers,
   where the first column \ldots}
+\item[edge.length]{numeric list of edge lengths
+(length $N$ or empty)}
 \item[Nnode]{integer, number of nodes}
-\item[tip.label]{character vector of tip labels}
-\item[root.edge]{integer or NA, defining root edge}
+\item[tip.label]{character vector of tip labels (required)}
+\item[node.label]{character vector of node labels (maybe empty)}
+\item[root.edge]{integer defining root edge (maybe NA)}
 \end{description}
 
-Ultrametric, scaled, polytomies (zero-length or structural)
+Print method: add information about
+(ultrametric, scaled, polytomies (zero-length or structural))?
  
 \section{Hacks/backward compatibility}
 
@@ -35,9 +39,22 @@ Hilmar Lapp very kindly showed a way to hack
 the \verb+$+ operator so that it would provide
 backward compatibility with code that is 
 extracting internal elements of a \code{phylo4}.
+The basic recipe is:
 <<eval=FALSE>>=
+setMethod("$","phylo4",function(x,name) { attr(x,name)})
 @ 
-
+but this has to be hacked slightly to intercept
+calls to elements that might be missing.  For example,
+\code{ape} detects whether log-likelihood, root edges,
+node labels, etc. are missing by testing whether they
+are \code{NULL}, whereas missing items are represented
+in \code{phylo4} by zero-length vectors in the slots 
+(or \code{NA} for the root edge) --- so we need code
+like
+<<eval=FALSE>>=
+if(!hasNodeLabels(x)) NULL else x@node.label
+@ 
+to handle these cases.
 
 <<>>=
 library(ape)
@@ -46,7 +63,13 @@ library(ape)
 
 
 \begin{itemize}
-\item Warning on undocumented code objects: print, nNodes, nTips, \ldots
+\item Conflict with \code{nTips} if \code{ape} is loaded first:
+ask EP to get rid of this (obsolete?) function? (\code{Ntips}
+is the real \code{ape} function for getting the number of tips)
+\item basic tree manipulation: tip-dropping, \code{na.omit}, etc. --- 
+especially for multi-tree and tree-with-data cases
+\item tree-manipulation code: tree traversal (store current
+position as an attribute), pruning, etc.
 \end{itemize}
 
 \end{document}

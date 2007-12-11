@@ -32,7 +32,9 @@
 \alias{NodeLabels}
 \alias{NodeLabels-methods}
 \alias{NodeLabels,phylo4-method}
-
+\alias{tdata}
+\alias{tdata-methods}
+\alias{tdata,phylo4d-method}
 \title{Methods for S4 phylog classes}
 \description{
    Generic methods for phylogenetic trees represented as S4 classes
@@ -56,7 +58,15 @@
     rooted (i.e. has explicit root edge defined \emph{or} root node has
     <= 2 descendants)}
   \item{RootEdge}{\code{signature(object = "phylo4")}: root edge}
+  \item{tdata}{\code{signature(object = "phylo4d")}: trait data}
 }
-
+}
+\section{usage}{
+  \S4method{tdata}{phylo4d}(x,which="tip",\dots)
+}
+\arguments{
+  \item{which}{Which data to extract: "tip" (tips only), "node"
+    (internal nodes only), "allnode" (tips and internal nodes), "edge"
+    (edges) }
 }
 \keyword{methods}

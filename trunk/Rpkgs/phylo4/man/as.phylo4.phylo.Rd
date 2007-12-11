@@ -1,6 +1,8 @@
 \name{as.phylo4.phylo}
 \alias{as.phylo4.phylo}
 \alias{as.phylo.phylo4}
+\alias{as.multi.tree.phylo4}
+\alias{as.phylo4.multi.tree}
 \alias{as.phylo4}
 \title{Translate between phylo and phylo4 classes}
 \description{
@@ -10,7 +12,9 @@
 \usage{
 as.phylo4(x,\dots)
 \method{as.phylo4}{phylo}(x,\dots)
+\method{as.phylo4}{multi.tree}(x,\dots)
 as.phylo.phylo4(x)
+as.multi.tree.phylo4(x)
 }
 \arguments{
   \item{x}{A phylogenetic tree of the appropriate class}
@@ -27,8 +31,6 @@ as.phylo.phylo4(x)
   P1 = as.phylo4.phylo(tree.owls)
   P1
   identical(p1,as.phylo.phylo4(P1))
-  p1$edge ## works!
-
 }
 \keyword{misc}
 

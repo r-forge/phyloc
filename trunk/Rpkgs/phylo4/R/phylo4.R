@@ -342,7 +342,29 @@ setMethod("tdata","phylo4d", function(x,which="tip",...) {
          edge=x@edgedata)
 })
 
-                       
+
+phylo4d <- function(tree,data,edgedata=data.frame(),which="tip") {
+  if (which=="tip") {
+    tipdata <- data
+    nodedata <- data.frame()
+  } else if (which=="node") {
+    nodedata <- data
+    tipdata <- data.frame()
+  } else if (which=="all") {
+    tipdata <- data[1:nTips(tree),]
+    nodedata <- data[(nTips(tree)+1):(nTips(tree)+nNodes(tree)),]
+  }
+  new("phylo4d",
+      edge=tree@edge,
+      edge.length=tree@edge.length,
+      Nnode=tree@Nnode,
+      tip.label=tree@tip.label,
+      root.edge=tree@root.edge,
+      tipdata=tipdata,
+      nodedata=nodedata,
+      edgedata=edgedata)
+}
+
 ## extend: phylo with model fit (???)
 ## hacked with logLik attribute from ape, but otherwise not done
   
@@ -372,9 +394,6 @@ setClass("multiPhylo4",
   #cat("\nTips: data.frame with", nrow(...))
   
 #}) # end summary phylo4d
-
-
-
 
 
 ################
