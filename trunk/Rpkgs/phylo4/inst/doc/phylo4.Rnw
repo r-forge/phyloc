@@ -26,6 +26,8 @@ the \code{phylo4} class are:
 \item[tip.label]{character vector of tip labels}
 \item[root.edge]{integer or NA, defining root edge}
 \end{description}
+
+Ultrametric, scaled, polytomies (zero-length or structural)
  
 \section{Hacks/backward compatibility}
 
@@ -35,6 +37,7 @@ backward compatibility with code that is
 extracting internal elements of a \code{phylo4}.
 <<eval=FALSE>>=
 @ 
+
 
 <<>>=
 library(ape)

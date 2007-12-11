@@ -11,6 +11,7 @@ setClass("phylo4",
            edge.length=numeric(0),
            Nnode=as.integer(0),
            tip.label=character(0),
+           node.label=character(0),
            root.edge=as.integer(NA)),
          validity=function(object) {
            ## browser()
@@ -21,7 +22,6 @@ setClass("phylo4",
              return("number of tip labels not consistent with number of edges and nodes")
            return(TRUE)
          })
-
 
 ## accessor functions for all internal bits
 setGeneric("nTips", function(x) {
@@ -34,7 +34,7 @@ setMethod("nTips","phylo4", function(x) {
 ## hack to ensure ape compatibility
 setMethod("nTips","ANY", function(x) {
   if (class(x)=="phylo") {
-    ape::nTips(x)
+    Ntip(x)
   } else stop(paste("no 'nTips' method available for",
                     deparse(substitute(x)),
                     "(class",class(x),")"))
@@ -81,16 +81,40 @@ setMethod("isRooted","phylo4", function(x) {
   ## root node (first node after last tip) has <= 2 descendants
 })
 
-setGeneric("hasBranchLengths", function(x) {
-  standardGeneric("hasBranchLengths")
+setGeneric("hasEdgeLength", function(x) {
+  standardGeneric("hasEdgeLength")
 })
-setMethod("hasBranchLengths","phylo4", function(x) {
+setMethod("hasEdgeLength","phylo4", function(x) {
   length(x@edge.length)>0
+})
+
+setGeneric("EdgeLength", function(x) {
+  standardGeneric("EdgeLength")
+})
+setMethod("EdgeLength","phylo4", function(x) {
+  if (!hasEdgeLength) NULL else x@edge.length
+})
+
+
+
+setGeneric("hasNodeLabels", function(x) {
+  standardGeneric("hasNodeLabels")
+})
+setMethod("hasNodeLabels","phylo4", function(x) {
+  length(x@node.label)>0
 })
 
 ## labels exists already as a generic
 setMethod("labels","phylo4", function(object,...) {
   object@tip.label
+})
+
+## labels exists already as a generic
+setGeneric("NodeLabels", function(x) {
+  standardGeneric("NodeLabels")
+})
+setMethod("NodeLabels","phylo4", function(object) {
+  object@node.label
 })
 
 ## setAs only works among S4 classes ...
@@ -106,12 +130,23 @@ setMethod("labels","phylo4", function(object,...) {
 ## }
 
 ## convert from phylo4 to phylo
-as.phylo4.phylo <- function(x) {
-  new("phylo4",
+as.phylo4.phylo <- function(x,...) {
+  newobj <- new("phylo4",
       edge=x$edge,
       edge.length=x$edge.length,
       Nnode=x$Nnode,
-      tip.label=x$tip.label)
+      tip.label=x$tip.label,
+      root.edge=if(is.null(x$root.edge)) as.integer(NA) else x$root.edge)
+  attribs = attributes(x)
+  attribs$names <- NULL
+  knownattr <- c("logLik","order","origin","para","xi")
+  known <- names(attribs)[names(attribs) %in% knownattr]
+  unknown <- names(attribs)[!names(attribs) %in% c(knownattr,"class","names")]
+  if (length(unknown)>0) {
+    warning(paste("unknown attributes ignored: ",unknown,collapse=" "))
+  }
+  for (i in known) attr(newobj,i) <- attr(x,i)
+  newobj
 }
 
 ## convert from phylo to phylo4
@@ -128,7 +163,8 @@ as.phylo.phylo4 <- function(x) {
 ## hack to allow access with $
 setMethod("$","phylo4",function(x,name) {
   switch(name,
-         edge.length=if(!hasBranchLengths(x)) NULL else x@edge.length,
+         edge.length=if(!hasEdgeLength(x)) NULL else x@edge.length,
+         node.label=if(!hasNodeLabels(x)) NULL else x@node.label,
          root.edge=if(is.na(x@root.edge)) NULL else x@root.edge,
          attr(x,name))
 })
@@ -137,7 +173,7 @@ printphylo <- function (x,printlen=6,...) {
     nb.tip <- length(x$tip.label)
     nb.node <- x$Nnode
     cat(paste("\nPhylogenetic tree with", nb.tip, "tips and", 
-        nb.node, "internal nodes.\n\n"))
+        nb.node, "internal nodes\n\n"))
     cat("Tip labels:\n")
     if (nb.tip > printlen) {
         cat(paste("\t", paste(x$tip.label[1:printlen], collapse = ", "), 
@@ -154,9 +190,9 @@ printphylo <- function (x,printlen=6,...) {
     }
     rlab <- if (isRooted(x)) "Rooted"  else "Unrooted"
     cat("\n", rlab, "; ", sep = "")
-    blen <- if (is.null(x$edge.length)) 
-        "no branch lengths."
-    else "includes branch lengths."
+    blen <- if (hasEdgeLength(x))
+        "no branch lengths"
+    else "includes branch lengths"
     cat(blen, "\n", sep = "")
 }
 
@@ -171,24 +207,15 @@ setMethod("print", "phylo4", printphylo)
 setMethod("show", "phylo4", function(object) printphylo(object))
 
 
-## this is still hacked
-setMethod("summary","phylo4",
-          function(object) {
-            summary(as.phylo.phylo4(object))
-          })
-## this doesn't QUITE work since it mangles
-##  the name of the object ... should replace with summary
-
-
-
+## S3 generic for conversion to S4
+as.phylo4 <- function (x, ...) 
+{
+    if (class(x) == "phylo4") 
+      return(x)
+    UseMethod("as.phylo4")
+  }
 ###################################
 ## extensions
-
-## rooted/unrooted
-## branch lengths/no branch lengths
-## associated data/no data
-
-## different classes, or just allow empty internal values?
 
 ## extend: phylo with data
 setClass("phylo4d",
@@ -198,7 +225,7 @@ setClass("phylo4d",
                        
 ## extend: phylo with model fit
 
-## extend: multi.phylo
+## extend: multiPhylo4
 
 ## how does multi.phylo extend any of the other
 ##  (single) classes? -- can it extend more

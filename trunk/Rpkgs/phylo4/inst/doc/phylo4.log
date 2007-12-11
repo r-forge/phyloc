@@ -1,4 +1,4 @@
-This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2007.12.7)  11 DEC 2007 12:25
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2007.12.7)  11 DEC 2007 14:57
 entering extended mode
  %&-line parsing enabled.
 **phylo4.tex
@@ -500,19 +500,19 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <7> on input line 24.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <5> on input line 24.
-LaTeX Font Info:    Try loading font information for TS1+aer on input line 47.
+LaTeX Font Info:    Try loading font information for TS1+aer on input line 50.
 (/usr/share/R/share/texmf/ts1aer.fd
 File: ts1aer.fd 
 )
 LaTeX Font Info:    Font shape `TS1/aer/m/n' in size <10> not available
-(Font)              Font shape `TS1/cmr/m/n' tried instead on input line 47.
+(Font)              Font shape `TS1/cmr/m/n' tried instead on input line 50.
  [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./phylo4.aux) ) 
 Here is how much of TeX's memory you used:
  2072 strings out of 93945
  26369 string characters out of 1162043
- 72106 words of memory out of 1500000
+ 73106 words of memory out of 1500000
  5314 multiletter control sequences out of 10000+50000
  23908 words of font info for 55 fonts, out of 1200000 for 2000
  743 hyphenation exceptions out of 8191
@@ -526,7 +526,7 @@ live/fonts/type1/bluesky/cm/cmr12.pfb></usr/share/texmf-texlive/fonts/type1/blu
 esky/cm/cmr17.pfb></usr/share/texmf-texlive/fonts/type1/bluesky/cm/cmsltt10.pfb
 ></usr/share/texmf-texlive/fonts/type1/bluesky/cm/cmsy10.pfb></usr/share/texmf-
 texlive/fonts/type1/bluesky/cm/cmtt10.pfb>
-Output written on phylo4.pdf (1 page, 47425 bytes).
+Output written on phylo4.pdf (1 page, 48088 bytes).
 PDF statistics:
  47 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 131072)

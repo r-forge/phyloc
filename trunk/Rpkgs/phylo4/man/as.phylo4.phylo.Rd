@@ -1,17 +1,20 @@
 \name{as.phylo4.phylo}
 \alias{as.phylo4.phylo}
 \alias{as.phylo.phylo4}
+\alias{as.phylo4}
 \title{Translate between phylo and phylo4 classes}
 \description{
   Translates between phylo (S3, ape) and phylo4 (S4) classes of
   phylogenetic trees
 }
 \usage{
-as.phylo4.phylo(x)
+as.phylo4(x,\dots)
+\method{as.phylo4}{phylo}(x,\dots)
 as.phylo.phylo4(x)
 }
 \arguments{
   \item{x}{A phylogenetic tree of the appropriate class}
+  \item{\dots}{additional arguments, for future generic-compatibility}
 }
 \value{
   A phylogenetic tree object of the appropriate class

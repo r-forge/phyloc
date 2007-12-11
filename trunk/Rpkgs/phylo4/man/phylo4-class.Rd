@@ -3,12 +3,6 @@
 \alias{phylo4-class}
 \alias{phylo4d-class}
 \alias{$,phylo4-method}
-%\alias{nNodes-methods}
-%\alias{nTips-methods}
-%\alias{print-methods}
-\alias{labels,phylo4-method}
-%\alias{nNodes,phylo4-method}
-%\alias{nTips,phylo4-method}
 \alias{print,phylo4-method}
 \alias{show,phylo4-method}
 \alias{summary,phylo4-method}
@@ -24,20 +18,23 @@
     \item{\code{edge.length}:}{Numeric vector of edge lengths}
     \item{\code{Nnode}:}{Integer: number of nodes}
     \item{\code{tip.label}:}{Character vector of tip labels}
+    \item{\code{root.edge}:}{Integer: root edge (NA if none)}
   }
 }
 \section{Methods}{
   \describe{
     \item{\$}{\code{signature(x = "phylo4")}: extract a slot}
-    \item{labels}{\code{signature(object = "phylo4")}: extract tip
-      labels}
-    %    \item{nNodes}{\code{signature(x = "phylo4")}: number of nodes}
-    % \item{nTips}{\code{signature(x = "phylo4")}: number of tips}
     \item{print}{\code{signature(x = "phylo4")}: print method}
     \item{show}{\code{signature(object = "phylo4")}: show method }
     \item{summary}{\code{signature(object = "phylo4")}: summary method}
     }
   }
+  \section{usage}{
+    \S4method{print}{phylo4}(x,printlen,...)
+  }
+  \arguments{
+    \item{printlen}{Maximum number of tip labels to print}
+    }
 \author{Ben Bolker}
 \examples{
   library(ape)
