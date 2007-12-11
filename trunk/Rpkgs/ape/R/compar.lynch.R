@@ -9,6 +9,17 @@
 
 compar.lynch <- function(x, G, eps = 1e-4)
 {
+	if (!hasNames(x) || !hasNames(G)) {
+		if (!.ape.quiet) warning ("Your data and/or matrix do not have names. It is assumed they are sorted in the same order.")
+	}
+    else {
+        if (all(names(x) %in% row.names(G))) {
+        	x <- x[row.names(G)]
+        }
+        else {
+        	if (!.ape.quiet) warning('The names of the data and the names of the matrix did not match. It is assumed they are sorted in the same order.')
+        }
+    }
     if (is.vector(x) || is.data.frame(x)) x <- as.matrix(x)
     alea <- runif(1, 0, 1)
     z <- as.vector(x)
