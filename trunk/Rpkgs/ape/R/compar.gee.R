@@ -10,7 +10,15 @@
 compar.gee <- function(formula, data = NULL, family = "gaussian", phy,
                        scale.fix = FALSE, scale.value = 1)
 {
-    if (is.null(data)) data <- parent.frame() else {
+    if (is.null(data)){ 
+        data <- parent.frame() 
+        for(i in attr(terms.formula(formula), 'term.labels')) {
+            if(!.ape.quiet && !hasNames(get(i))) {
+                warning(paste("Formula argument '", i, "' does not have names. Order is assumed to the be the same as phy$tip.label", sep = ""))
+            }
+        }
+    }
+    else {
         if(!any(is.na(match(rownames(data), phy$tip.label))))
           data <- data[phy$tip.label, ]
         else warning("the rownames of the data.frame and the names of the tip labels

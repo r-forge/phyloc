@@ -14,7 +14,10 @@ compar.ou <- function(x, phy, node = NULL, alpha = NULL)
     if (!is.numeric(x)) stop("'x' must be numeric.")
     if (!is.null(names(x))) {
         if (all(names(x) %in% phy$tip.label)) x <- x[phy$tip.label]
-        else warning('the names of argument "x" and the names of the tip labels did not match: the former were ignored in the analysis.')
+        else warning('The names of argument "x" and the names of the tip labels did not match: the former were ignored in the analysis.')
+    }
+    else {
+      warning("Formula argument 'x' does not have names. Order is assumed to the be the same as phy$tip.label")
     }
     nb.tip <- length(phy$tip.label)
     root <- nb.tip + 1
