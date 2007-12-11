@@ -1,9 +1,13 @@
 Package: Rmesquite
-Type: Package
-Title: What the package does (short line)
-Version: 1.0
+Version: 0.1-1
 Date: 2007-12-11
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Title: Wrapper for Mesquite methods in R
+Author: Hilmar Lapp <hlapp@gmx.net>, and Wayne Maddison <wmaddisn@interchange.ubc.ca>.
+Maintainer: Hilmar Lapp <hlapp@gmx.net>
+Depends: R (>= 2.6.0)
+Suggests: 
+Description: Provides a transparent wrapper for Mesquite functions in
+    R. Mesquite is a modular system for evolutionary analysis in
+    Java. Mesquite is available from http://mesquiteproject.org.
+License: GPL (>= 2)
+URL: http://phyloc.r-forge.r-project.org, http://mesquiteproject.org
