@@ -6,10 +6,11 @@
 \alias{print,phylo4-method}
 \alias{show,phylo4-method}
 \alias{summary,phylo4-method}
+\alias{names,phylo4-method}
 \title{phylo4 and extended classes}
 \description{Classes for phylogenetic trees}
 \section{Objects from the Class}{
-  Objects can be created by calls of the form \code{new("phylo4", ...)
+  Objects can be created by calls of the form \code{new("phylo4", ...)}
   Translation from other phylogenetic packages ...}.
 }
 \section{Slots}{
@@ -21,28 +22,52 @@
     \item{\code{root.edge}:}{Integer: root edge (NA if none)}
   }
 }
-\section{Methods}{
+\methods{
   \describe{
     \item{\$}{\code{signature(x = "phylo4")}: extract a slot}
     \item{print}{\code{signature(x = "phylo4")}: print method}
     \item{show}{\code{signature(object = "phylo4")}: show method }
     \item{summary}{\code{signature(object = "phylo4")}: summary method}
-    }
+    \item{names}{\code{signature(x = "genpop")}: gives the slots names}
   }
-  \section{usage}{
+}
+\usage{
     \S4method{print}{phylo4}(x,printlen,...)
+    \S4method{summary}{phylo4}(x,quiet=FALSE,...)
+    \S4method{names}{phylo4}(x)
   }
   \arguments{
+    \item{x}{a phylo4 object}
     \item{printlen}{Maximum number of tip labels to print}
-    }
-\author{Ben Bolker}
+    \item{quiet}{a logical stating whether the results of the summary
+      should be printed to the screen (FALSE, default) or not (TRUE)}
+  }
+  \value{
+    The \code{summary} method invisibly returns a list with the
+    following components: \cr
+    - \code{name}: the name of the object \cr
+    - \code{nb.tips}: the number of tips\cr
+    - \code{nb.nodes}: the number of nodes \cr
+    - \code{mean.el}: mean of edge lengths \cr
+    - \code{var.el}: variance of edge lengths (estimate for population) \cr
+    - \code{sumry.el}: summary (i.e. range and quartiles) of the edge
+    lengths \cr
+
+   The \code{names} method returns a vector of characters corresponding
+   to the names of the slots.
+  }
+  \author{Ben Bolker, Thibaut Jombart}
+    
 \examples{
   library(ape)
   example(read.tree)
   p1 = tree.owls
   P1 = as.phylo4.phylo(tree.owls)
+  names(P1)
   P1
   identical(p1,as.phylo.phylo4(P1))
   p1$edge ## works!
+  sumryP1 = summary(P1)
+  sumryP1
 }
 \keyword{classes}
