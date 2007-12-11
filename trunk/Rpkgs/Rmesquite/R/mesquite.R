@@ -76,22 +76,28 @@ mesquiteCategoricalMatrix <- function(mesquite=.mesquite(),
                                       taxaBlock,
                                       blockName=NULL) {
   if (is.character(taxaBlock)) {
-    taxaBlock <- mesquiteTaxaBlock(.mesquite(), taxaBlock, blockName=blockName);
+    taxaBlock <- mesquiteTaxaBlock(mesquite,
+                                   nameArray=taxaBlock, blockName=blockName);
   }
   catMatrix <- .jcall(mesquite,
                       "Lmesquite/categ/lib/CategoricalData;",
                       "loadCategoricalMatrix",
                       taxaBlock,
                       matrixName,
+                      ## FIXME: change back to as.integer() on RMLink update 
                       as.numeric(numCols),
                       as.numeric(t(charMatrix)));
   catMatrix
 }
 
 mesquiteTree <- function(mesquite=.mesquite(),
-                         newick, treeName = "TreeFromR", taxaBlock, blockName){
+                         newick,
+                         treeName="TreeFromR",
+                         taxaBlock,
+                         blockName=NULL){
   if (is.character(taxaBlock)) {
-    taxaBlock <- mesquiteTaxaBlock(.mesquite(), taxaBlock, blockName=blockName);
+    taxaBlock <- mesquiteTaxaBlock(mesquite,
+                                   nameArray=taxaBlock, blockName=blockName);
   }
   tree <- .jcall(mesquite,
                  "Lmesquite/lib/MesquiteTree;",
@@ -102,12 +108,15 @@ mesquiteTree <- function(mesquite=.mesquite(),
   tree
 }
 
-startMesquiteModule <- function(className, script = NULL){
+startMesquiteModule <- function(className, script=NULL){
+  if (is.null(script)) {
+    script <- .jnew(class="java/lang/String");
+  }
   moduleID <- .jcall(.mesquite(),
                      "I",
                      "startModule",
                      className,
-                     as.character(script));
+                     script);
   moduleID
 }
 
@@ -116,12 +125,13 @@ mesquiteApply.TreeAndCharacter <- function(mesquite=.mesquite(),
                                            tree,
                                            categMatrix,
                                            charIndex=1,
-                                           taxaBlock,
+                                           taxaBlock=NULL,
                                            module.script=NULL) {
   blockName <- paste(".block.",as.integer(runif(1,min=1,max=2^31)),sep="");
   if (is.matrix(categMatrix)) {
     if (is.character(taxaBlock)) {
-      taxaBlock <- mesquiteTaxaBlock(mesquite, taxaBlock, blockName);
+      taxaBlock <- mesquiteTaxaBlock(mesquite,
+                                     nameArray=taxaBlock, blockName=blockName);
     }
     categMatrix <- mesquiteCategoricalMatrix(mesquite,
                                              charMatrix=categMatrix,
@@ -129,9 +139,10 @@ mesquiteApply.TreeAndCharacter <- function(mesquite=.mesquite(),
   }
   if (is.character(tree)) {
     if (is.character(taxaBlock)) {
-      taxaBlock <- mesquiteTaxaBlock(mesquite, taxaBlock, blockName);
+      taxaBlock <- mesquiteTaxaBlock(mesquite,
+                                     nameArray=taxaBlock, blockName=blockName);
     }
-    tree <- mesquiteTree(mesquite, tree, taxaBlock, blockName);
+    tree <- mesquiteTree(mesquite, newick=tree, taxaBlock=taxaBlock);
   }
   if (is.character(moduleID)) {
     moduleID <- startMesquiteModule(moduleID,script=module.script);
@@ -140,7 +151,7 @@ mesquiteApply.TreeAndCharacter <- function(mesquite=.mesquite(),
                    "D",
                    "numberForTreeAndCharacter",
                    as.integer(moduleID),
-                   mesquiteTree,
+                   tree,
                    categMatrix,
                    as.integer(charIndex))
   result
@@ -151,11 +162,11 @@ biSSELikelihood <-  function(tree,
                              charIndex=1,
                              taxaBlock,
                              script=NULL){
-  result <- mesquiteApply.TreeAndCharacter(moduleID="BiSSELikelihood",
+  result <- mesquiteApply.TreeAndCharacter(moduleID="#BiSSELikelihood",
                                            tree=tree,
                                            categMatrix=categMatrix,
                                            charIndex=charIndex,
                                            taxaBlock=taxaBlock,
-                                           script=script);
+                                           module.script=script);
   result
 }
