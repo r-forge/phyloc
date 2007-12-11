@@ -1,6 +1,17 @@
 require(methods)
 
 ## base class: includes branch lengths, maybe shouldn't
+
+check_phylo4 <- function(object) {
+           ## browser()
+           N <- nrow(object@edge)
+           if (length(object@edge.length) != N)
+             return("edge lengths do not match number of edges")
+           if (length(object@tip.label)+object@Nnode-1 != N)
+             return("number of tip labels not consistent with number of edges and nodes")
+           return(TRUE)
+         }
+
 setClass("phylo4",
          representation(edge="matrix",
                         edge.length="numeric",
@@ -13,15 +24,7 @@ setClass("phylo4",
            tip.label=character(0),
            node.label=character(0),
            root.edge=as.integer(NA)),
-         validity=function(object) {
-           ## browser()
-           N <- nrow(object@edge)
-           if (length(object@edge.length) != N)
-             return("edge lengths do not match number of edges")
-           if (length(object@tip.label)+object@Nnode-1 != N)
-             return("number of tip labels not consistent with number of edges and nodes")
-           return(TRUE)
-         })
+         validity=check_phylo4)
 
 ## accessor functions for all internal bits
 setGeneric("nTips", function(x) {
@@ -74,11 +77,11 @@ setGeneric("isRooted", function(x) {
 
 ##  trace("isRooted",browser)
 setMethod("isRooted","phylo4", function(x) {
-  browser()
   !is.na(x@root.edge) ||  ## root edge explicitly defined
   ## HACK: make sure we find the right "nTips"
   tabulate(edges(x)[, 1])[phylo4::nTips(x)+1] <= 2
   ## root node (first node after last tip) has <= 2 descendants
+  ## FIXME (?): fails with empty tree
 })
 
 setGeneric("hasEdgeLength", function(x) {
@@ -149,7 +152,21 @@ as.phylo4.phylo <- function(x,...) {
   newobj
 }
 
-## convert from phylo to phylo4
+as.phylo4.multi.tree <- function(x,...) {
+  newobj <- new("multiPhylo4",
+                phylolist=lapply(as.phylo4.phylo,x),
+                tree.names=names(x),
+                tip.data=data.frame())
+}
+
+as.multi.tree.phylo4 <- function(x) {
+  y <- lapply(x@phylolist,as.phylo.phylo4)
+  names(y) <- x@tree.names
+  if (nrow(x@tip.data)>0) warning("discarded tip data")
+  class(y) <- "multi.tree"
+  y
+}
+
 as.phylo.phylo4 <- function(x) {
   y <- list(edge=x@edge,
             edge.length=x@edge.length,
@@ -311,13 +328,29 @@ as.phylo4 <- function (x, ...)
 
 ## extend: phylo with data
 setClass("phylo4d",
-         representation(nodedata="data.frame",
+         representation(tipdata="data.frame",
+                        nodedata="data.frame",
                         edgedata="data.frame"),
          contains="phylo4")
+
+setGeneric("tdata", function(x,...) {
+  standardGeneric("tdata")
+})
+setMethod("tdata","phylo4d", function(x,which="tip",...) {
+  switch(which,tip=x@tipdata,node=x@nodedata,
+         allnode=rbind(x@tipdata,x@nodedata),
+         edge=x@edgedata)
+})
+
                        
-## extend: phylo with model fit
-
-
+## extend: phylo with model fit (???)
+## hacked with logLik attribute from ape, but otherwise not done
+  
+setClass("multiPhylo4",
+         representation(phylolist="list",
+                        tree.names="character",
+                        tipdata="data.frame"),
+         contains="phylo4")
 
 
 ################
