@@ -18,7 +18,7 @@ BEGIN CHARACTERS;
 	CHARSTATELABELS 
 		1 Region /  Durham Hawaii Boston New_Orleans, 2 Favorite_food /  Coke Diet_Coke Brownie Cake ; 
 	MATRIX
-	taxon_1   0001{1,2}?01{0,1}0
+	taxon_1   0001{12}?01{01}0
 	taxon_2   110000?003
 	taxon_3   031301?300
 	taxon_4   0101122210
