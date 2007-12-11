@@ -12,8 +12,11 @@ startMesquite <- function(cp){
   .jcall(mesquite.Runner, "Lmesquite/Mesquite;", "startMesquite")
 }
 
-.mesquite() <- function(mesquite) {
-  is.null(mesquite) || missing(mesquite) ? mesquite.Runner : mesquite;
+.mesquite <- function(mesquite) {
+  if (missing(mesquite) || is.null(mesquite))
+    mesquite.Runner
+  else
+    mesquite;
 }
 
 mesquiteReadFile <- function(mesquite,path,format=NULL){
@@ -52,21 +55,26 @@ getPhyloTreeFromVector <- function(treeVector, treeIndex){
 	tree
 }
 
-mesquiteTaxaBlock <- function(mesquite, nameArray, blockName){
-  taxa <- .jcall(.mesquite(),
+mesquiteTaxaBlock <- function(mesquite=.mesquite(),
+                              nameArray,
+                              blockName=NULL){
+  if (is.null(blockName)) {
+    blockName <- paste(".block.",as.integer(runif(1,min=1,max=2^31)),sep="");
+  }
+  taxa <- .jcall(mesquite,
                  "Lmesquite/lib/Taxa;",
                  "loadTaxaBlock",
-                 as.character(blockName),
+                 blockName,
                  nameArray);
   taxa
 }
 
 mesquiteCategoricalMatrix <- function(mesquite=.mesquite(),
                                       charMatrix,
-                                      matrixName = "MatrixFromR",
+                                      matrixName="MatrixFromR",
                                       numCols=dim(charMatrix)[2],
                                       taxaBlock,
-                                      blockName) {
+                                      blockName=NULL) {
   if (is.character(taxaBlock)) {
     taxaBlock <- mesquiteTaxaBlock(.mesquite(), taxaBlock, blockName=blockName);
   }
@@ -75,8 +83,8 @@ mesquiteCategoricalMatrix <- function(mesquite=.mesquite(),
                       "loadCategoricalMatrix",
                       taxaBlock,
                       matrixName,
-                      numCols,
-                      charMatrix);
+                      as.numeric(numCols),
+                      as.numeric(t(charMatrix)));
   catMatrix
 }
 
@@ -110,7 +118,7 @@ mesquiteApply.TreeAndCharacter <- function(mesquite=.mesquite(),
                                            charIndex=1,
                                            taxaBlock,
                                            module.script=NULL) {
-  blockName <- ".temp.block";
+  blockName <- paste(".block.",as.integer(runif(1,min=1,max=2^31)),sep="");
   if (is.matrix(categMatrix)) {
     if (is.character(taxaBlock)) {
       taxaBlock <- mesquiteTaxaBlock(mesquite, taxaBlock, blockName);
@@ -143,11 +151,11 @@ biSSELikelihood <-  function(tree,
                              charIndex=1,
                              taxaBlock,
                              script=NULL){
-	result <- mesquiteApply.TreeAndCharacter(moduleID="BiSSELikelihood",
-                                                 tree=tree,
-                                                 categMatrix=categMatrix,
-                                                 charIndex=charIndex,
-                                                 taxaBlock=taxaBlock,
-                                                 script=script);
-	result
+  result <- mesquiteApply.TreeAndCharacter(moduleID="BiSSELikelihood",
+                                           tree=tree,
+                                           categMatrix=categMatrix,
+                                           charIndex=charIndex,
+                                           taxaBlock=taxaBlock,
+                                           script=script);
+  result
 }
