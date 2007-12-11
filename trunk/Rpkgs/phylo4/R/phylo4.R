@@ -28,7 +28,7 @@ setClass("phylo4",
          validity=check_phylo4)
 
 ## accessor functions for all internal bits
-setGeneric("nTips", function(x) {
+setGeneric("nTips", useAsDef=function() {
   standardGeneric("nTips")
 })
 setMethod("nTips","phylo4", function(x) {
@@ -381,22 +381,23 @@ setClass("multiPhylo4",
 # show phylo4d
 ################
 #
-# waiting for data accessors to be defined - Tibo
-#
-#setMethod("show", "phylo4d", function(object){
-#  x <- object
+setMethod("show", "phylo4d", function(object){
+  x <- object
 
-#  cat("\n\#\#Comparative data\#\#\n")
+  cat("\n##Comparative data##\n")
   #  print tree
-#  cat("\n\#Tree\#\n")
- # printphylo(x)
+  cat("\n#Tree#\n")
+  printphylo(x)
 
   # print traits
- # cat("\n\#Traits\#\n")
-  #cat("\nTips: data.frame with", nrow(...))
+  cat("\n#Traits#\n")
+  cat("\ntipdata: data.frame containing", ncol(tdata(x,"tip")), "traits for", nrow(tdata(x,"tip")),"tips" )
+  cat("\nnodedata: data.frame containing", ncol(tdata(x,"node")), "traits for", nrow(tdata(x,"node")),"nodes" )
+  cat("\nedgedata: data.frame containing", ncol(tdata(x,"edge")), "variables for", nrow(tdata(x,"edge")),"edges" )
   
-#}) # end summary phylo4d
+}) # end summary phylo4d
 
+setMethod("print", "phylo4", o)
 
 ################
 # names methods
