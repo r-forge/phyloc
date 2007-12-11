@@ -227,6 +227,9 @@ correlogram.phylo <- function(x, phy, nclass = NULL, breaks = NULL)
 {
   if (!("phylo" %in% class(phy))) stop("object \"phy\" is not of class \"phylo\"")
   if (is.null(phy$edge.length)) stop("tree \" phy\" must have branch lengths.")
+  if (!.ape.quiet && !hasNames(x))
+	warning ("Your data do not have names. It is assumed they are sorted in the same order as the phy$tip.label.")
+  x <- x[phy$tip.label]
   #Get the minimum and maximum distance in the tree:
   dist <- cophenetic.phylo(phy)
   #What classes to use?

@@ -13,6 +13,8 @@ pic <- function(x, phy, scaled = TRUE, var.contrasts = FALSE)
       stop("object 'phy' is not of class \"phylo\"")
     if (is.null(phy$edge.length))
       stop("your tree has no branch lengths: you may consider setting them equal to one, or using the function `compute.brlen'.")
+    if (!.ape.quiet && !hasNames(x))
+      warning ("Your data do not have names. It is assumed they are sorted in the same order as the phy$tip.label.")
     nb.tip <- length(phy$tip.label)
     nb.node <- phy$Nnode
     if (nb.node != nb.tip - 1)

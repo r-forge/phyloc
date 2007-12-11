@@ -164,6 +164,7 @@ prop.clades <- function(phy, ..., part = NULL)
 
 boot.phylo <- function(phy, x, FUN, B = 100, block = 1)
 {
+
     if (is.list(x)) {
         nm <- names(x)
         n <- length(x)
@@ -172,6 +173,7 @@ boot.phylo <- function(phy, x, FUN, B = 100, block = 1)
         x <- matrix(x, n, nL/n, byrow = TRUE)
         rownames(x) <- nm
     }
+    
     boot.tree <- vector("list", B)
     for (i in 1:B) {
         if (block > 1) {

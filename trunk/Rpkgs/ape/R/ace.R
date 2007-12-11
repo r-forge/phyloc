@@ -13,6 +13,8 @@ ace <- function(x, phy, type = "continuous", method = "ML", CI = TRUE,
 {
     if (class(phy) != "phylo")
       stop('object "phy" is not of class "phylo".')
+    if (!.ape.quiet && !hasNames(x))
+		warning ("Your data do not have names. It is assumed they are sorted in the same order as phy$tip.label.")
     type <- match.arg(type, c("continuous", "discrete"))
     nb.tip <- length(phy$tip.label)
     nb.node <- phy$Nnode
