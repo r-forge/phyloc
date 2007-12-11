@@ -8,12 +8,13 @@
 \alias{show,phylo4-method}
 \alias{summary,phylo4-method}
 \alias{names,phylo4-method}
+\alias{names,phylo4d-method}
 \title{phylo4 and extended classes}
 \description{Classes for phylogenetic trees}
 \section{Objects from the Class}{
   Objects can be created by calls of the form \code{new("phylo4", ...)}
-  Translation from other phylogenetic packages ...}.
-}
+  Translation from other phylogenetic packages ...
+  }
 \section{Slots}{
   \describe{
     \item{\code{edge}:}{Matrix of edges}
@@ -25,21 +26,22 @@
     \item{\code{nodedata}:}{(phylo4d) data frame for traits of internal
       nodes}
     \item{\code{edgedata}:}{(phylo4d) data frame for traits of edges}
-    \item{\code{phylolist}:}{list of phylogenetic trees (each of which
+    \item{\code{phylolist}:}{(multiPhylo4) list of phylogenetic trees (each of which
     may be of type \code{phylo4d}, containing node and/or edge data)}
 }
-\methods{
+}
+\section{Methods}{
   \describe{
     \item{\$}{\code{signature(x = "phylo4")}: extract a slot}
     \item{print}{\code{signature(x = "phylo4")}: print method}
     \item{show}{\code{signature(object = "phylo4")}: show method }
     \item{summary}{\code{signature(object = "phylo4")}: summary method}
-    \item{names}{\code{signature(x = "genpop")}: gives the slots names}
+    \item{names}{\code{signature(x = "phylo4")}: gives the slots names}
 }
 }
 \usage{
-    \S4method{print}{phylo4}(x,printlen,...)
-    \S4method{summary}{phylo4}(x,quiet=FALSE,...)
+    \S4method{print}{phylo4}(x,printlen,\dots)
+    \S4method{summary}{phylo4}(x,quiet=FALSE,\dots)
     \S4method{names}{phylo4}(x)
   }
   \arguments{
@@ -47,6 +49,7 @@
     \item{printlen}{Maximum number of tip labels to print}
     \item{quiet}{a logical stating whether the results of the summary
       should be printed to the screen (FALSE, default) or not (TRUE)}
+    \item{\dots}{additional arguments (for generic consistency)}
   }
   \value{
     The \code{summary} method invisibly returns a list with the
