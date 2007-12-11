@@ -4,6 +4,7 @@ Title: Base package for phylogenetic structures
 Version: 0.1
 Date: 2007-12-10
 Depends: methods
+Suggests: ape
 Author: R Hackathon
 Maintainer:  Ben Bolker <bolker@ufl.edu>
 Description: Provides a base S4 class for comparative methods, incorporating one or more trees and trait data

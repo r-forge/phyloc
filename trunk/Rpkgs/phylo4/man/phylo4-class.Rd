@@ -1,7 +1,7 @@
 \name{phylo4-class}
 \docType{class}
 \alias{phylo4-class}
-\alias{phylod4-class}
+\alias{phylo4d-class}
 \alias{$,phylo4-method}
 %\alias{nNodes-methods}
 %\alias{nTips-methods}

@@ -1,4 +1,8 @@
 \documentclass{article}
+%\VignetteIndexEntry{phylo4 design}
+%\VignettePackage{phylo4}
+%\VignetteDepends{ape}
+\usepackage[utf8]{inputenc} % for UTF-8/single quotes from sQuote()
 \newcommand{\code}[1]{{{\tt #1}}}
 \title{Design decisions for the phylo4 class}
 \author{Ben Bolker}
@@ -17,15 +21,29 @@ Like \code{phylo}, the main components of
 the \code{phylo4} class are:
 \begin{description}
 \item[edge]{an $N \times 2$ matrix of integers,
-  where the first column}
+  where the first column \ldots}
+\item[Nnode]{integer, number of nodes}
+\item[tip.label]{character vector of tip labels}
+\item[root.edge]{integer or NA, defining root edge}
 \end{description}
  
+\section{Hacks/backward compatibility}
 
+Hilmar Lapp very kindly showed a way to hack
+the \verb+$+ operator so that it would provide
+backward compatibility with code that is 
+extracting internal elements of a \code{phylo4}.
+<<eval=FALSE>>=
+@ 
+
+<<>>=
+library(ape)
+@ 
 \section{To do/problems}
 
+
 \begin{itemize}
-\item Warning on print generic
-\item Warning on undocumented code objects: print, nNodes, nTips
+\item Warning on undocumented code objects: print, nNodes, nTips, \ldots
 \end{itemize}
 
 \end{document}
