@@ -1,0 +1,3 @@
+* Expose directory methods in Mesquite to R (for example, list all
+  algorithms (i.e., classes) that will operate on a tree and a
+  character, ideally with a short description).
