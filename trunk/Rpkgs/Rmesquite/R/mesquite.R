@@ -10,7 +10,7 @@ startMesquite <- function(cp){
   if ((!is.null(cp)) && length(cp) > 0) {
     .jaddClassPath(cp);
   }
-  mesquite.Runner <<- .jnew("mesquite/rmLink/lib/MesquiteRunner")
+  mesquite.Runner <<- .jnew("mesquite/rmLink/rCallsM/MesquiteRunner")
   .jcall(mesquite.Runner, "Lmesquite/Mesquite;", "startMesquite")
 }
 
@@ -38,14 +38,14 @@ startMesquiteModule <- function(className, script=NULL){
 
 #========================== Harvesting Data from Mesquite =============================
 #==== Asks Mesquite to read a file.  Currently only NEXUS permitted
-mesquiteReadFile <- function(mesquite,path,format=NULL){
-  projectID <- .jcall(.mesquite(), "I", "readFile", path, as.character(format))
-  projectID
+mesquiteReadFile <- function(mesquite,path,format="NEXUS"){
+  project <- .jcall(.mesquite(), "Lmesquite/lib/MesquiteProject;", "readFile", path, as.character(format))
+  project
 }
 
 #==== Gets taxa (OTU) blocks in project in Mesquite
-getTaxaBlocks <- function(projectID){
-	taxaBlocks <- .jcall(.mesquite(), "[Lmesquite/lib/Taxa;", "getTaxaBlocks", projectID)
+getTaxaBlocks <- function(project){
+	taxaBlocks <- .jcall(.mesquite(), "[Lmesquite/lib/Taxa;", "getTaxaBlocks", project)
 	taxaBlocks
 	
 }
@@ -162,7 +162,7 @@ getRowNames <- function(mesqMatrix){
 
 #==== Creates taxa block in Mesquite with taxon names as indicated by the array
 mesquiteTaxaBlock <- function(mesquite=.mesquite(),
-                              nameArray,
+                              nameArray=NULL,
                               blockName=NULL){
   if (is.null(blockName)) {
     blockName <- paste(".block.",as.integer(runif(1,min=1,max=2^31)),sep="");
@@ -192,8 +192,8 @@ mesquiteCategoricalMatrix <- function(mesquite=.mesquite(),
                       taxaBlock,
                       matrixName,
                       ## FIXME: change back to as.integer() on RMLink update 
-                      as.numeric(numCols),
-                      as.numeric(t(charMatrix)));
+                      as.integer(numCols),
+                      as.integer(t(charMatrix)));
   catMatrix
 }
 
@@ -220,7 +220,7 @@ mesquiteTree <- function(mesquite=.mesquite(),
 #==== Calls a Mesquite module that returns values for a tree and character.
 # Requires that the module be of java subclass NumberForTreeAndCharacter 
 #   Does NOT that the module has already been started.  However, this means that a module is started for each request.
-mesquiteApply.TreeAndCharacter <- function(mesquite=.mesquite(),
+mesquiteApply.TreeAndCategChar <- function(mesquite=.mesquite(),
                                            moduleID,
                                            tree,
                                            categMatrix,
@@ -252,7 +252,7 @@ mesquiteApply.TreeAndCharacter <- function(mesquite=.mesquite(),
                    "numberForTreeAndCharacter",
                    as.integer(moduleID),
                    tree,
-                   categMatrix,
+                   .jcast(categMatrix, new.class = "mesquite/lib/characters/CharacterData"),
                    as.integer(charIndex))
   result
 }
@@ -263,7 +263,7 @@ bisseLikelihood <-  function(tree,
                              charIndex=1,
                              taxaBlock,
                              script=NULL){
-  result <- mesquiteApply.TreeAndCharacter(moduleID="#BiSSELikelihood",
+  result <- mesquiteApply.TreeAndCategChar(moduleID="#BiSSELikelihood",
                                            tree=tree,
                                            categMatrix=categMatrix,
                                            charIndex=charIndex,
