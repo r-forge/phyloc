@@ -30,8 +30,8 @@ Kernel configured for up to 2 processors.
 Processor type: i486 (Intel 80486)
 Processors active: 0 1
 Primary memory available: 2.00 gigabytes
-Default processor set: 67 tasks, 277 threads, 2 processors
-Load average: 1.10, Mach factor: 0.89
+Default processor set: 57 tasks, 228 threads, 2 processors
+Load average: 0.50, Mach factor: 1.49
 /bin/machine           = unknown
 /usr/bin/oslevel       = unknown
 /bin/universe          = unknown
@@ -827,10 +827,7 @@ config.status:721: creating example/Makefile
 config.status:721: creating example/ncltest/Makefile
 config.status:721: creating example/nclsimplest/Makefile
 config.status:721: creating example/basiccmdline/Makefile
-config.status:721: creating example/normalizer/Makefile
-config.status:721: creating ncl/Makefile
-config.status:825: creating config.h
-config.status:1139: executing depfiles commands
+config.status:781: error: cannot find input file: example/basiccmdline/Makefile.in
 
 ## ---------------- ##
 ## Cache variables. ##
@@ -942,15 +939,15 @@ lt_lt_cv_sys_global_symbol_to_cdecl='"sed -n -e '\''s/^. .* \\(.*\\)\$/extern in
 ## Output variables. ##
 ## ----------------- ##
 
-ACLOCAL='${SHELL} /Users/bcomeara/Downloads/ncl-2.0.02/config/missing --run aclocal-1.9'
+ACLOCAL='${SHELL} /Users/bcomeara/Documents/phyloc/trunk/Rpkgs/ioNCL/ncl-2.0.02/config/missing --run aclocal-1.9'
 AMDEPBACKSLASH='\'
 AMDEP_FALSE='#'
 AMDEP_TRUE=''
-AMTAR='${SHELL} /Users/bcomeara/Downloads/ncl-2.0.02/config/missing --run tar'
+AMTAR='${SHELL} /Users/bcomeara/Documents/phyloc/trunk/Rpkgs/ioNCL/ncl-2.0.02/config/missing --run tar'
 AR='ar'
-AUTOCONF='${SHELL} /Users/bcomeara/Downloads/ncl-2.0.02/config/missing --run autoconf'
-AUTOHEADER='${SHELL} /Users/bcomeara/Downloads/ncl-2.0.02/config/missing --run autoheader'
-AUTOMAKE='${SHELL} /Users/bcomeara/Downloads/ncl-2.0.02/config/missing --run automake-1.9'
+AUTOCONF='${SHELL} /Users/bcomeara/Documents/phyloc/trunk/Rpkgs/ioNCL/ncl-2.0.02/config/missing --run autoconf'
+AUTOHEADER='${SHELL} /Users/bcomeara/Documents/phyloc/trunk/Rpkgs/ioNCL/ncl-2.0.02/config/missing --run autoheader'
+AUTOMAKE='${SHELL} /Users/bcomeara/Documents/phyloc/trunk/Rpkgs/ioNCL/ncl-2.0.02/config/missing --run automake-1.9'
 AWK='awk'
 CC='gcc'
 CCDEPMODE='depmode=gcc3'
@@ -981,7 +978,7 @@ LIBS=''
 LIBTOOL='$(SHELL) $(top_builddir)/libtool'
 LN_S='ln -s'
 LTLIBOBJS=''
-MAKEINFO='${SHELL} /Users/bcomeara/Downloads/ncl-2.0.02/config/missing --run makeinfo'
+MAKEINFO='${SHELL} /Users/bcomeara/Documents/phyloc/trunk/Rpkgs/ioNCL/ncl-2.0.02/config/missing --run makeinfo'
 OBJEXT='o'
 PACKAGE='ncl'
 PACKAGE_BUGREPORT='paul.lewis@uconn.edu'
@@ -1026,7 +1023,7 @@ host_os='darwin9.1.0'
 host_vendor='apple'
 includedir='${prefix}/include'
 infodir='${prefix}/info'
-install_sh='/Users/bcomeara/Downloads/ncl-2.0.02/config/install-sh'
+install_sh='/Users/bcomeara/Documents/phyloc/trunk/Rpkgs/ioNCL/ncl-2.0.02/config/install-sh'
 libdir='${exec_prefix}/lib'
 libexecdir='${exec_prefix}/libexec'
 localstatedir='${prefix}/var'
@@ -1079,4 +1076,4 @@ target_alias=''
 #ifdef __cplusplus
 extern "C" void std::exit (int); using std::exit;
 
-configure: exit 0
+configure: exit 1

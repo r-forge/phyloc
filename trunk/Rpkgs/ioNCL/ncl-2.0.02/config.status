@@ -494,12 +494,12 @@ s,@INSTALL_DATA@,${INSTALL} -m 644,;t t
 s,@CYGPATH_W@,echo,;t t
 s,@PACKAGE@,ncl,;t t
 s,@VERSION@,2.0.02,;t t
-s,@ACLOCAL@,${SHELL} /Users/bcomeara/Downloads/ncl-2.0.02/config/missing --run aclocal-1.9,;t t
-s,@AUTOCONF@,${SHELL} /Users/bcomeara/Downloads/ncl-2.0.02/config/missing --run autoconf,;t t
-s,@AUTOMAKE@,${SHELL} /Users/bcomeara/Downloads/ncl-2.0.02/config/missing --run automake-1.9,;t t
-s,@AUTOHEADER@,${SHELL} /Users/bcomeara/Downloads/ncl-2.0.02/config/missing --run autoheader,;t t
-s,@MAKEINFO@,${SHELL} /Users/bcomeara/Downloads/ncl-2.0.02/config/missing --run makeinfo,;t t
-s,@install_sh@,/Users/bcomeara/Downloads/ncl-2.0.02/config/install-sh,;t t
+s,@ACLOCAL@,${SHELL} /Users/bcomeara/Documents/phyloc/trunk/Rpkgs/ioNCL/ncl-2.0.02/config/missing --run aclocal-1.9,;t t
+s,@AUTOCONF@,${SHELL} /Users/bcomeara/Documents/phyloc/trunk/Rpkgs/ioNCL/ncl-2.0.02/config/missing --run autoconf,;t t
+s,@AUTOMAKE@,${SHELL} /Users/bcomeara/Documents/phyloc/trunk/Rpkgs/ioNCL/ncl-2.0.02/config/missing --run automake-1.9,;t t
+s,@AUTOHEADER@,${SHELL} /Users/bcomeara/Documents/phyloc/trunk/Rpkgs/ioNCL/ncl-2.0.02/config/missing --run autoheader,;t t
+s,@MAKEINFO@,${SHELL} /Users/bcomeara/Documents/phyloc/trunk/Rpkgs/ioNCL/ncl-2.0.02/config/missing --run makeinfo,;t t
+s,@install_sh@,/Users/bcomeara/Documents/phyloc/trunk/Rpkgs/ioNCL/ncl-2.0.02/config/install-sh,;t t
 s,@STRIP@,strip,;t t
 s,@ac_ct_STRIP@,strip,;t t
 s,@INSTALL_STRIP_PROGRAM@,${SHELL} $(install_sh) -c -s,;t t
@@ -507,7 +507,7 @@ s,@mkdir_p@,$(mkinstalldirs),;t t
 s,@AWK@,awk,;t t
 s,@SET_MAKE@,,;t t
 s,@am__leading_dot@,.,;t t
-s,@AMTAR@,${SHELL} /Users/bcomeara/Downloads/ncl-2.0.02/config/missing --run tar,;t t
+s,@AMTAR@,${SHELL} /Users/bcomeara/Documents/phyloc/trunk/Rpkgs/ioNCL/ncl-2.0.02/config/missing --run tar,;t t
 s,@am__tar@,tar --format=ustar -chf - "$$tardir",;t t
 s,@am__untar@,tar -xf -,;t t
 s,@LN_S@,ln -s,;t t
