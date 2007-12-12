@@ -47,8 +47,8 @@ compar.ou(x, phy, node = NULL, alpha = NULL)
   example).
 
   If \code{x} has names, its values are matched to the tip labels of
-  \code{phy}, otherwise its values are taken to be in the same order
-  than the tip labels of \code{phy}.
+  \code{phy}, otherwise a warning is issued and the values of \code{x} 
+  are taken to be in the same order than the tip labels of \code{phy}.
 
   The user must be careful here since the function requires that both
   series of names perfectly match, so this operation may fail if there

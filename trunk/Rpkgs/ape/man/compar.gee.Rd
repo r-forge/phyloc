@@ -41,9 +41,9 @@ compar.gee(formula, data = NULL, family = "gaussian", phy,
   rownames are matched to the tip labels of \code{phy}. The user must be
   careful here since the function requires that both series of names
   perfectly match, so this operation may fail if there is a typing or
-  syntax error. If both series of names do not match, the values in the
-  data frame are taken to be in the same order than the tip labels of
-  \code{phy}, and a warning message is issued.
+  syntax error. If both series of names do not match, or there are no
+  names, the values in the data frame are taken to be in the same order
+  than the tip labels of \code{phy}, and a warning message is issued.
 
   If \code{data = NULL}, then it is assumed that the variables are in
   the same order than the tip labels of \code{phy}.
