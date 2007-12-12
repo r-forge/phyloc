@@ -41,7 +41,7 @@ macrocaic(formula, data, phy, names.col, macroMethod = "RRD", stand.contr = TRUE
 The list has attributes (DETAILS)
 }
 \references{
-Felsenstein, J.  (1985).  Phylogenies and the comparative method.  Am. Nat.  125, 1–15
+Felsenstein, J.  (1985).  Phylogenies and the comparative method.  Am. Nat.  125, 1-15
 Agapow, P.-M. and Isaac, N. J. B. (2002) MacroCAIC: correlates of species richness. Diversity & Distributions, 8, 41-43
 }
 \author{David Orme}

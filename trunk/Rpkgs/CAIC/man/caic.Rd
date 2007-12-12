@@ -53,7 +53,7 @@ Polytomies - more detail here The Mac Classic program CAIC used 1 for both 'Brun
   \item{lm}{An 'lm' object containing a regression model through the origin for the calculated contrasts}
 }
 \references{
-Felsenstein, J.  (1985).  Phylogenies and the comparative method.  Am. Nat.  125, 1–15
+Felsenstein, J.  (1985).  Phylogenies and the comparative method.  Am. Nat.  125, 1-15
 Pagel, M. D. (1992). A method for the analysis of comparative data.  J. theor. Biol. 156, 431-442.
 Purvis, A. and Rambaut, A. (1995) Comparative analysis by independent contrasts (CAIC): an Apple Macintosh application for analysing comparative data.  Computer Appl. Biosciences 11, 247-251.
 }
