@@ -120,6 +120,9 @@ class BASICCMDLINE
 		NxsString			GetFileName(NxsToken& token);
 		void				HandleReturnData(NxsToken& token);
 		NxsString			ReturnDataForR(bool allchar, bool polymorphictomissing, bool levelsall);
+		void				RReturnCharacters(NxsString * nexuscharacters, bool allchar, bool polymorphictomissing, bool levelsall);
+		void				RReturnTrees(NxsString * nexustrees);
+		void				RReturnDistances(NxsString * nexusdistances);
 		void				FactoryDefaults();
 		void				HandleEndblock(NxsToken& token);
 		void				HandleShow(NxsToken& token);
