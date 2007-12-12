@@ -1,12 +1,12 @@
- zoom.new<-function(x, wait=FALSE)
+ zoom.new2<-function(x, wait=FALSE)
  {
 click<-"Complete tree"
+sub<-subtrees(x, wait=wait)
 repeat {
-
  plot(x, sub=paste("Node :", click))
  N.tip<-Ntip(x)
  N.node<-Nnode(x)
- sub<-subtrees(x, wait=wait)
+ 
  coor<-plot.phylo.coor(x)
  tips<-x$tip.label
  nodes<-x$node.label
