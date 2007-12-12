@@ -1,25 +1,5 @@
 require(methods)
 
-## base class: includes branch lengths, maybe shouldn't
-
-check_phylo4 <- function(object) {
-  N <- nrow(object@edge)
-  if (hasEdgeLength(object) && length(object@edge.length) != N)
-    return("edge lengths do not match number of edges")
-  if (length(object@tip.label)+object@Nnode-1 != N)
-    return("number of tip labels not consistent with number of edges and nodes")
-  return(TRUE)
-}
-
-check_phylo4d <- function(object) {
-  N <- nrow(object@edge)
-  if (length(object@edge.length) != N)
-    return("edge lengths do not match number of edges")
-  if (length(object@tip.label)+object@Nnode-1 != N)
-    return("number of tip labels not consistent with number of edges and nodes")
-  return(TRUE)
-}
-
 
 setClass("phylo4",
          representation(edge="matrix",
@@ -36,7 +16,7 @@ setClass("phylo4",
            ## check?
            ##           node.label = as.character(1:Nnode),
            root.edge=as.integer(NA)),
-         validity=check_phylo4)
+         validity=check_edgestruc)
 
 ## accessor functions for all internal bits
 ## HORRIBLE KLUGE
@@ -346,6 +326,11 @@ setClass("phylo4d",
          representation(tipdata="data.frame",
                         nodedata="data.frame",
                         edgedata="data.frame"),
+         validity = function(object) {
+           ## FIXME: finish this by intercepting FALSE, char string, etc.
+           check_data(object)
+           check_edgestruc(object)
+         }                   
          contains="phylo4")
 
 setGeneric("tdata", function(x,...) {
