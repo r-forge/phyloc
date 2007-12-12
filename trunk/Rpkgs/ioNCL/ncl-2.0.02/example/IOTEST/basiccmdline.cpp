@@ -248,104 +248,212 @@ void BASICCMDLINE::HandleReturnData(
 void BASICCMDLINE::RReturnCharacters(NxsString * nexuscharacters, bool allchar, bool polymorphictomissing, bool levelsall) {
 	int nchartoreturn=0;
 	int ntax = taxa->GetNumTaxonLabels(); 
-	if (!characters->IsEmpty())
+/*	if (!characters->IsEmpty())
 	{
-		*nexuscharacters=characters->GetDatatypeName();
-		*nexuscharacters+=" <- data.frame(taxa=c(";
-		
-		for (int taxon=0;taxon<ntax;taxon++) {
-			*nexuscharacters+='"';
-			*nexuscharacters+=characters->GetTaxonLabel(taxon);
-			*nexuscharacters+='"';
-			if (taxon+1<ntax) {
-				*nexuscharacters+=',';
-			}
-		}
-		*nexuscharacters+=')';
-		if (allchar) {
-			nchartoreturn=characters->GetNCharTotal();
-		}
-		else {
-			nchartoreturn=characters->GetNChar();
-		}
-		for (int character=0; character<nchartoreturn; character++) { //We only pass the non-eliminated chars
-			NxsString charlabel=characters->GetCharLabel(character);
-			*nexuscharacters+=", ";
-			if (charlabel.length()>1) {
-				*nexuscharacters+="'";
-				*nexuscharacters+=charlabel;
-				*nexuscharacters+="'";
-			}
-			else {
-				*nexuscharacters+="char";
-				*nexuscharacters+=character+1;
-			}
-			*nexuscharacters+=" = ";
+		if (1==characters->GetDatatype()) { //standard datatype
+			*nexuscharacters=characters->GetDatatypeName();
+			*nexuscharacters+=" <- data.frame(taxa=c(";
 			
-			*nexuscharacters+="factor(c(";
 			for (int taxon=0;taxon<ntax;taxon++) {
-				int statenumber=characters->GetInternalRepresentation(taxon,character,0);
-				
-				if(characters->IsMissingState(taxon,character)) {
-					*nexuscharacters+='<NA>';
-				}
-				else if (characters->GetNumStates(taxon,character)>1) {
-					if(polymorphictomissing) {
-						*nexuscharacters+='<NA>';
-					}
-					else {
-						*nexuscharacters+='{';
-						for (int k=0;k<characters->GetNumStates(taxon,character);k++) {
-							*nexuscharacters+=characters->GetInternalRepresentation(taxon,character,0);
-							if (k+1<characters->GetNumStates(taxon,character)) {
-								*nexuscharacters+=',';
-							}
-						}
-						*nexuscharacters+='}';
-					}
-				}
-				else {
-					*nexuscharacters+=statenumber;
-				}
+				*nexuscharacters+='"';
+				*nexuscharacters+=characters->GetTaxonLabel(taxon);
+				*nexuscharacters+='"';
 				if (taxon+1<ntax) {
 					*nexuscharacters+=',';
 				}
 			}
 			*nexuscharacters+=')';
-			if (levelsall) {
-				*nexuscharacters+=", levels=c(";
-				for (int l=0;l<characters->GetMaxObsNumStates(); l++) {
-					*nexuscharacters+=l;
-					if (l+1<characters->GetMaxObsNumStates()) {
+			if (allchar) {
+				nchartoreturn=characters->GetNCharTotal();
+			}
+			else {
+				nchartoreturn=characters->GetNChar();
+			}
+			for (int character=0; character<nchartoreturn; character++) { //We only pass the non-eliminated chars
+				NxsString charlabel=characters->GetCharLabel(character);
+				*nexuscharacters+=", ";
+				if (charlabel.length()>1) {
+					*nexuscharacters+="'";
+					*nexuscharacters+=charlabel;
+					*nexuscharacters+="'";
+				}
+				else {
+					*nexuscharacters+="char";
+					*nexuscharacters+=character+1;
+				}
+				*nexuscharacters+=" = ";
+				
+				*nexuscharacters+="factor(c(";
+				for (int taxon=0;taxon<ntax;taxon++) {
+					int statenumber=characters->GetInternalRepresentation(taxon,character,0);
+					
+					if(characters->IsMissingState(taxon,character)) {
+						*nexuscharacters+='<NA>';
+					}
+					else if (characters->GetNumStates(taxon,character)>1) {
+						if(polymorphictomissing) {
+							*nexuscharacters+='<NA>';
+						}
+						else {
+							*nexuscharacters+='{';
+							for (int k=0;k<characters->GetNumStates(taxon,character);k++) {
+								*nexuscharacters+=characters->GetInternalRepresentation(taxon,character,0);
+								if (k+1<characters->GetNumStates(taxon,character)) {
+									*nexuscharacters+=',';
+								}
+							}
+							*nexuscharacters+='}';
+						}
+					}
+					else {
+						*nexuscharacters+=statenumber;
+					}
+					if (taxon+1<ntax) {
 						*nexuscharacters+=',';
 					}
 				}
 				*nexuscharacters+=')';
-			}
-			else {
-				
-				NxsString levels=", levels=c(";
-				NxsString labels=", labels=c(";
-				
-				for (int l=0;l<characters->GetObsNumStates(character); l++) {
-					labels+= characters->GetStateLabel(character,l);
-					levels+= l;
-					if (l+1<characters->GetObsNumStates(character)) {
-						labels+=',';
-						levels+=',';
+				if (levelsall) {
+					*nexuscharacters+=", levels=c(";
+					for (int l=0;l<characters->GetMaxObsNumStates(); l++) {
+						*nexuscharacters+=l;
+						if (l+1<characters->GetMaxObsNumStates()) {
+							*nexuscharacters+=',';
+						}
+					}
+					*nexuscharacters+=')';
+				}
+				else {
+					
+					NxsString levels=", levels=c(";
+					NxsString labels=", labels=c(";
+					
+					for (int l=0;l<characters->GetObsNumStates(character); l++) {
+						labels+= characters->GetStateLabel(character,l);
+						levels+= l;
+						if (l+1<characters->GetObsNumStates(character)) {
+							labels+=',';
+							levels+=',';
+						}
+					}
+					levels+=')';
+					labels+=')';
+					if (labels.length()>levels.length()) {
+						*nexuscharacters+=levels;
+						*nexuscharacters+=labels;
 					}
 				}
-				levels+=')';
-				labels+=')';
-				if (labels.length()>levels.length()) {
-					*nexuscharacters+=levels;
-					*nexuscharacters+=labels;
-				}
+				*nexuscharacters+=")\n";
 			}
 			*nexuscharacters+=")\n";
 		}
-		*nexuscharacters+=")\n";
-	}
+		else if (2==characters->GetDatatype()) { //dna
+			*nexuscharacters=characters->GetDatatypeName();
+			*nexuscharacters+=" <- data.frame(taxa=c(";
+			
+			for (int taxon=0;taxon<ntax;taxon++) {
+				*nexuscharacters+='"';
+				*nexuscharacters+=characters->GetTaxonLabel(taxon);
+				*nexuscharacters+='"';
+				if (taxon+1<ntax) {
+					*nexuscharacters+=',';
+				}
+			}
+			*nexuscharacters+=')';
+			if (allchar) {
+				nchartoreturn=characters->GetNCharTotal();
+			}
+			else {
+				nchartoreturn=characters->GetNChar();
+			}
+			for (int character=0; character<nchartoreturn; character++) { //We only pass the non-eliminated chars
+				NxsString charlabel=characters->GetCharLabel(character);
+				*nexuscharacters+=", ";
+				if (charlabel.length()>1) {
+					*nexuscharacters+="'";
+					*nexuscharacters+=charlabel;
+					*nexuscharacters+="'";
+				}
+				else {
+					*nexuscharacters+="char";
+					*nexuscharacters+=character+1;
+				}
+				*nexuscharacters+=" = ";
+				
+				*nexuscharacters+="factor(c(";
+				for (int taxon=0;taxon<ntax;taxon++) {
+					int statenumber=characters->GetInternalRepresentation(taxon,character,0);
+					
+					if(characters->IsMissingState(taxon,character)) {
+						*nexuscharacters+='<NA>';
+					}
+					else if (characters->GetNumStates(taxon,character)>1) {
+						if(polymorphictomissing) {
+							*nexuscharacters+='<NA>';
+						}
+						else {
+							*nexuscharacters+='{';
+							for (int k=0;k<characters->GetNumStates(taxon,character);k++) {
+								*nexuscharacters+=characters->GetInternalRepresentation(taxon,character,0);
+								if (k+1<characters->GetNumStates(taxon,character)) {
+									*nexuscharacters+=',';
+								}
+							}
+							*nexuscharacters+='}';
+						}
+					}
+					else {
+						*nexuscharacters+=statenumber;
+					}
+					if (taxon+1<ntax) {
+						*nexuscharacters+=',';
+					}
+				}
+				*nexuscharacters+=')';
+				if (levelsall) {
+					*nexuscharacters+=", levels=c(";
+					for (int l=0;l<characters->GetMaxObsNumStates(); l++) {
+						*nexuscharacters+=l;
+						if (l+1<characters->GetMaxObsNumStates()) {
+							*nexuscharacters+=',';
+						}
+					}
+					*nexuscharacters+=')';
+				}
+				else {
+					
+					NxsString levels=", levels=c(";
+					NxsString labels=", labels=c(";
+					
+					for (int l=0;l<characters->GetObsNumStates(character); l++) {
+						labels+= characters->GetStateLabel(character,l);
+						levels+= l;
+						if (l+1<characters->GetObsNumStates(character)) {
+							labels+=',';
+							levels+=',';
+						}
+					}
+					levels+=')';
+					labels+=')';
+					if (labels.length()>levels.length()) {
+						*nexuscharacters+=levels;
+						*nexuscharacters+=labels;
+					}
+				}
+				*nexuscharacters+=")\n";
+			}
+			*nexuscharacters+=")\n";
+			
+		}
+		else if (3==characters->GetDatatype()) { //rna
+		}
+		else if (4==characters->GetDatatype()) { //nucleotide
+		}
+		else if (5==characters->GetDatatype()) { //protein
+		}
+		else if (6==characters->GetDatatype()) { //continuous
+		}
+	}*/
 }
 
 void BASICCMDLINE::RReturnTrees(NxsString * nexustrees) {
