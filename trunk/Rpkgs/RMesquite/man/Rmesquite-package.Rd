@@ -1,19 +1,19 @@
-\name{Rmesquite-package}
-\alias{Rmesquite-package}
-\alias{Rmesquite}
+\name{RMesquite-package}
+\alias{RMesquite-package}
+\alias{RMesquite}
 \docType{package}
 \title{
-Rmesquite - Provides a transparent wrapper for Mesquite functions in R
+RMesquite - Provides a transparent wrapper for Mesquite functions in R
 }
 \description{
-  The Rmesquite package provides transparent access to data types and
+  The RMesquite package provides transparent access to data types and
   analysis modules in Mesquite. Mesquite is a modular system for
   evolutionary analysis in Java. Mesquite is available from
   http://mesquiteproject.org.
 }
 \details{
 \tabular{ll}{
-Package: \tab Rmesquite\cr
+Package: \tab RMesquite\cr
 Type: \tab Package\cr
 Version: \tab 0.1\cr
 Date: \tab 2007-12-11\cr

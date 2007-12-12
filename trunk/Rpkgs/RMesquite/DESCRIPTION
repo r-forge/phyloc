@@ -1,4 +1,4 @@
-Package: Rmesquite
+Package: RMesquite
 Version: 0.1-1
 Date: 2007-12-11
 Title: Wrapper for Mesquite methods in R
