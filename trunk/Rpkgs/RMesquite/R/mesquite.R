@@ -33,8 +33,8 @@ startMesquite <- function(cp){
   if ((!is.null(cp)) && length(cp) > 0) {
     .jaddClassPath(cp);
   }
-  .mesquite.Runner <- .jnew("mesquite/rmLink/rCallsM/MesquiteRunner");
-  assign(".mesquite.Runner",.mesquite.Runner,pos="package:RMesquite");
+  mesquite.Runner <- .jnew("mesquite/rmLink/rCallsM/MesquiteRunner");
+  assign(".mesquite.Runner",mesquite.Runner,pos="package:RMesquite");
   invisible(.jcall(mesquite.Runner, "Lmesquite/Mesquite;", "startMesquite"));
 }
 
