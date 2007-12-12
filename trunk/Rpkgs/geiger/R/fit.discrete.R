@@ -17,8 +17,19 @@ function(phy, data, data.names=NULL, lambda=FALSE, delta=FALSE, kappa=FALSE, lin
 			f<-function(x) {
 				likelihood.discrete(td$phy, td$data[,i], exp(x))
 			}
-			out<-nlm(f, p=log(start.rate), gradtol = 1e-10)
-			res[[i]]<-list(lnl=-out$minimum, q=exp(out$estimate), gradient=out$gradient, code=out$code, iterations=out$iterations)
+			outTries<-list()
+			outTries[[1]]<-optim(f, par=log(0.01), method="L",  lower=-50, upper=50)
+			outTries[[2]]<-optim(f, par=log(0.1), method="L",  lower=-50, upper=50)
+			outTries[[3]]<-optim(f, par=log(1), method="L",  lower=-50, upper=50)
+			outTries[[4]]<-optim(f, par=log(10), method="L",  lower=-50, upper=50)
+
+			l4<-numeric(4)
+			for(j in 1:4)
+				l4[j]<-outTries[[j]]$value					
+			b<-min(which(l4==min(l4)))
+			out<-outTries[[b]]	
+			
+			res[[i]]<-list(lnl=-out$value, q=exp(out$par), convergence=out$convergence, message=out$message)
 		}
 	
 
