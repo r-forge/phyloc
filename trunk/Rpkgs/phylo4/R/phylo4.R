@@ -3,14 +3,23 @@ require(methods)
 ## base class: includes branch lengths, maybe shouldn't
 
 check_phylo4 <- function(object) {
-           ## browser()
-           N <- nrow(object@edge)
-           if (length(object@edge.length) != N)
-             return("edge lengths do not match number of edges")
-           if (length(object@tip.label)+object@Nnode-1 != N)
-             return("number of tip labels not consistent with number of edges and nodes")
-           return(TRUE)
-         }
+  N <- nrow(object@edge)
+  if (hasEdgeLength(object) && length(object@edge.length) != N)
+    return("edge lengths do not match number of edges")
+  if (length(object@tip.label)+object@Nnode-1 != N)
+    return("number of tip labels not consistent with number of edges and nodes")
+  return(TRUE)
+}
+
+check_phylo4d <- function(object) {
+  N <- nrow(object@edge)
+  if (length(object@edge.length) != N)
+    return("edge lengths do not match number of edges")
+  if (length(object@tip.label)+object@Nnode-1 != N)
+    return("number of tip labels not consistent with number of edges and nodes")
+  return(TRUE)
+}
+
 
 setClass("phylo4",
          representation(edge="matrix",
@@ -23,7 +32,9 @@ setClass("phylo4",
            edge.length=numeric(0),
            Nnode=as.integer(0),
            tip.label=character(0),
-           node.label=character(0),
+           node.label=as.character(0),
+           ## check?
+           ##           node.label = as.character(1:Nnode),
            root.edge=as.integer(NA)),
          validity=check_phylo4)
 
@@ -291,7 +302,7 @@ setMethod("summary","phylo4", function (object, quiet=FALSE)
               cat("  No node labels.\n")
             }
             else {
-              if (nb.node <= 10) {
+              if (res$nb.nodes <= 10) {
                 cat("  Node labels:", x$node.label[1], "\n")
                 cat(paste("              ", x$node.label[-1]),
                 sep = "\n")

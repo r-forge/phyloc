@@ -54,7 +54,19 @@ or \code{tdata(x,"all")}.
 
 \textbf{edge data can also be included --- is this
 useful/worth keeping?}
+
+\section{Validity checking}
+
+\begin{itemize}
+\item number of rows of edge matrix ($N$) == length of edge-length vector (if $>0$)
+\item (number of tip labels)+(nNode)-1 == $N$
+\item data matrix must have row names
+\item row names must match tip labels (if not, spit out mismatches)
+\item 
+\end{itemize}
  
+Default node labels:
+
 \section{Hacks/backward compatibility}
 
 Hilmar Lapp very kindly showed a way to hack
