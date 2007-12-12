@@ -188,6 +188,8 @@ printphylo <- function (x,printlen=6,...) {
     nb.node <- x$Nnode
     cat(paste("\nPhylogenetic tree with", nb.tip, "tips and", 
         nb.node, "internal nodes\n\n"))
+
+    # print tip labels
     cat("Tip labels:\n")
     if (nb.tip > printlen) {
         cat(paste("\t", paste(x$tip.label[1:printlen], collapse = ", "), 
@@ -202,6 +204,39 @@ printphylo <- function (x,printlen=6,...) {
         }
         else print(x$node.label)
     }
+
+    # print node labels
+    cat("Node labels:\n")
+    if (nb.node > printlen) {
+        cat(paste("\t", paste(x$node.label[1:printlen], collapse = ", "), 
+                  ", ...\n", sep = ""))
+    }
+    else print(x$node.label)
+    if (!is.null(x$node.label)) {
+        cat("\tNode labels:\n")
+        if (nb.node > printlen) {
+            cat(paste("\t", paste(x$node.label[1:printlen], collapse = ", "), 
+                ",...\n", sep = ""))
+        }
+        else print(x$node.label)
+    }
+
+    # print edge labels
+    cat("Edge labels:\n")
+    if (nb.edge > printlen) {
+        cat(paste("\t", paste(x$edge.label[1:printlen], collapse = ", "), 
+                  ", ...\n", sep = ""))
+    }
+    else print(x$edge.label)
+    if (!is.null(x$edge.label)) {
+        cat("\tEdge labels:\n")
+        if (nb.edge > printlen) {
+            cat(paste("\t", paste(x$edge.label[1:printlen], collapse = ", "), 
+                ",...\n", sep = ""))
+        }
+        else print(x$edge.label)
+    }
+  
     rlab <- if (isRooted(x)) "Rooted"  else "Unrooted"
     cat("\n", rlab, "; ", sep = "")
     blen <- if (hasEdgeLength(x))
@@ -271,28 +306,7 @@ setMethod("summary","phylo4", function (object, quiet=FALSE)
             } else {
               cat("  No root edge.\n")
             }
-            
-            if (res$nb.tips <= 10) {
-              cat("  Tip labels:", x$tip.label[1], "\n")
-              cat(paste("             ", x$tip.label[-1]), sep = "\n")
-            }
-            else {
-              cat("  First ten tip labels:", x$tip.label[1], "\n")
-              cat(paste("                       ", x$tip.label[2:10]), sep = "\n")
-            }
-            if(is.null(x$node.label)) {
-              cat("  No node labels.\n")
-            }
-            else {
-              if (res$nb.nodes <= 10) {
-                cat("  Node labels:", x$node.label[1], "\n")
-                cat(paste("              ", x$node.label[-1]),
-                sep = "\n")
-              } else {
-                cat("  First ten node labels:", x$node.label[1], "\n")
-                cat(paste("                        ", x$node.label[2:10]), sep = "\n")
-              }
-            }
+                       
             if (!is.null(attr(x, "loglik"))) {
               cat("Phylogeny estimated by maximum likelihood.\n")
               cat("  log-likelihood:", attr(x, "loglik"), "\n\n")
