@@ -7,10 +7,6 @@ In RMLink:
 
 * Expose directory methods for inquiring about installed packages.
 
-* Return Mesquite project as object.
-
-* Accept integers, not doubles, where integers as meant to be passed.
-
 In Mesquite:
 ============
 
@@ -19,8 +15,8 @@ In Mesquite:
 In R:
 =====
 
-* Make Rmesquite package an installable package.
-
 * Try to obtain Mesquite location in a more automated fashion.
+** More or less done. Refinement pending to Mesquite writing its home
+   into a file that can distinguish between headless and awt.
 
 * Ancestral state reconstruction.
