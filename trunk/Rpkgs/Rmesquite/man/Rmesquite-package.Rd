@@ -3,29 +3,29 @@
 \alias{Rmesquite}
 \docType{package}
 \title{
-What the package does (short line)
-~~ package title ~~
+Rmesquite - Provides a transparent wrapper for Mesquite functions in R
 }
 \description{
-More about what it does (maybe more than one line)
-~~ A concise (1-5 lines) description of the package ~~
+  The Rmesquite package provides transparent access to data types and
+  analysis modules in Mesquite. Mesquite is a modular system for
+  evolutionary analysis in Java. Mesquite is available from
+  http://mesquiteproject.org.
 }
 \details{
 \tabular{ll}{
 Package: \tab Rmesquite\cr
 Type: \tab Package\cr
-Version: \tab 1.0\cr
+Version: \tab 0.1\cr
 Date: \tab 2007-12-11\cr
-License: \tab What license is it under?\cr
+License: \tab GPLv2.0 or later\cr
 }
 ~~ An overview of how to use the package, including the most ~~
 ~~ important functions ~~
 }
 \author{
-Who wrote it
+Hilmar Lapp (hlapp@gmx.net) and Wayne Maddison (wmaddisn@interchange.ubc.ca)
 
-Maintainer: Who to complain to <yourfault@somewhere.net>
-~~ The author and/or maintainer of the package ~~
+Maintainer: Hilmar Lapp <hlapp@gmx.net>
 }
 \references{
 ~~ Literature or other references for background information ~~
@@ -38,5 +38,5 @@ Maintainer: Who to complain to <yourfault@somewhere.net>
 ~~ \code{\link[<pkg>:<pkg>-package]{<pkg>}} ~~
 }
 \examples{
-~~ simple examples of the most important functions ~~
+%% ~~ simple examples of the most important functions ~~
 }

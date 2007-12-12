@@ -1,4 +1,4 @@
-#========================== Basic Mesquite functions =============================
+#========================== Basic Mesquite functions =========================
 mesquite.classpath <- function() {
 }
 

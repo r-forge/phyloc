@@ -11,8 +11,6 @@ In RMLink:
 
 * Accept integers, not doubles, where integers as meant to be passed.
 
-* Create ant build file and build jar to be put into Rmesquite/java.
-
 In Mesquite:
 ============
 

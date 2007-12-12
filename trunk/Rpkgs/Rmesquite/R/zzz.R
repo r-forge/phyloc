@@ -1,6 +1,6 @@
 .First.lib <- function(lib,pkg) {
   require(rJava);
-  .jpackage(pgk);
+  .jpackage(pkg);
 }
 
 ## Ideally we would want to clean up behind ourselves on exit, but at
