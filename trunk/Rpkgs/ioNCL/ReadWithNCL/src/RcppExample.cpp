@@ -19,6 +19,7 @@
 #include <fstream>
 
 #include "Rcpp.hpp"
+#define  Rf_length length
 #include "ncl.h"
 #include "basiccmdline.h"
 
