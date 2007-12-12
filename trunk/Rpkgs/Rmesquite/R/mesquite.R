@@ -1,8 +1,31 @@
 #========================== Basic Mesquite functions =========================
+
+#==== Trying to determine the location of Mesquite
 mesquite.classpath <- function() {
+  # default location is $HOME/Mesquite_Support_Files
+  home.dir <- if (.Platform$OS.type == "windows")
+    Sys.getenv("HOMEPATH") else Sys.getenv("HOME");
+  mesqu.prefs.dir <- paste(home.dir,
+                           .Platform$file.sep,"Mesquite_Support_Files",sep="");
+  # for now the only place we have to look into is the Mesquite log,
+  # so it has to have been fired up at least once, and it must have
+  # been the headless version that was fired up last.
+  con <- file(paste(mesqu.prefs.dir,.Platform$file.sep,"Mesquite_Log",sep=""),
+              open="r");
+  l <- readLines(con,n=1);
+  while((length(l) > 0) && (length(grep("^Mesquite directory: ",l)) == 0)) {
+    l <- readLines(con,n=1);
+  }
+  close(con);
+  if (length(l) > 0) {
+    p <- attr(regexpr("^Mesquite directory:\\s*",l),"match.length");
+    return(substring(l, p+1));
+  }
+  character(0);
 }
 
-#==== Starts up Mesquite.  Expensive; should be done once before calling Mesquite functions.
+# ==== Starts up Mesquite.  Expensive; should be done once before
+# calling Mesquite functions.
 startMesquite <- function(cp){
   if (missing(cp)) {
     cp <- mesquite.classpath();
@@ -14,7 +37,8 @@ startMesquite <- function(cp){
   .jcall(mesquite.Runner, "Lmesquite/Mesquite;", "startMesquite")
 }
 
-#==== ???? Hilmar
+# ==== Returns the passed variable if provided and not null, and
+# otherwise returns the cached instance of the Mesquite runner
 .mesquite <- function(mesquite) {
   if (missing(mesquite) || is.null(mesquite))
     mesquite.Runner
@@ -22,8 +46,12 @@ startMesquite <- function(cp){
     mesquite;
 }
 
-#==== Starts Mesquite module of given class.  E.g., mesquite.diverse.BiSSELikelihood should be indicated by #BiSSELikelihood or #mesquite.diverse.BiSSELikelihood
-# This module itself may hire other modules and so forth.  The script passed can control the parameters of this module as well as the hiring of this module/s employee modules
+# ==== Starts Mesquite module of given class.  E.g.,
+# mesquite.diverse.BiSSELikelihood should be indicated by
+# #BiSSELikelihood or #mesquite.diverse.BiSSELikelihood. This module
+# itself may hire other modules and so forth.  The script passed can
+# control the parameters of this module as well as the hiring of this
+# module/s employee modules
 startMesquiteModule <- function(className, script=NULL){
   if (is.null(script)) {
     script <- .jnew(class="java/lang/String");
