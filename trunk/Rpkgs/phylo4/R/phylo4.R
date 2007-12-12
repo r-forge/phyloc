@@ -18,7 +18,7 @@ setClass("phylo4",
            ## check?
            ##           node.label = as.character(1:Nnode),
            root.edge=as.integer(NA)),
-         validity=check_edgestruc)
+         validity=check_phylo4)
 
 ## accessor functions for all internal bits
 ## HORRIBLE KLUGE
@@ -331,7 +331,7 @@ setClass("phylo4d",
          validity = function(object) {
            ## FIXME: finish this by intercepting FALSE, char string, etc.
            check_data(object)
-           check_edgestruc(object)
+           check_phylo4(object)
          }                   
          contains="phylo4")
 
@@ -577,6 +577,20 @@ phylo4 <- function(edge, edge.length=NULL, tip.label=NULL, node.label=NULL,
   res@root.edge <- root.edge
 
   check_phylo4(res)
+}
+
+
+
+
+######################
+# phylo4d constructor
+######################
+#
+# TEST ME . wait for validity check
+phylo4 <- function(edge, edge.length=NULL, tip.label=NULL, node.label=NULL,
+                   edge.label=NULL, root.edge=NULL,...){
+  
+
 }
 
 
