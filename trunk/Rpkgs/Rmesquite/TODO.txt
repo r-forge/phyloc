@@ -20,3 +20,4 @@ In R:
    into a file that can distinguish between headless and awt.
 
 * Ancestral state reconstruction.
+** Should be done, but needs testing.
