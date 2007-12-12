@@ -21,3 +21,5 @@ In R:
 
 * Ancestral state reconstruction.
 ** Should be done, but needs testing.
+
+* Method to convert state matrix from Java to R
