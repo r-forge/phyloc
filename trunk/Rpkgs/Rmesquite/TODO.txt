@@ -5,6 +5,8 @@ In RMLink:
   algorithms (i.e., classes) that will operate on a tree and a
   character, ideally with a short description).
 
+* Expose directory methods for inquiring about installed packages.
+
 * Return Mesquite project as object.
 
 * Accept integers, not doubles, where integers as meant to be passed.
