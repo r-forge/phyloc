@@ -101,7 +101,11 @@ bisseLikelihood <-  function(tree,
 
 # ==== Call's one of Mesquite's ancestral state reconstruction methods
 # for categorical matrices
-ancestralStatesCategorical <-  function(tree, categMatrix, charIndex = 1, script = ""){
+ancestralStatesCategorical <-  function(tree,
+                                        categMatrix,
+                                        charIndex=1,
+                                        taxaBlock,
+                                        script=NULL) {
   result <- mesquiteApply.TreeAndCategChar(module="#MargProbAncStates",
                                            tree=tree,
                                            categMatrix=categMatrix,
