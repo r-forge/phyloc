@@ -8,3 +8,4 @@ export(fit.continuous, fit.discrete, prune.extinct.taxa, prune.random.taxa, rc)
 export(sim.char)
 export(tip.disparity)
 export(BDsim)
+export{treedata}
