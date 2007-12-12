@@ -114,7 +114,7 @@ check_data <- function(object,
 					return(TRUE)
 				}
 				#don't use tip names or attempt to sort - but check to make sure dimensions match
-				if (!(phylo4::nTips(tree)==length(object@tipdata))) {
+				if (!(nTips(tree)==length(object@tipdata))) {
 					return("Tip data do not have names and do not match number of phylo4 tips.")
 				}
 			}
@@ -123,7 +123,7 @@ check_data <- function(object,
 	else
 	{
 		#don't use tip names or attempt to sort - but check to make sure dimensions match
-		if (!(phylo4::nTips(tree)==length(object@tipdata))) {
+		if (!(nTips(tree)==length(object@tipdata))) {
 			return("Tip data do not have names and do not match number of phylo4 tips.")
 		}
 	}

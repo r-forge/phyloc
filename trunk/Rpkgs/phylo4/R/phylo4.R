@@ -76,7 +76,7 @@ setGeneric("isRooted", function(x) {
 setMethod("isRooted","phylo4", function(x) {
   !is.na(x@root.edge) ||  ## root edge explicitly defined
   ## HACK: make sure we find the right "nTips"
-  tabulate(edges(x)[, 1])[phylo4::nTips(x)+1] <= 2
+  tabulate(edges(x)[, 1])[nTips(x)+1] <= 2
   ## root node (first node after last tip) has <= 2 descendants
   ## FIXME (?): fails with empty tree
 })
@@ -184,65 +184,47 @@ setMethod("$","phylo4",function(x,name) {
 })
 
 printphylo <- function (x,printlen=6,...) {
+    printlen <- max(1,printlen)
     nb.tip <- length(x$tip.label)
     nb.node <- x$Nnode
+    nb.edge <- length(x$edge.label)
     cat(paste("\nPhylogenetic tree with", nb.tip, "tips and", 
-        nb.node, "internal nodes\n\n"))
+        nb.node, "internal nodes\n"))
 
     # print tip labels
-    cat("Tip labels:\n")
+    cat("\nTip labels:\n")
     if (nb.tip > printlen) {
         cat(paste("\t", paste(x$tip.label[1:printlen], collapse = ", "), 
                   ", ...\n", sep = ""))
-    }
-    else print(x$tip.label)
-    if (!is.null(x$node.label)) {
-        cat("\tNode labels:\n")
-        if (nb.node > printlen) {
-            cat(paste("\t", paste(x$node.label[1:printlen], collapse = ", "), 
-                ",...\n", sep = ""))
-        }
-        else print(x$node.label)
-    }
-
+    } else print(x$tip.label)
+    
     # print node labels
-    cat("Node labels:\n")
+    cat("\nNode labels:\n")
     if (nb.node > printlen) {
         cat(paste("\t", paste(x$node.label[1:printlen], collapse = ", "), 
                   ", ...\n", sep = ""))
-    }
-    else print(x$node.label)
-    if (!is.null(x$node.label)) {
-        cat("\tNode labels:\n")
-        if (nb.node > printlen) {
-            cat(paste("\t", paste(x$node.label[1:printlen], collapse = ", "), 
-                ",...\n", sep = ""))
-        }
-        else print(x$node.label)
-    }
-
+    } else print(x$node.label)
+    
     # print edge labels
-    cat("Edge labels:\n")
+    cat("\nEdge labels:\n")
     if (nb.edge > printlen) {
         cat(paste("\t", paste(x$edge.label[1:printlen], collapse = ", "), 
                   ", ...\n", sep = ""))
-    }
-    else print(x$edge.label)
-    if (!is.null(x$edge.label)) {
-        cat("\tEdge labels:\n")
-        if (nb.edge > printlen) {
-            cat(paste("\t", paste(x$edge.label[1:printlen], collapse = ", "), 
-                ",...\n", sep = ""))
-        }
-        else print(x$edge.label)
-    }
-  
+    } else print(x$edge.label)
+
+    # slots
+    cat("\nSlots:\n")
+    cat(paste("@", names(x)[1:4], sep=""),sep="\t")
+    cat("\n")
+    cat(paste("@", names(x)[5:7], sep=""),sep="\t")
+    cat("\n")
+    
     rlab <- if (isRooted(x)) "Rooted"  else "Unrooted"
     cat("\n", rlab, "; ", sep = "")
     blen <- if (hasEdgeLength(x))
         "no branch lengths"
     else "includes branch lengths"
-    cat(blen, "\n", sep = "")
+    cat(blen, "\n\n", sep = "")
 }
 
 
@@ -346,7 +328,7 @@ setClass("phylo4d",
            ## FIXME: finish this by intercepting FALSE, char string, etc.
            check_data(object)
            check_phylo4(object)
-         }                   
+         },                   
          contains="phylo4")
 
 setGeneric("tdata", function(x,...) {
@@ -367,8 +349,8 @@ phylo4d <- function(tree,data,edgedata=data.frame(),which="tip") {
     nodedata <- data
     tipdata <- data.frame()
   } else if (which=="all") {
-    tipdata <- data[1:phylo4::nTips(tree),]
-    nodedata <- data[(phylo4::nTips(tree)+1):(phylo4::nTips(tree)+nNodes(tree)),]
+    tipdata <- data[1:nTips(tree),]
+    nodedata <- data[(nTips(tree)+1):(nTips(tree)+nNodes(tree)),]
   }
   new("phylo4d",
       edge=tree@edge,
@@ -590,7 +572,8 @@ phylo4 <- function(edge, edge.length=NULL, tip.label=NULL, node.label=NULL,
   res@edge.label <- edge.label
   res@root.edge <- root.edge
 
-  check_phylo4(res)
+  if(!check_phylo4(res)) stop("Invalid object created")
+  return(res)
 }
 
 
@@ -601,7 +584,7 @@ phylo4 <- function(edge, edge.length=NULL, tip.label=NULL, node.label=NULL,
 ######################
 #
 # TEST ME . wait for validity check
-phylo4 <- function(edge, edge.length=NULL, tip.label=NULL, node.label=NULL,
+phylo4d <- function(edge, edge.length=NULL, tip.label=NULL, node.label=NULL,
                    edge.label=NULL, root.edge=NULL,...){
   
 
