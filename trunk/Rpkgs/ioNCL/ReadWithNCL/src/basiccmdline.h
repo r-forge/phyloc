@@ -99,7 +99,12 @@ class BASICCMDLINE
 		void				SkippingCommand(NxsString commandName);
 		void				SkippingDisabledBlock(NxsString blockName);
 		virtual bool		UserQuery(NxsString mb_message, NxsString mb_title, BASICCMDLINE::UserQueryEnum mb_choices = BASICCMDLINE::uq_ok);
-
+		void				HandleReturnData(NxsToken& token);
+		NxsString			ReturnDataForR(bool allchar, bool polymorphictomissing, bool levelsall);
+		void				RReturnCharacters(NxsString * nexuscharacters, bool allchar, bool polymorphictomissing, bool levelsall);
+		void				RReturnTrees(NxsString & nexustrees);
+		void				RReturnDistances(NxsString * nexusdistances);
+		
 	protected:
 
 		bool				inf_open;			/* true if `inf' is currently open */
@@ -114,12 +119,9 @@ class BASICCMDLINE
 		NxsCharactersBlock	*characters;		/* pointer to NxsCharactersBlock object */
 		NxsDataBlock		*data;				/* pointer to NxsDataBlock object */
 		char				*next_command;		/* workspace for processing next command entered interactively by user */
-
 		unsigned			CharLabelToNumber(NxsString s);
 		bool				FileExists(const char* fn);
 		NxsString			GetFileName(NxsToken& token);
-		void				HandleReturnData(NxsToken& token);
-		NxsString			ReturnDataForR(bool allchar, bool polymorphictomissing, bool levelsall);
 		void				FactoryDefaults();
 		void				HandleEndblock(NxsToken& token);
 		void				HandleShow(NxsToken& token);
