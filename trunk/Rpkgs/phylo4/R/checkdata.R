@@ -129,6 +129,72 @@ check_data <- function(object,
 	}
 
 ## node data checks
+	## if tipdata exist
+	if (!is.null(object@nodedata)) {
+		## if we want to use node.names
+		if (use.node.names) {
+			## check for names
+			if (!is.null(row.names(object@nodedata))) {
+				## check for missing or extra node data (relative to tree taxa)
+				if (setequal(row.names(object@nodedata), object@node.label)) {
+					##names are perfect match - ok
+					return(TRUE)
+				}
+				else {
+					#we know the tree taxa and nodedata taxa are not a perfect match
+					#if tree taxa are subset of nodedata, check missing.node arg and act accordingly
+					if (all(row.names(object@nodedata) %in% object@node.label)) {
+						#we know it's not an exact match - we have missing.node.data - take action
+						#stop
+						if (missing.node.data == "stop") {
+							return("Node data names do not exactly match phylo4 node labels.")
+						}
+						#warn
+						else if (missing.node.data == "warn") {
+							warning("Node data names do not exactly match phylo4 labels.")
+							return(TRUE)
+						}
+						#else ok
+					}
+					#if nodedata taxa are subset of tree taxa, check extra.node arg and act accordingly
+					if (all(object@node.label %in% row.names(object@nodedata))) {
+						#we know it's not an exact match - we have extra.node.data - take action
+						#stop
+						if (missing.node.data == "stop") {
+							return("Node data are a superset of phylo4 nodes.")
+						}
+						else if (missing.node.data == "warn") {
+							warning("Node data are a superset of phylo4 nodes.")
+							return(TRUE)
+						}
+						#else ok
+					}
+					return(TRUE)
+				}
+			}
+			else {
+				#no node.names
+				if (missing.node.names == "stop") {
+					return("Node data do not have names.")
+				}
+				else if (missing.node.names == "warn") {
+					warning("Node data do not have names.")
+					return(TRUE)
+				}
+				#don't use node names or attempt to sort - but check to make sure dimensions match
+				if (!(nNodes(tree)==length(object@nodedata))) {
+					return("Node data do not have names and do not match number of phylo4 nodes.")
+				}
+			}
+		}
+	}
+	else
+	{
+		#don't use node names or attempt to sort - but check to make sure dimensions match
+		if (!(nNodes(tree)==length(object@nodedata))) {
+			return("Tip data do not have names and do not match number of phylo4 nodes.")
+		}
+	}
 
 ## edge data checks
 ## TODO check this section - do edge.label and such exist? do we just use node.label? or ignore?
@@ -161,6 +227,7 @@ attach_data <- function(object,
 		## if we want to use tip.names
 		if (use.tip.names) {
 			tipdata <- tipdata[match(row.names(object@tipdata),object@tip.label),]
+			row.names(tipdata) <- object@tip.label
 		}
 	}
 	
@@ -168,7 +235,8 @@ attach_data <- function(object,
 	if (!is.null(object@nodedata)) {
 		## if we want to use tip.names
 		if (use.tip.names) {
-			nodedata <- nodedata[match(row.names(object@tipdata),object@tip.label),]
+			nodedata <- nodedata[match(row.names(object@nodedata),object@node.label),]
+			row.names(nodedata) <- object@node.label
 		}
 	}
 
@@ -177,6 +245,7 @@ attach_data <- function(object,
 		## if we want to use tip.names
 		if (use.edge.names) {
 			edgedata <- edgedata[match(row.names(object@edgedata),object@edge.label),]
+			row.names(tipdata) <- object@tip.label
 		}
 	}
 	
