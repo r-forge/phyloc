@@ -33,7 +33,8 @@ startMesquite <- function(cp){
   if ((!is.null(cp)) && length(cp) > 0) {
     .jaddClassPath(cp);
   }
-  mesquite.Runner <<- .jnew("mesquite/rmLink/rCallsM/MesquiteRunner");
+  .mesquite.Runner <- .jnew("mesquite/rmLink/rCallsM/MesquiteRunner");
+  assign(".mesquite.Runner",.mesquite.Runner,pos="package:RMesquite");
   invisible(.jcall(mesquite.Runner, "Lmesquite/Mesquite;", "startMesquite"));
 }
 
@@ -41,7 +42,7 @@ startMesquite <- function(cp){
 # otherwise returns the cached instance of the Mesquite runner
 .mesquite <- function(mesquite) {
   if (missing(mesquite) || is.null(mesquite))
-    mesquite.Runner
+    RMesquite::.mesquite.Runner
   else
     mesquite;
 }
@@ -56,12 +57,12 @@ startMesquiteModule <- function(className, script=NULL){
   if (is.null(script)) {
     script <- .jnull(class="java/lang/String");
   }
-  moduleID <- .jcall(.mesquite(),
-                     "Lmesquite/lib/MesquiteModule;",
-                     "startModule",
-                     className,
-                     script);
-  moduleID
+  module <- .jcall(.mesquite(),
+                   "Lmesquite/lib/MesquiteModule;",
+                   "startModule",
+                   className,
+                   script);
+  module
 }
 
 # ==== Stops Mesquite module.  Should be called when a module is no
