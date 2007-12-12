@@ -85,6 +85,8 @@ ace(x, phy, type = "continuous", method = "ML", CI = TRUE,
   \code{"SYM"} is a symmetrical model (e.g., \code{matrix(c(0, 1, 2, 1,
     0, 3, 2, 3, 0), 3)}). If a short-cut is used, the number of states
   is determined from the data.
+  
+  If \code{x} does not have names or the names do not match the tip.labels of \code{phy} it is assumed that \code{x} is sorted in the same order as \code{phy\$tip.label} and a warning will be issued.
 }
 \value{
   a list with the following elements:

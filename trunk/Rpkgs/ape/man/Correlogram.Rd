@@ -47,6 +47,8 @@
   \code{correlogram.phylo} will return NAs if void classes are used.
   This may happen if \code{breaks} if not properly defined, or sometimes with the \code{nclass=argument}, depending on the tree used.
   Usually, you'll have to pull classes.
+  
+    If \code{x} does not have names or the names do not match the tip.labels of \code{phy} it is assumed that \code{x} is sorted in the same order as \code{phy\$tip.label} and a warning will be issued.
 }
 \author{Julien Dutheil \email{julien.dutheil@univ-montp2.fr}}
 \seealso{

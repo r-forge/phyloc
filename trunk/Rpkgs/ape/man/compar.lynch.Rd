@@ -28,6 +28,8 @@ compar.lynch(x, G, eps = 1e-4)
   estimates. Convergence occurs when the differences between two
   successive iterations of the EM algorithm leads to differences between
   both residual and additive values less than or equal to \code{eps}.
+
+    If \code{x} or \code{G} do not have names or the names do not match it is assumed that they are sorted in the same order and a warning will be issued.
 }
 \note{
   The present function does not perform the estimation of ancestral

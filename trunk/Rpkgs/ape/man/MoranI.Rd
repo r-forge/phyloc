@@ -37,6 +37,8 @@
 
 	The 'na.rm' option is forwarded to all 'sd', 'sum' and 'mean' functions used in computations.
 	Note that 'NA' values are allowed only in 'x' and not in 'dist'.
+	
+  If \code{x} does not have names or the names do not match the tip.labels of \code{phy} it is assumed that \code{x} is sorted in the same order as \code{phy\$tip.label} and a warning will be issued.	
 }
 \value{
   A list containing the attributes:
