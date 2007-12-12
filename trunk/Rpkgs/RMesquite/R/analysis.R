@@ -112,7 +112,7 @@ ancestralStatesCategorical <-  function(tree,
                                            charIndex=charIndex,
                                            taxaBlock=taxaBlock,
                                            runnerMethod="ancestralStatesCategorical",
-                                           returnType="Lmesquite/lib/characters/CharacterHistory;",
+                                           returnType="Lmesquite/rmLink/common/RContMatrix;",
                                            module.script=script);
   result
 }
