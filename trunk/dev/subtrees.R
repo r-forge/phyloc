@@ -2,13 +2,11 @@ subtrees<-function(tree)
 {
 N.tip<-Ntip (tree)
 N.node<-Nnode(tree)
-#if (is.unrooted(tree))
-  limit<-N.tip+N.node
-print("limit")
-print(limit)
+limit<-N.tip+N.node
 sub<-list(N.node)
 u<-0
-  for (k in (N.tip+2):limit)
+
+  for (k in (N.tip+1):limit)
   {
   u<-u+1
   fils<-NULL
@@ -21,14 +19,22 @@ u<-0
 	fils<-NULL
 	if (length(pere)==0) break
 	}
+
   len<-res[res>N.tip] 
+   if (u==1) {
+	tree2<-tree
+	len<-(N.tip+1):limit
+	}
+   else {	
   len.tip<-res[res<N.tip+1] 
   vec<-1:length(tree$tip.label)
   len.tip.stay<-setdiff(vec, len.tip)
   tree2<-drop.tip(tree, len.tip.stay)
+	  }
   sub[[u]]<-tree2
-
   sub[[u]]$name<-k
+  if (is.null(tree$node.label))
+  	sub[[u]]$node.label<-len
 
   }
 return(sub)
