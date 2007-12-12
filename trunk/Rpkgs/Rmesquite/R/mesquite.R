@@ -57,11 +57,51 @@ startMesquiteModule <- function(className, script=NULL){
     script <- .jnew(class="java/lang/String");
   }
   moduleID <- .jcall(.mesquite(),
-                     "I",
+                     "Lmesquite/lib/MesquiteModule;",
                      "startModule",
                      className,
                      script);
   moduleID
+}
+
+#==== Stops Mesquite module.  Should be called when a module is no longer needed.
+stopMesquiteModule <- function(module){
+  .jcall(.mesquite(),
+                     "V",
+                     "stopModule",
+                     module);
+}
+
+#==== Gets from Mesquite a list of modules available for a particular duty
+availableMesquiteModules <- function(dutyName){
+  moduleList <- .jcall(.mesquite(),
+                     "[Lmesquite/lib/Listable;",
+                     "modulesWithDuty",
+                     dutyName);
+  moduleList
+}
+
+#==== Shows the list of module names with explanations
+showModules <- function(category){
+	if (is.character(category)){
+		category <- availableMesquiteModules(category)
+	}
+ for (i in 1:length(category))
+  {
+    module <- category[[i]]
+    name <- .jcall(.mesquite(), "S", "getName", module)
+    className <- .jcall(.mesquite(), "S", "getClassName", module)
+    explanation <- .jcall(.mesquite(), "S", "getExplanation", module)
+    result <- paste(name, " -- ", explanation, " (Class name: ", className, ")")
+    show(result)
+  }
+}
+#==== Shows the list of module names with explanations
+showDuties <- function(){
+  dutyList <- .jcall(.mesquite(),
+                     "[S",
+                     "dutyClasses");
+  dutyList
 }
 
 #========================== Harvesting Data from Mesquite =============================
@@ -249,7 +289,7 @@ mesquiteTree <- function(mesquite=.mesquite(),
 # Requires that the module be of java subclass NumberForTreeAndCharacter 
 #   Does NOT that the module has already been started.  However, this means that a module is started for each request.
 mesquiteApply.TreeAndCategChar <- function(mesquite=.mesquite(),
-                                           moduleID,
+                                           module,
                                            tree,
                                            categMatrix,
                                            charIndex=1,
@@ -272,16 +312,17 @@ mesquiteApply.TreeAndCategChar <- function(mesquite=.mesquite(),
     }
     tree <- mesquiteTree(mesquite, newick=tree, taxaBlock=taxaBlock);
   }
-  if (is.character(moduleID)) {
-    moduleID <- startMesquiteModule(moduleID,script=module.script);
+  if (is.character(module)) {
+    module <- startMesquiteModule(module,script=module.script);
   }
   result <- .jcall(.mesquite(),
                    "D",
                    "numberForTreeAndCharacter",
-                   as.integer(moduleID),
+                   module,
                    tree,
                    .jcast(categMatrix, new.class = "mesquite/lib/characters/CharacterData"),
                    as.integer(charIndex))
+  #Hilmar: if the module had been newly created, need to call stopMesquiteModule
   result
 }
 
@@ -291,7 +332,7 @@ bisseLikelihood <-  function(tree,
                              charIndex=1,
                              taxaBlock,
                              script=NULL){
-  result <- mesquiteApply.TreeAndCategChar(moduleID="#BiSSELikelihood",
+  result <- mesquiteApply.TreeAndCategChar(module="#BiSSELikelihood",
                                            tree=tree,
                                            categMatrix=categMatrix,
                                            charIndex=charIndex,
@@ -302,17 +343,18 @@ bisseLikelihood <-  function(tree,
 
 
 #==== Calls a module to reconstruct ancestral states.  Module needs to have been started.
-ancestralStatesCategoricalFromModule <-  function(moduleID, mesquiteTree, categMatrix, characterIndex = 1){
+ancestralStatesCategoricalFromModule <-  function(module, tree, categMatrix, charIndex = 1){
 	#Hilmar: to be cleaned
-	result <- .jcall(.mesquite(), "Lmesquite/lib/characters/CharacterHistory;", "ancestralStatesCategorical", as.integer(moduleID), mesquiteTree, categMatrix, as.integer(characterIndex))
+	result <- .jcall(.mesquite(), "Lmesquite/lib/characters/CharacterHistory;", "ancestralStatesCategorical", module, tree, categMatrix, as.integer(charIndex))
 	result
 }
 
 #==== Call's one of Mesquite's ancestral state reconstruction methods for categorical matrices
-ancestralStatesCategorical <-  function(mesquiteTree, categMatrix, characterIndex = 1, script = ""){
+ancestralStatesCategorical <-  function(tree, categMatrix, charIndex = 1, script = ""){
 	#Hilmar: to be cleaned
 	anc <- startMesquiteModule(className = "#MargProbAncStates", script);
-	result <- ancestralStatesCategoricalFromModule(moduleID = anc, mesquiteTree, categMatrix, characterIndex)
+	result <- ancestralStatesCategoricalFromModule(module = anc, tree, categMatrix, charIndex)
+	stopMesquiteModule(anc)
 	result
 }
 
