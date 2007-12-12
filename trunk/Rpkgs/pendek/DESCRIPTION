@@ -1,0 +1,12 @@
+Package: pendek
+Type: Package
+Title: Miscellaneous functions mostly for phylogenetic analyses
+Version: 1.03
+Date: 2006-05-19
+Author: Andy Purvis, David Orme, Richard Grenyer
+Maintainer: Andy Purvis <a.purvis@imperial.ac.uk>
+Depends: R, ape
+Description: Collection of functions, mostly for phylogenetic analyses. Includes the functions needed for "CAIC in R" analyses.
+License: GPL
+History: 2006-01-16: Version 1.0. Initial functions, nearly all by Andy Purvis; 2006-02-06: Version 1.01. Functions by David Orme added; 2002-02-10: Version 1.02. orme v1.2 merged in, with extra functions; 2002-05-19: Version 1.03. Some extra functions and some bug fixes.
+Packaged: Wed Sep  6 14:25:03 2006; dorme

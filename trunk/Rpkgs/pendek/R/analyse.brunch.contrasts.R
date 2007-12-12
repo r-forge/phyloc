@@ -1,0 +1,71 @@
+"analyse.brunch.contrasts" <-
+function(contrasts,model.with.x=FALSE){
+
+#Does simple analyses on the y contrasts in a set of contrasts produced by brunch
+#If model.with.x = TRUE, additionally regresses y contrasts on x contrasts
+
+dy<-unlist(lapply(contrasts,function(x){x$y.contrast}))
+vars<-unlist(lapply(contrasts,function(x){if (!is.null(x$y.contrast)) x$variance}))
+non.zero.dy<-dy[dy!=0]
+
+bt<-binom.test(sum(non.zero.dy>0,na.rm=TRUE),sum(!is.na(non.zero.dy)))
+cat(paste("\nOf ",bt$parameter," non-zero contrasts in ",names(contrasts[[1]])[3],", ",bt$statistic," are positive\n",sep=""))
+cat(paste("Binomial test p-value:",format.pval(bt$p.value),"\n\n"))
+
+wt<-wilcox.test(non.zero.dy)
+cat(paste("Wilcoxon signed-rank statistic V:",wt$statistic,"\n"))
+cat(paste("Wilcoxon p-value:",format.pval(wt$p.value),"\n\n"))
+
+sdy<-dy/sqrt(vars)
+tt<-t.test(sdy)
+cat(paste("Mean scaled contrast in ",names(contrasts[[1]])[3],": ",format(tt$estimate),"\n", sep=""))
+cat(paste("t-test vs mean = 0; t = ",format(tt$statistic),", d.f. = ",tt$parameter,"\n", sep=""))
+cat(paste("t-test p-value = ", format.pval(tt$p.value),"\n", sep=""))
+
+st<-shapiro.test(sdy)
+cat(paste("(Shapiro-Wilk normality test: W =",format(st$statistic),", p-value =",format.pval(st$p.value),")\n\n"))
+
+utt<-t.test(dy)
+cat(paste("Mean unscaled contrast in ",names(contrasts[[1]])[3],": ",format(utt$estimate),"\n", sep=""))
+cat(paste("t-test vs mean = 0; t = ",format(utt$statistic),", d.f. = ",utt$parameter,"\n", sep=""))
+cat(paste("t-test p-value = ", format.pval(utt$p.value),"\n", sep=""))
+
+ust<-shapiro.test(dy)
+cat(paste("(Shapiro-Wilk normality test: W =",format(ust$statistic),", p-value =",format.pval(ust$p.value),")\n\n"))
+
+
+stats<-c(bt$parameter,bt$statistic,bt$p.value,wt$statistic,wt$p.value,tt$estimate,tt$statistic,tt$parameter,tt$p.value,
+	st$statistic,st$p.value,utt$estimate,utt$statistic,utt$parameter,utt$p.value,ust$statistic,ust$p.value)
+names(stats)<-c("n.contrasts","n.positive","binomial.p.value","wilcoxon.v","wilcoxon.p.value","mean.scaled.contrast","scaled.t",
+	"scaled.t.df","scaled.t.p.value","scaled.shapiro.w","scaled.shapiro.p.value","mean.unscaled.contrast","unscaled.t","unscaled.t.df","unscaled.t.p.value",
+	"unscaled.shapiro.w","unscaled.shapiro.p.value")
+
+if (model.with.x==TRUE)
+{
+	dx<-unlist(lapply(contrasts,function(x){x$x.contrast}))
+	sdx<-dx/sqrt(vars)
+
+	sm<-lm(sdy~sdx-1)
+	um<-lm(dy~dx-1)
+
+	reg.stats<-c(coef(summary(sm)),coef(summary(um)))
+	names(reg.stats)<-c("scaled.b","scaled.se","scaled.regression.t","scaled.regression.p","unscaled.b","unscaled.se",
+		"unscaled.regression.t","unscaled.regression.p")
+	stats<-c(stats,reg.stats)
+
+	cat(paste("Scaled regression: b = ",format(reg.stats[1]),", t = ", format(reg.stats[3]), ", p = ",format.pval(reg.stats[4]),"\n",sep=""))
+	cat(paste("Uncaled regression: b = ",format(reg.stats[5]),", t = ", format(reg.stats[7]), ", p = ",format.pval(reg.stats[8]),"\n\n",sep=""))
+
+	old.par<-par(no.readonly=TRUE)
+	par(mfrow=c(1,2))
+	plot(sdy~sdx, main=paste("Scaled",names(contrasts[[1]])[3]), sub=names(contrasts[[1]])[4])
+	abline(sm)
+	plot(dy~dx, main=paste("Uncaled",names(contrasts[[1]])[3]), sub=names(contrasts[[1]])[4])
+	abline(um)
+	par(old.par)
+}
+
+
+invisible(stats)
+}
+
