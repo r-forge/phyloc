@@ -1,3 +1,26 @@
+In RMLink:
+==========
+
 * Expose directory methods in Mesquite to R (for example, list all
   algorithms (i.e., classes) that will operate on a tree and a
   character, ideally with a short description).
+
+* Return Mesquite project as object.
+
+* Accept integers, not doubles, where integers as meant to be passed.
+
+* Create ant build file and build jar to be put into Rmesquite/java.
+
+In Mesquite:
+============
+
+* Register location of headless Mesquite in preferences directory.
+
+In R:
+=====
+
+* Make Rmesquite package an installable package.
+
+* Try to obtain Mesquite location in a more automated fashion.
+
+* Ancestral state reconstruction.
