@@ -11,6 +11,8 @@ mesquiteApply.TreeAndCategChar <- function(mesquite=.mesquite(),
                                            categMatrix,
                                            charIndex=1,
                                            taxaBlock=NULL,
+                                           runnerMethod,
+                                           returnType="D",
                                            module.script=NULL) {
   blockName <- paste(".block.",as.integer(runif(1,min=1,max=2^31)),sep="");
   if (is.matrix(categMatrix)) {
@@ -35,8 +37,8 @@ mesquiteApply.TreeAndCategChar <- function(mesquite=.mesquite(),
     need.stop <- TRUE;
   }
   result <- .jcall(.mesquite(),
-                   "D",
-                   "numberForTreeAndCharacter",
+                   returnType,
+                   runnerMethod,
                    module,
                    tree,
                    .jcast(categMatrix,
@@ -44,6 +46,41 @@ mesquiteApply.TreeAndCategChar <- function(mesquite=.mesquite(),
                    as.integer(charIndex));
   if (need.stop) stopMesquiteModule(module);
   result
+}
+
+mesquiteApply.TreeAndCategChar.Number <- function(mesquite=.mesquite(),
+                                                  module,
+                                                  tree,
+                                                  categMatrix,
+                                                  charIndex=1,
+                                                  taxaBlock=NULL,
+                                                  module.script=NULL) {
+  mesquiteApply.TreeAndCategChar(mesquite,
+                                 module=module,
+                                 tree=tree,
+                                 categMatrix=categMatrix,
+                                 charIndex=charIndex,
+                                 taxaBlock=taxaBlock,
+                                 runnerMethod="numberForTreeAndCharacter",
+                                 module.script=module.script);
+}
+
+mesquiteApply.AncestralStateCategChar <- function(mesquite=.mesquite(),
+                                                  module,
+                                                  tree,
+                                                  categMatrix,
+                                                  charIndex=1,
+                                                  taxaBlock=NULL,
+                                                  module.script=NULL) {
+  mesquiteApply.TreeAndCategChar(mesquite,
+                                 module=module,
+                                 tree=tree,
+                                 categMatrix=categMatrix,
+                                 charIndex=charIndex,
+                                 taxaBlock=taxaBlock,
+                                 runnerMethod="ancestralStatesCategorical",
+                                 returnType="Lmesquite/lib/characters/CharacterHistory;",
+                                 module.script=module.script);
 }
 
 #====  Calls Mesquite's BiSSE likelihood function.  
@@ -57,24 +94,22 @@ bisseLikelihood <-  function(tree,
                                            categMatrix=categMatrix,
                                            charIndex=charIndex,
                                            taxaBlock=taxaBlock,
+                                           runnerMethod="numberForTreeAndCharacter",
                                            module.script=script);
   result
 }
 
-
-#==== Calls a module to reconstruct ancestral states.  Module needs to have been started.
-ancestralStatesCategoricalFromModule <-  function(module, tree, categMatrix, charIndex = 1){
-	#Hilmar: to be cleaned
-	result <- .jcall(.mesquite(), "Lmesquite/lib/characters/CharacterHistory;", "ancestralStatesCategorical", module, tree, categMatrix, as.integer(charIndex))
-	result
-}
-
-#==== Call's one of Mesquite's ancestral state reconstruction methods for categorical matrices
+# ==== Call's one of Mesquite's ancestral state reconstruction methods
+# for categorical matrices
 ancestralStatesCategorical <-  function(tree, categMatrix, charIndex = 1, script = ""){
-	#Hilmar: to be cleaned
-	anc <- startMesquiteModule(className = "#MargProbAncStates", script);
-	result <- ancestralStatesCategoricalFromModule(module = anc, tree, categMatrix, charIndex)
-	stopMesquiteModule(anc)
-	result
+  result <- mesquiteApply.TreeAndCategChar(module="#MargProbAncStates",
+                                           tree=tree,
+                                           categMatrix=categMatrix,
+                                           charIndex=charIndex,
+                                           taxaBlock=taxaBlock,
+                                           runnerMethod="ancestralStatesCategorical",
+                                           returnType="Lmesquite/lib/characters/CharacterHistory;",
+                                           module.script=script);
+  result
 }
 
