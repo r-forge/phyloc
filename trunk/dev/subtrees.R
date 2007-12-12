@@ -1,4 +1,4 @@
-subtrees<-function(tree)
+subtrees<-function(tree, wait=FALSE)
 {
 N.tip<-Ntip (tree)
 N.node<-Nnode(tree)
@@ -8,7 +8,8 @@ u<-0
 
   for (k in (N.tip+1):limit)
   {
-  u<-u+1
+ u<-u+1
+	if (wait==TRUE) cat("wait... Node",u,"out of", N.node, "treated\n")
   fils<-NULL
   pere<-res <- k 
 	repeat
@@ -38,4 +39,5 @@ u<-0
 
   }
 return(sub)
+cat("\n")
 }
