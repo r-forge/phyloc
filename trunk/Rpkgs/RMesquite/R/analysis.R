@@ -13,6 +13,7 @@ mesquiteApply.TreeAndCategChar <- function(mesquite=.mesquite(),
                                            taxaBlock=NULL,
                                            runnerMethod,
                                            returnType="D",
+                                           castMatrixType=NULL,
                                            module.script=NULL) {
   blockName <- paste(".block.",as.integer(runif(1,min=1,max=2^31)),sep="");
   if (is.matrix(categMatrix)) {
@@ -41,8 +42,11 @@ mesquiteApply.TreeAndCategChar <- function(mesquite=.mesquite(),
                    runnerMethod,
                    module,
                    tree,
-                   .jcast(categMatrix,
-                          new.class = "mesquite/lib/characters/CharacterData"),
+                   if (is.null(castMatrixType)) {
+                     categMatrix
+                   } else {
+                     .jcast(categMatrix,new.class=castMatrixType)
+                   },
                    as.integer(charIndex));
   if (need.stop) stopMesquiteModule(module);
   result
@@ -62,6 +66,7 @@ mesquiteApply.TreeAndCategChar.Number <- function(mesquite=.mesquite(),
                                  charIndex=charIndex,
                                  taxaBlock=taxaBlock,
                                  runnerMethod="numberForTreeAndCharacter",
+                                 castMatrixType="mesquite/lib/characters/CharacterData",
                                  module.script=module.script);
 }
 
