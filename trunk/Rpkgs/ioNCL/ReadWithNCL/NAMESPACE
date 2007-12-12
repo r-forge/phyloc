@@ -1,0 +1,8 @@
+useDynLib(ReadWithNCL)
+
+export(RcppExample,
+       print.RcppExample,
+       RcppTemplateDemo,
+       RcppTemplateVersion,
+	ReadWithNCL
+	)

@@ -1,0 +1,2 @@
+PKG_CXXFLAGS=@CPPFLAGS@ -I../../ncl-2.0.02/ncl -I../../ncl-2.0.02/example/basiccmdline
+PKG_LIBS=@LDFLAGS@  -L../../ncl-2.0.02/ncl/.libs -lncl
