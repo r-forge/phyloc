@@ -8,6 +8,7 @@
 \alias{show,phylo4-method}
 \alias{show,phylo4d-method}
 \alias{summary,phylo4-method}
+\alias{summary,phylo4d-method}
 \alias{names,phylo4-method}
 \alias{names,phylo4d-method}
 \title{phylo4 and extended classes}
