@@ -28,12 +28,15 @@ setClass("phylo4",
          validity=check_phylo4)
 
 ## accessor functions for all internal bits
-setGeneric("nTips", useAsDef=function() {
+## HORRIBLE KLUGE
+nTips <- function(x,...)  { }  ## mask ape::nTips
+setGeneric("nTips", function(x,...) {
   standardGeneric("nTips")
 })
-setMethod("nTips","phylo4", function(x) {
+setMethod("nTips","phylo4", function(x,...) {
   length(x@tip.label)
 })
+## rm(nTips)
 
 ## hack to ensure ape compatibility
 setMethod("nTips","ANY", function(x) {
@@ -117,8 +120,8 @@ setMethod("labels","phylo4", function(object,...) {
 setGeneric("NodeLabels", function(x) {
   standardGeneric("NodeLabels")
 })
-setMethod("NodeLabels","phylo4", function(object) {
-  object@node.label
+setMethod("NodeLabels","phylo4", function(x) {
+  x@node.label
 })
 
 ## setAs only works among S4 classes ...
@@ -352,8 +355,8 @@ phylo4d <- function(tree,data,edgedata=data.frame(),which="tip") {
     nodedata <- data
     tipdata <- data.frame()
   } else if (which=="all") {
-    tipdata <- data[1:nTips(tree),]
-    nodedata <- data[(nTips(tree)+1):(nTips(tree)+nNodes(tree)),]
+    tipdata <- data[1:phylo4::nTips(tree),]
+    nodedata <- data[(phylo4::nTips(tree)+1):(phylo4::nTips(tree)+nNodes(tree)),]
   }
   new("phylo4d",
       edge=tree@edge,
@@ -397,7 +400,7 @@ setMethod("show", "phylo4d", function(object){
   
 }) # end summary phylo4d
 
-setMethod("print", "phylo4", o)
+## ?? setMethod("print", "phylo4", o)
 
 ################
 # names methods

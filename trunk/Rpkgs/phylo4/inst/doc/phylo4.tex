@@ -18,6 +18,9 @@ data in R.  It is closely modeled on the the \code{phylo}
 class in \code{ape}, which is the dominant data structure
 at the moment.
 
+\section{Definitions/slots}
+
+\subsection{phylo4}
 Like \code{phylo}, the main components of
 the \code{phylo4} class are:
 \begin{description}
@@ -31,8 +34,27 @@ the \code{phylo4} class are:
 \item[root.edge]{integer defining root edge (maybe NA)}
 \end{description}
 
+We have defined basic methods for \code{phylo4}:
+\code{show}, \code{print} (copied from \code{print.phylo} in
+\code{ape}), and a variety of accessor functions (see help files).
+
+\code{summary} does not seem to be terribly useful in the
+context of a ``raw'' tree, because there is not much to
+compute: \textbf{end users?}
+
 Print method: add information about
 (ultrametric, scaled, polytomies (zero-length or structural))?
+
+\subsection{phylo4d}
+
+The \code{phylo4d} class extends \code{phylo4}
+with data.  Tip data, (internal) node data, and edge
+data are stored separately, but can be retrieved
+together or separately with \code{tdata(x,"tip")}
+or \code{tdata(x,"all")}.
+
+\textbf{edge data can also be included --- is this
+useful/worth keeping?}
  
 \section{Hacks/backward compatibility}
 
@@ -70,15 +92,15 @@ to handle these cases.
 \end{Schunk}
 \section{To do/problems}
 
-
 \begin{itemize}
 \item Conflict with \code{nTips} if \code{ape} is loaded first:
 ask EP to get rid of this (obsolete?) function? (\code{Ntips}
 is the real \code{ape} function for getting the number of tips)
 \item basic tree manipulation: tip-dropping, \code{na.omit}, etc. --- 
-especially for multi-tree and tree-with-data cases
+  especially for multi-tree and tree-with-data cases
 \item tree-manipulation code: tree traversal (store current
-position as an attribute), pruning, etc.
+  position as an attribute), pruning, etc.
+\item restrict/specify edges matrix to be integer?
 \end{itemize}
 
 \end{document}

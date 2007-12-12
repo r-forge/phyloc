@@ -6,6 +6,7 @@
 \alias{$,phylo4-method}
 \alias{print,phylo4-method}
 \alias{show,phylo4-method}
+\alias{show,phylo4d-method}
 \alias{summary,phylo4-method}
 \alias{names,phylo4-method}
 \alias{names,phylo4d-method}
