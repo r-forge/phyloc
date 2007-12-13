@@ -52,7 +52,7 @@ check_data <- function(object,
 	
 	## tip data checks
 	## if tip.data exist
-	if (!is.null(object@tip.data)) {
+	if (!all(dim(object@tip.data)==0)) {
 		## if we want to use tip.names
 		if (use.tip.names) {
 			## check for names
@@ -120,7 +120,7 @@ check_data <- function(object,
 
 	## node data checks
 	## if tip.data exist
-	if (!is.null(object@node.data)) {
+	if (!all(dim(object@node.data)==0)) {
 		## if we want to use node.names
 		if (use.node.names) {
 			## check for names
@@ -207,7 +207,7 @@ attach_data <- function(object,
 	
 	## tip data operations:
 	## if tip.data exist
-	if (!is.null(object@tip.data)) {
+	if (!all(dim(object@tip.data)==0)) {
 		## if we want to use tip.names
 		if (use.tip.names) {
 			tip.data <- tip.data[match(row.names(object@tip.data),object@tip.label),]
@@ -216,7 +216,7 @@ attach_data <- function(object,
 	}
 	
 	## node data operations
-	if (!is.null(object@node.data)) {
+	if (!all(dim(object@node.data)==0)) {
 		## if we want to use tip.names
 		if (use.node.names) {
 			node.data <- node.data[match(row.names(object@node.data),object@node.label),]
