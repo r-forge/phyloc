@@ -344,7 +344,7 @@ plot.phylo.coor <- function (x, type = "phylogram", use.edge.length = TRUE, node
     .last_plot.phylo <<- c(L, list(edge = xe, xx = xx, yy = yy))
     invisible(L)
     ##lines for developement
-    coor<-matrix(ncol=2, nrow=Ntip*2-1)
+    coor<-matrix(ncol=2, nrow=Ntip+Nnode)
     coor[,1]<-xx
     coor[,2]<-yy
     #row.names(coor)<-x$tip.label
