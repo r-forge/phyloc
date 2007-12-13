@@ -338,8 +338,9 @@ setClass("phylo4d",
 ##                        edgedata="data.frame"),
          validity = function(object) {
            ## FIXME: finish this by intercepting FALSE, char string, etc.
-           check_data(object)
-           check_phylo4(object)
+           check1 <- check_data(object)
+           check2 <- check_phylo4(object)
+           browser()
          },                   
          contains="phylo4")
 
@@ -581,7 +582,7 @@ phylo4 <- function(edge, edge.length=NULL, tip.label=NULL, node.label=NULL,
 setGeneric("phylo4d", function(x,...) { standardGeneric("phylo4d")} )
 
 # first arg is a phylo4
-setMethod("phylo4d", c("phylo4"), function(x,...){
+setMethod("phylo4d", c("phylo4"), function(x,tip.data,node.data,...){
 
   if(!check_phylo4(x)) stop("invalid phylo4 object provided in x")
   
@@ -607,6 +608,9 @@ setMethod("phylo4d", c("phylo4"), function(x,...){
   res@node.data <- node.data  
  
   if(!check_phylo4(res)) stop("invalid phylo4d object created")
+  browser()
+  arglist <- c(list(object=res),list(...))
+  do.call("check_data",arglist)
   return(res)
   
 })
