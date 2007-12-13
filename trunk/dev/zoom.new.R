@@ -1,5 +1,6 @@
  zoom.new2<-function(x, wait=FALSE)
  {
+   if(!dev.interactive(dev.cur())){stop("This command requires an interactive device see help(Devices)")}
 click<-"Complete tree"
 sub<-subtrees(x, wait=wait)
 repeat {
@@ -19,7 +20,7 @@ repeat {
   	 if (click > N.tip)
  		 {
  		 for (i in 1:length(sub)) if (sub[[i]]$name==click) break
- 		 x11()
+ 		 getOption("device")
  		 x<-sub[[i]]
  		 }
  	 else cat("this is a tip, you have to choose a node\n")
