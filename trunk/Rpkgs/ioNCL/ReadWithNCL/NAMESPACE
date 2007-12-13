@@ -1,6 +1,9 @@
 useDynLib(ReadWithNCL)
 
 export(RcppExample,
+       NexusToPhylo4,
+       NexusToDataFrame,
+       NexusToPhylo4D,	
        print.RcppExample,
        RcppTemplateDemo,
        RcppTemplateVersion,

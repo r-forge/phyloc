@@ -171,8 +171,17 @@ NexusToPhylo4D <- function(fileToRead,multi=FALSE) {
 
 read.nexustreestring <- function(X)
 {
+#Returns list of phylo objects (not multi.phylo, and always a list, even if there is only one element
 #X is a character vector, each element is one line from a treefile
 ## first remove all the comments
+#	print(X)
+#	print(mode(X))
+#X<-c(X)
+#print(X)
+#print(mode(X))
+	X<-unlist(strsplit(unlist(X),c("\n")))
+#	print(X)
+#	print(mode(X))
     LEFT <- grep("\\[", X)
     RIGHT <- grep("\\]", X)
     if (length(LEFT)) {
@@ -204,6 +213,8 @@ read.nexustreestring <- function(X)
     }
     start <- if (translation)  semico[semico > i2][1] + 1 else semico[semico > i1][1]
     end <- endblock[endblock > i1][1] - 1
+#	print(X)
+#	print(mode(X))
     tree <- paste(X[start:end], sep = "", collapse = "")
     tree <- gsub(" ", "", tree)
     tree <- unlist(strsplit(tree, "[=;]"))
