@@ -1,5 +1,6 @@
 \name{phylo4d-methods}
 \docType{methods}
+\alias{phylo4d}
 \alias{phylo4d-methods}
 \alias{phylo4d,phylo4-method}
 \alias{phylo4d,matrix-method}
@@ -22,9 +23,12 @@
   data.frame into a \code{phylo4d} object }    
    }
  }
- 
-\usage{
-phylo4d(x, tip.data = NULL, node.data = NULL,
+ \usage{
+\S4method{phylo4d}{phylo4}(x, tip.data = NULL, node.data = NULL,
+        all.data = NULL,...)
+\S4method{phylo4d}{phylo}(x, tip.data = NULL, node.data = NULL,
+        all.data = NULL,...)
+\S4method{phylo4d}{matrix}(x, tip.data = NULL, node.data = NULL,
         all.data = NULL,...)
 }
 \arguments{
@@ -33,7 +37,8 @@ phylo4d(x, tip.data = NULL, node.data = NULL,
 \item{tip.data}{a data frame for tips data}
 \item{node.data}{a data frame for nodes data}
 \item{all.data}{a data frame for all (i.e. tips and nodes) data. In such
-case, first rows should correspond to tips, last rows to nodes.}
+  case, first rows should correspond to tips, last rows to nodes.}
+\item{\dots}{further arguments to be passed to other methods.}
 }
 \value{
   An object of class \linkS4class{phylo4d}.
