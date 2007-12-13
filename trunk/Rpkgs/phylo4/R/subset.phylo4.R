@@ -2,7 +2,7 @@
 # subset phylo4
 ################
 #
-setGeneric("subset", "phylo4",
+setMethod("subset", "phylo4",
   function(object,tips.include=NULL,tips.exclude=NULL,node.subtree=NULL){
 
 if (!is.null(tips.include)) {
