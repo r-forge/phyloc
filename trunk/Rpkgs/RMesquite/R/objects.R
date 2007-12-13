@@ -123,6 +123,28 @@ getRowNames <- function(mesqMatrix){
 	str
 }
 
+#================== Converting return types from Mesquite ==================
+
+from.RNumericMatrix <- function(obj) {
+  if (class(obj) != "jobjRef") {
+    stop("need to pass java object reference, not ",class(obj));
+  }
+  col.names <- .jcall(obj, "[Ljava/lang/String;","getColumnNames");
+  row.names <- .jcall(obj, "[Ljava/lang/String;","getRowNames");
+  vals <- .jcall(obj, "[[Lmesquite/lib/MesquiteNumber;","getValues");
+  vals <- sapply(vals,
+                 function(col) sapply(.jevalArray(col),
+                                      function(obj) .jcall(obj,
+                                                           "D",
+                                                           "getDoubleValue")));
+  if (length(row.names) < 2) {
+    res <- vals;
+    names(res) <- col.names;
+    return(res);
+  }
+  matrix(vals, nrow=length(row.names), byrow=FALSE,
+         dimnames=list(row.names,col.names));
+}
 
 #========================== Giving Data To Mesquite ========================
 

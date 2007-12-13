@@ -46,7 +46,7 @@ mesquiteApply.TreeAndCategChar <- function(mesquite=.mesquite(),
                    },
                    as.integer(charIndex));
   if (need.stop) stopMesquiteModule(module);
-  result
+  from.RNumericMatrix(result);
 }
 
 mesquiteApply.NumberForTreeAndCategChar <- function(mesquite=.mesquite(),

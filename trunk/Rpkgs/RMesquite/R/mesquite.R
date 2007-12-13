@@ -6,20 +6,24 @@ mesquite.classpath <- function() {
   home.dir <- if (.Platform$OS.type == "windows")
     Sys.getenv("HOMEPATH") else Sys.getenv("HOME");
   mesqu.prefs.dir <- paste(home.dir,
-                           .Platform$file.sep,"Mesquite_Support_Files",sep="");
+                           .Platform$file.sep,"Mesquite_Support_Files",
+                           .Platform$file.sep,"Mesquite_Prefs",
+                           sep="");
   # for now the only place we have to look into is the Mesquite log,
   # so it has to have been fired up at least once, and it must have
   # been the headless version that was fired up last.
-  con <- file(paste(mesqu.prefs.dir,.Platform$file.sep,"Mesquite_Log",sep=""),
+  con <- file(paste(mesqu.prefs.dir,.Platform$file.sep,"Mesquite.xml",sep=""),
               open="r");
   l <- readLines(con,n=1);
-  while((length(l) > 0) && (length(grep("^Mesquite directory: ",l)) == 0)) {
+  while((length(l) > 0) && (length(grep("<mesquiteHeadlessPath>",l)) == 0)) {
     l <- readLines(con,n=1);
   }
   close(con);
   if (length(l) > 0) {
-    p <- attr(regexpr("^Mesquite directory:\\s*",l),"match.length");
-    return(substring(l, p+1));
+    p <- sub(".*<mesquiteHeadlessPath>([^<]+)</mesquiteHeadlessPath>.*",
+             "\\1",
+             l);
+    return(sub("\\./","",p));
   }
   character(0);
 }
