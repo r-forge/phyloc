@@ -28,6 +28,7 @@ attach_data(object,
   \item{extra.tip.data}{Can tip data taxa be a superset of tree taxa? (default=\code{fail})}
   \item{missing.tip.names}{Can tip data be supplied without taxa names? (default=\code{fail})}
   \item{use.node.names}{Use node data names if present (default=\code{FALSE})}
+  \item{use.edge.names}{Use edge data names if present (default=\code{FALSE})}
   \item{missing.node.data}{Can node data taxa be a subset of tree taxa? (default=\code{fail})}
   \item{extra.node.data}{Can node data taxa be a superset of tree taxa? (default=\code{fail})}
   \item{missing.node.names}{Can node data be supplied without taxa
