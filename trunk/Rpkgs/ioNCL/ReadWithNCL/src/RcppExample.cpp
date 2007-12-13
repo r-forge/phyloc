@@ -43,7 +43,7 @@ RcppExport SEXP ReadWithNCL(SEXP params) {
 		//this is where the reader would be passed the filename to read
 		//reader.Run(filename.c_str()); //Will not compile
 		//reader.Run(NULL);
-		//reader.Run(const_cast < char* > (filename.c_str()));
+		reader.Run(const_cast < char* > (filename.c_str()));
 	
 		string filenameString = "I was told to read a file named ";
 		filenameString += filename;

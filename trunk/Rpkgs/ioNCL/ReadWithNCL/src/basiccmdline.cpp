@@ -245,24 +245,24 @@ void BASICCMDLINE::HandleReturnData(
 	}
 }
 
-void BASICCMDLINE::RReturnCharacters(NxsString * nexuscharacters, bool allchar, bool polymorphictomissing, bool levelsall) {
+void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, bool polymorphictomissing, bool levelsall) {
 	int nchartoreturn=0;
 	int ntax = taxa->GetNumTaxonLabels(); 
 /*	if (!characters->IsEmpty())
 	{
 		if (1==characters->GetDatatype()) { //standard datatype
-			*nexuscharacters=characters->GetDatatypeName();
-			*nexuscharacters+=" <- data.frame(taxa=c(";
+			nexuscharacters=characters->GetDatatypeName();
+			nexuscharacters+=" <- data.frame(taxa=c(";
 			
 			for (int taxon=0;taxon<ntax;taxon++) {
-				*nexuscharacters+='"';
-				*nexuscharacters+=characters->GetTaxonLabel(taxon);
-				*nexuscharacters+='"';
+				nexuscharacters+='"';
+				nexuscharacters+=characters->GetTaxonLabel(taxon);
+				nexuscharacters+='"';
 				if (taxon+1<ntax) {
-					*nexuscharacters+=',';
+					nexuscharacters+=',';
 				}
 			}
-			*nexuscharacters+=')';
+			nexuscharacters+=')';
 			if (allchar) {
 				nchartoreturn=characters->GetNCharTotal();
 			}
@@ -271,57 +271,57 @@ void BASICCMDLINE::RReturnCharacters(NxsString * nexuscharacters, bool allchar, 
 			}
 			for (int character=0; character<nchartoreturn; character++) { //We only pass the non-eliminated chars
 				NxsString charlabel=characters->GetCharLabel(character);
-				*nexuscharacters+=", ";
+				nexuscharacters+=", ";
 				if (charlabel.length()>1) {
-					*nexuscharacters+="'";
-					*nexuscharacters+=charlabel;
-					*nexuscharacters+="'";
+					nexuscharacters+="'";
+					nexuscharacters+=charlabel;
+					nexuscharacters+="'";
 				}
 				else {
-					*nexuscharacters+="char";
-					*nexuscharacters+=character+1;
+					nexuscharacters+="char";
+					nexuscharacters+=character+1;
 				}
-				*nexuscharacters+=" = ";
+				nexuscharacters+=" = ";
 				
-				*nexuscharacters+="factor(c(";
+				nexuscharacters+="factor(c(";
 				for (int taxon=0;taxon<ntax;taxon++) {
 					int statenumber=characters->GetInternalRepresentation(taxon,character,0);
 					
 					if(characters->IsMissingState(taxon,character)) {
-						*nexuscharacters+='<NA>';
+						nexuscharacters+='<NA>';
 					}
 					else if (characters->GetNumStates(taxon,character)>1) {
 						if(polymorphictomissing) {
-							*nexuscharacters+='<NA>';
+							nexuscharacters+='<NA>';
 						}
 						else {
-							*nexuscharacters+='{';
+							nexuscharacters+='{';
 							for (int k=0;k<characters->GetNumStates(taxon,character);k++) {
-								*nexuscharacters+=characters->GetInternalRepresentation(taxon,character,0);
+								nexuscharacters+=characters->GetInternalRepresentation(taxon,character,0);
 								if (k+1<characters->GetNumStates(taxon,character)) {
-									*nexuscharacters+=',';
+									nexuscharacters+=',';
 								}
 							}
-							*nexuscharacters+='}';
+							nexuscharacters+='}';
 						}
 					}
 					else {
-						*nexuscharacters+=statenumber;
+						nexuscharacters+=statenumber;
 					}
 					if (taxon+1<ntax) {
-						*nexuscharacters+=',';
+						nexuscharacters+=',';
 					}
 				}
-				*nexuscharacters+=')';
+				nexuscharacters+=')';
 				if (levelsall) {
-					*nexuscharacters+=", levels=c(";
+					nexuscharacters+=", levels=c(";
 					for (int l=0;l<characters->GetMaxObsNumStates(); l++) {
-						*nexuscharacters+=l;
+						nexuscharacters+=l;
 						if (l+1<characters->GetMaxObsNumStates()) {
-							*nexuscharacters+=',';
+							nexuscharacters+=',';
 						}
 					}
-					*nexuscharacters+=')';
+					nexuscharacters+=')';
 				}
 				else {
 					
@@ -339,27 +339,27 @@ void BASICCMDLINE::RReturnCharacters(NxsString * nexuscharacters, bool allchar, 
 					levels+=')';
 					labels+=')';
 					if (labels.length()>levels.length()) {
-						*nexuscharacters+=levels;
-						*nexuscharacters+=labels;
+						nexuscharacters+=levels;
+						nexuscharacters+=labels;
 					}
 				}
-				*nexuscharacters+=")\n";
+				nexuscharacters+=")\n";
 			}
-			*nexuscharacters+=")\n";
+			nexuscharacters+=")\n";
 		}
 		else if (2==characters->GetDatatype()) { //dna
-			*nexuscharacters=characters->GetDatatypeName();
-			*nexuscharacters+=" <- data.frame(taxa=c(";
+			nexuscharacters=characters->GetDatatypeName();
+			nexuscharacters+=" <- data.frame(taxa=c(";
 			
 			for (int taxon=0;taxon<ntax;taxon++) {
-				*nexuscharacters+='"';
-				*nexuscharacters+=characters->GetTaxonLabel(taxon);
-				*nexuscharacters+='"';
+				nexuscharacters+='"';
+				nexuscharacters+=characters->GetTaxonLabel(taxon);
+				nexuscharacters+='"';
 				if (taxon+1<ntax) {
-					*nexuscharacters+=',';
+					nexuscharacters+=',';
 				}
 			}
-			*nexuscharacters+=')';
+			nexuscharacters+=')';
 			if (allchar) {
 				nchartoreturn=characters->GetNCharTotal();
 			}
@@ -368,57 +368,57 @@ void BASICCMDLINE::RReturnCharacters(NxsString * nexuscharacters, bool allchar, 
 			}
 			for (int character=0; character<nchartoreturn; character++) { //We only pass the non-eliminated chars
 				NxsString charlabel=characters->GetCharLabel(character);
-				*nexuscharacters+=", ";
+				nexuscharacters+=", ";
 				if (charlabel.length()>1) {
-					*nexuscharacters+="'";
-					*nexuscharacters+=charlabel;
-					*nexuscharacters+="'";
+					nexuscharacters+="'";
+					nexuscharacters+=charlabel;
+					nexuscharacters+="'";
 				}
 				else {
-					*nexuscharacters+="char";
-					*nexuscharacters+=character+1;
+					nexuscharacters+="char";
+					nexuscharacters+=character+1;
 				}
-				*nexuscharacters+=" = ";
+				nexuscharacters+=" = ";
 				
-				*nexuscharacters+="factor(c(";
+				nexuscharacters+="factor(c(";
 				for (int taxon=0;taxon<ntax;taxon++) {
 					int statenumber=characters->GetInternalRepresentation(taxon,character,0);
 					
 					if(characters->IsMissingState(taxon,character)) {
-						*nexuscharacters+='<NA>';
+						nexuscharacters+='<NA>';
 					}
 					else if (characters->GetNumStates(taxon,character)>1) {
 						if(polymorphictomissing) {
-							*nexuscharacters+='<NA>';
+							nexuscharacters+='<NA>';
 						}
 						else {
-							*nexuscharacters+='{';
+							nexuscharacters+='{';
 							for (int k=0;k<characters->GetNumStates(taxon,character);k++) {
-								*nexuscharacters+=characters->GetInternalRepresentation(taxon,character,0);
+								nexuscharacters+=characters->GetInternalRepresentation(taxon,character,0);
 								if (k+1<characters->GetNumStates(taxon,character)) {
-									*nexuscharacters+=',';
+									nexuscharacters+=',';
 								}
 							}
-							*nexuscharacters+='}';
+							nexuscharacters+='}';
 						}
 					}
 					else {
-						*nexuscharacters+=statenumber;
+						nexuscharacters+=statenumber;
 					}
 					if (taxon+1<ntax) {
-						*nexuscharacters+=',';
+						nexuscharacters+=',';
 					}
 				}
-				*nexuscharacters+=')';
+				nexuscharacters+=')';
 				if (levelsall) {
-					*nexuscharacters+=", levels=c(";
+					nexuscharacters+=", levels=c(";
 					for (int l=0;l<characters->GetMaxObsNumStates(); l++) {
-						*nexuscharacters+=l;
+						nexuscharacters+=l;
 						if (l+1<characters->GetMaxObsNumStates()) {
-							*nexuscharacters+=',';
+							nexuscharacters+=',';
 						}
 					}
-					*nexuscharacters+=')';
+					nexuscharacters+=')';
 				}
 				else {
 					
@@ -436,13 +436,13 @@ void BASICCMDLINE::RReturnCharacters(NxsString * nexuscharacters, bool allchar, 
 					levels+=')';
 					labels+=')';
 					if (labels.length()>levels.length()) {
-						*nexuscharacters+=levels;
-						*nexuscharacters+=labels;
+						nexuscharacters+=levels;
+						nexuscharacters+=labels;
 					}
 				}
-				*nexuscharacters+=")\n";
+				nexuscharacters+=")\n";
 			}
-			*nexuscharacters+=")\n";
+			nexuscharacters+=")\n";
 			
 		}
 		else if (3==characters->GetDatatype()) { //rna
@@ -483,12 +483,12 @@ void BASICCMDLINE::RReturnTrees(NxsString & nexustrees) {
 	
 }
 
-void BASICCMDLINE::RReturnDistances(NxsString * nexusdistances) {
+void BASICCMDLINE::RReturnDistances(NxsString  & nexusdistances) {
 	int ntax = taxa->GetNumTaxonLabels(); 
 
 	if (!distances->IsEmpty())
 	{ //fill cols first, first col has taxon 1, first row has taxon 2 (no diags)
-		*nexusdistances+="\ndistances <- structure(c(";
+		nexusdistances+="\ndistances <- structure(c(";
 		vector<double> distancevector;
 		for (int col=0;col<ntax-1;col++) {
 			for (int row=col+1;row<ntax;row++) {
@@ -496,23 +496,23 @@ void BASICCMDLINE::RReturnDistances(NxsString * nexusdistances) {
 			}
 		}
 		for (int i=0;i<distancevector.size();i++) {
-			*nexusdistances+=distancevector.at(i);
+			nexusdistances+=distancevector.at(i);
 			if (i+1<distancevector.size()) {
-				*nexusdistances+=',';
+				nexusdistances+=',';
 			}
 		}
-		*nexusdistances+="), Size = ";
-		*nexusdistances+=ntax;
-		*nexusdistances+="L, Labels = c(";
+		nexusdistances+="), Size = ";
+		nexusdistances+=ntax;
+		nexusdistances+="L, Labels = c(";
 		for (int taxon=0; taxon<ntax;taxon++) {
-			*nexusdistances+='"';
-			*nexusdistances+=taxa->GetTaxonLabel(taxon);
-			*nexusdistances+='"';
+			nexusdistances+='"';
+			nexusdistances+=taxa->GetTaxonLabel(taxon);
+			nexusdistances+='"';
 			if (taxon+1<ntax) {
-				*nexusdistances+=", ";
+				nexusdistances+=", ";
 			}
 		}
-		*nexusdistances+="), Upper = FALSE, Diag = FALSE, class = \"dist\")\n";
+		nexusdistances+="), Upper = FALSE, Diag = FALSE, class = \"dist\")\n";
 	}
 }
 
