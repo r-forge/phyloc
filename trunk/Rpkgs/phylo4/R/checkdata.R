@@ -15,7 +15,7 @@ check_phylo4 <- function(object) {
 ## check_data0 <- function(object) {
 	## check consistency 
 ##	return(TRUE)
-## }
+}
 
 
 check_data <- function(object,

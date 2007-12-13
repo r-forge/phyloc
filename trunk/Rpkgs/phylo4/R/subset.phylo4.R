@@ -27,4 +27,4 @@ setMethod("subset", "phylo4",
     }
     
     return(x)
-}})
+  })
