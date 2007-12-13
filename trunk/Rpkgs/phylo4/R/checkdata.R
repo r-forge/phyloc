@@ -203,8 +203,8 @@ attach_data <- function(object,
 	if (!all(dim(object@tip.data)==0)) {
 		## if we want to use tip.names
 		if (use.tip.names) {
-			tip.data <- tip.data[match(row.names(object@tip.data),object@tip.label),]
-			row.names(tip.data) <- object@tip.label
+			object@tip.data <- object@tip.data[match(row.names(object@tip.data),object@tip.label),]
+			row.names(object@tip.data) <- object@tip.label
 		}
 	}
 	
@@ -212,8 +212,8 @@ attach_data <- function(object,
 	if (!all(dim(object@node.data)==0)) {
 		## if we want to use tip.names
 		if (use.node.names) {
-			node.data <- node.data[match(row.names(object@node.data),object@node.label),]
-			row.names(node.data) <- object@node.label
+			object@node.data <- object@node.data[match(row.names(object@node.data),object@node.label),]
+			row.names(object@node.data) <- object@node.label
 		}
 	}
 	

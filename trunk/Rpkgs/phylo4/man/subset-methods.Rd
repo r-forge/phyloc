@@ -42,10 +42,7 @@
 }
 \author{Steven Kembel \email{skembel@berkeley.edu}}
 \examples{
-require(ape)
-p3 <- rcoal(10)
-p4 <- as(p3,"phylo4")
-subset(p4,tips.include=c("t1","t2","t9"))
+
 }
 \keyword{manip}
 \keyword{methods}
