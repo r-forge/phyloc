@@ -109,6 +109,7 @@ setMethod("hasNodeLabels","phylo4", function(x) {
 })
 
 ## labels exists already as a generic
+setGeneric("labels")
 setMethod("labels","phylo4", function(object,...) {
   object@tip.label
 })
