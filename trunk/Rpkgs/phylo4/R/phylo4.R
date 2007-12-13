@@ -1,4 +1,5 @@
 require(methods)
+require(ape)
 
 
 setClass("phylo4",
@@ -133,7 +134,8 @@ setMethod("NodeLabels","phylo4", function(x) {
 as.phylo4.phylo <- function(x,...) {
   newobj <- phylo4(x$edge, x$edge.length,
                    x$tip.label, node.label=NULL,
-                   edge.label=NULL, root.edge=x$root.edge)
+                   edge.label=NULL,
+                   root.edge=x$root.edge)
   attribs = attributes(x)
   attribs$names <- NULL
   knownattr <- c("logLik","order","origin","para","xi")
@@ -557,7 +559,7 @@ phylo4 <- function(edge, edge.length=NULL, tip.label=NULL, node.label=NULL,
     if(!is.integer(root.edge)) stop("root.edge must be an integer")
     if(root.edge > nrow(edge)) stop("indicated root.edge do not exist")
   } else {
-    root.edge <- as.integer(NULL)
+    root.edge <- as.integer(NA)
   }
   
   # fill in the result
