@@ -26,7 +26,7 @@ check_data <- function(object,
 		use.node.names=FALSE,
 		missing.node.data=c("OK","warn","fail"),		
 		extra.node.data=c("OK","warn","fail"),												
-		missing.node.names=c("OK","warn","fail"))							 
+		missing.node.names=c("OK","warn","fail"),...)							 
 
 {
 		
@@ -218,7 +218,7 @@ attach_data <- function(object,
 	## node data operations
 	if (!is.null(object@node.data)) {
 		## if we want to use tip.names
-		if (use.tip.names) {
+		if (use.node.names) {
 			node.data <- node.data[match(row.names(object@node.data),object@node.label),]
 			row.names(node.data) <- object@node.label
 		}
