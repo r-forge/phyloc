@@ -622,6 +622,7 @@ setMethod("phylo4d", c("phylo4"), function(x, tip.data=NULL, node.data=NULL, all
   
   arglist <- c(list(object=res),list(...))
   do.call("check_data",arglist)
+  res <- do.call("attach_data",arglist)
   return(res)  
 })
 
