@@ -330,12 +330,15 @@ as.phylo4 <- function (x, ...)
 
 ###################################
 ## extensions
-
+## phylo4d class
 ## extend: phylo with data
 setClass("phylo4d",
          representation(tip.data="data.frame",
                         node.data="data.frame"),
 ##                        edgedata="data.frame"),
+         prototype = list( tip.data = data.frame(NULL),
+           node.data = data.frame(NULL),
+           all.data = data.frame(NULL) ),
          validity = function(object) {
            ## FIXME: finish this by intercepting FALSE, char string, etc.
            check1 <- check_data(object)
@@ -582,7 +585,7 @@ phylo4 <- function(edge, edge.length=NULL, tip.label=NULL, node.label=NULL,
 setGeneric("phylo4d", function(x,...) { standardGeneric("phylo4d")} )
 
 # first arg is a phylo4
-setMethod("phylo4d", c("phylo4"), function(x,tip.data,node.data,...){
+setMethod("phylo4d", c("phylo4"), function(x, tip.data=NULL, node.data=NULL, all.data=NULL, ...){
 
   if(!check_phylo4(x)) stop("invalid phylo4 object provided in x")
   
@@ -595,24 +598,30 @@ setMethod("phylo4d", c("phylo4"), function(x,tip.data,node.data,...){
   res@edge.label <- x@edge.label
   res@root.edge <- x@root.edge
 
-  tip.data <-list(...)$"tip.data"
-  if(is.null(tip.data)) tip.data <-list(...)$"tipdata"
+  # handle a which argument
+  which.dat <- match.arg(list(...)$"which", c("tip","node","all"))
+
+  # handle data
+  if(all(is.null(c(tip.data, node.data, all.data)))) stop("no data provided; please use phylo4 class")
   
-  if(is.matrix( tip.data) | is.null(tip.data))  tip.data <- as.data.frame(tip.data)
-  if(!is.data.frame(tip.data)) stop("tip.data is not NULL or a data.frame")
+  if(!is.null(all.data)){
+    if(!is.data.frame(all.data)) stop("all.data must be a data.frame")
+    tip.data <- all.data[1:phylo4::nTips(x) , ]
+    node.data <- all.data[-(1:phylo4::nTips(x)) , ]
+  }
+
+  # now at least one data.frame is provided
+  if(is.null(tip.data)) tip.data <- data.frame(NULL)
+  if(is.null(node.data)) node.data <- data.frame(NULL)
+  if(!is.data.frame(tip.data)) stop("tip.data must be a data.frame")
+  if(!is.data.frame(node.data)) stop("node.data must be a data.frame")
+  
   res@tip.data <- tip.data
+  res@node.data <- node.data
   
-  node.data <-list(...)$"node.data"
-  if(is.matrix( node.data) | is.null(node.data))  node.data <- as.data.frame(node.data)
-  if(!is.data.frame(node.data)) stop("node.data is not NULL or a data.frame")
-  res@node.data <- node.data  
- 
-  if(!check_phylo4(res)) stop("invalid phylo4d object created")
-  browser()
   arglist <- c(list(object=res),list(...))
   do.call("check_data",arglist)
-  return(res)
-  
+  return(res)  
 })
 
 # first arg is a matrix of edges
