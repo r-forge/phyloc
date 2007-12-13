@@ -1,0 +1,11 @@
+pendek CHANGES FILE
+
+2006-01-16: Version 1.0. First version, with 33 functions mostly by Andy Purvis (abst, crunch.contrast, force.binary.tree, all.LRLI, find.cherries, find.independent.pairs, compare.independent.pairs, get.root.to.tip, my.std.res, map.nodes, get.branch.length, optimise.kappa, pic.lm, test.all.linear, my.stud.res, with.fixed.predictors, matched.pairs.LRLI, test.linear, all.r2tbl, simulate.brownian, picmodsimp, optimal.pic, strip.missing.data, find.plums, strip.spp.not.in.tree, strip.phylo, root.to.tip, summary.pic.lm, brunch.contrast, simulate.with.kappa, all.one.predictors, brunch, and analyse.brunch.contrasts).
+
+2006-02-06: Version 1.01. Addition of 'clade functions' from David Orme (pd.bootstrap, pd.calc, clademat2vcv, clade.stats, all.clades, clade.members, phylo.overlap and clade.matrix).
+
+2006-02-10: Version 1.02. Merge in of orme 1.2 from David Orme, with  clifford.test, clifford.acf, print.clifford.test and a range of hollow curve distribution functions.
+
+2006-05-19: Version 1.03. Addition of analyse.DI, binned.DI, matched.pairs.DI; bug fixes in all.LRLI, all.r2tbl, test.linear, and pic.lm.
+
+2007-03-13: fixed bug in clifford.test giving one-tailed p-values.
