@@ -1,6 +1,8 @@
 require(methods)
 require(ape)
 
+setOldClass("phylo")
+setOldClass("multi.tree")
 
 setClass("phylo4",
          representation(edge="matrix",
@@ -131,46 +133,50 @@ setMethod("NodeLabels","phylo4", function(x) {
 ## }
 
 ## convert from phylo4 to phylo
-as.phylo4.phylo <- function(x,...) {
-  newobj <- phylo4(x$edge, x$edge.length,
-                   x$tip.label, node.label=NULL,
-                   edge.label=NULL,
-                   root.edge=x$root.edge)
-  attribs = attributes(x)
-  attribs$names <- NULL
-  knownattr <- c("logLik","order","origin","para","xi")
-  known <- names(attribs)[names(attribs) %in% knownattr]
-  unknown <- names(attribs)[!names(attribs) %in% c(knownattr,"class","names")]
-  if (length(unknown)>0) {
-    warning(paste("unknown attributes ignored: ",unknown,collapse=" "))
-  }
-  for (i in known) attr(newobj,i) <- attr(x,i)
-  newobj
-}
+setAs("phylo","phylo4",
+      function(from,to) {
+        newobj <- phylo4(from$edge, from$edge.length,
+                         from$tip.label, node.label=NULL,
+                         edge.label=NULL,
+                         root.edge=from$root.edge)
+        attribs = attributes(from)
+        attribs$names <- NULL
+        knownattr <- c("logLik","order","origin","para","xi")
+        known <- names(attribs)[names(attribs) %in% knownattr]
+        unknown <- names(attribs)[!names(attribs) %in% c(knownattr,"class","names")]
+        if (length(unknown)>0) {
+          warning(paste("unknown attributes ignored: ",unknown,collapse=" "))
+        }
+        for (i in known) attr(newobj,i) <- attr(from,i)
+        newobj
+      })
 
-as.phylo4.multi.tree <- function(x,...) {
-  newobj <- new("multiPhylo4",
-                phylolist=lapply(as.phylo4.phylo,x),
-                tree.names=names(x),
-                tip.data=data.frame())
-}
+setAs("multiPhylo4","multiPhylo",
+      function(from,to) {
+        newobj <- new("multiPhylo4",
+                      phylolist=lapply(as.phylo4.phylo,from),
+                      tree.names=names(from),
+                      tip.data=data.frame())
+      })
 
-as.multi.tree.phylo4 <- function(x) {
-  y <- lapply(x@phylolist,as.phylo.phylo4)
-  names(y) <- x@tree.names
-  if (nrow(x@tip.data)>0) warning("discarded tip data")
-  class(y) <- "multi.tree"
-  y
-}
+setAs("multiPhylo","multiPhylo4",
+      function(from,to) {
+        y <- lapply(from@phylolist,as.phylo.phylo4)
+        names(y) <- from@tree.names
+        if (nrow(from@tip.data)>0) warning("discarded tip data")
+        class(y) <- "multiPhylo"
+        y
+      })
 
-as.phylo.phylo4 <- function(x) {
-  y <- list(edge=x@edge,
-            edge.length=x@edge.length,
-            Nnode=x@Nnode,
-            tip.label=x@tip.label)
+setAs("phylo4","phylo",
+      function(from,to) {
+  y <- list(edge=from@edge,
+            edge.length=from@edge.length,
+            Nnode=from@Nnode,
+            tip.label=from@tip.label)
   class(y) <- "phylo"
   y
-}
+})
 
                 
 ## hack to allow access with $
@@ -556,7 +562,8 @@ phylo4 <- function(edge, edge.length=NULL, tip.label=NULL, node.label=NULL,
 
   # root.edge
   if(!is.null(root.edge)) {
-    if(!is.integer(root.edge)) stop("root.edge must be an integer")
+    if(!round(root.edge)==root.edge) stop("root.edge must be an integer")
+    root.edge <- as.integer(root.edge)
     if(root.edge > nrow(edge)) stop("indicated root.edge do not exist")
   } else {
     root.edge <- as.integer(NA)

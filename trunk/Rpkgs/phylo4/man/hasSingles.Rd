@@ -31,7 +31,7 @@ hasPoly(object)
 \examples{
 library(ape)
 example(read.tree)
-owls4 = as.phylo4(tree.owls.bis)
+owls4 = as(tree.owls.bis,"phylo4")
 hasPoly(owls4)
 hasSingles(owls4)
 }

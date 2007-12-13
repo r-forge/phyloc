@@ -73,11 +73,8 @@
   library(ape)
   example(read.tree)
   p1 = tree.owls
-  P1 = as.phylo4.phylo(tree.owls)
-  names(P1)
+  P1 = as(tree.owls,"phylo4")
   P1
-  identical(p1,as.phylo.phylo4(P1))
-  p1$edge ## works!
   sumryP1 = summary(P1)
   sumryP1
 }
