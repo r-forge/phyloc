@@ -19,8 +19,8 @@ AC_LANG(C++) dnl using C++
 AC_REQUIRE_CPP
 
 dnl configure include/load flags and copy sample source to inst/doc
-AC_SUBST([CPPFLAGS],["${CPPFLAGS} -I../RcppSrc -I ../ncl-2.0.02/ncl"])
-AC_SUBST([LDFLAGS],["${LDFLAGS} -L../RcppSrc -lRcpp -L../ncl-2.0.02/ncl/.libs -lncl"])
+AC_SUBST([CPPFLAGS],["${CPPFLAGS} -I../RcppSrc -I ../ncl/ncl"])
+AC_SUBST([LDFLAGS],["${LDFLAGS} -L../RcppSrc -lRcpp -L../ncl/ncl -lncl"])
 echo "Building libRcpp.a in RcppSrc..."
 cd RcppSrc
 make RHOME=${R_HOME}

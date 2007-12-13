@@ -102,6 +102,99 @@ RcppExport SEXP ReadWithNCL(SEXP params) {
 
 }
 
+RcppExport SEXP ReadTreesWithNCL(SEXP params) {
+	
+    SEXP  rl=R_NilValue; // Use this when there is nothing to be returned.
+    char* exceptionMesg=NULL;
+    try {
+		
+		
+		// Get parameters in params - only 1 is gotten now
+		RcppParams rparam(params);
+		string filename = rparam.getStringValue("filename");
+		
+		BASICCMDLINE reader;
+		
+		//this is where the reader would be passed the filename to read
+		//reader.Run(filename.c_str()); //Will not compile
+		//reader.Run(NULL);
+		reader.Initialize(const_cast < char* > (filename.c_str()));
+		
+		NxsString treeStringNxs;
+		reader.RReturnTrees(treeStringNxs);
+		string treeString=treeStringNxs.c_str();
+		
+		// Build result set to be returned as a list to R.
+		RcppResultSet rs;
+		
+		//if the various strings are nonempty, add them to the ResultSet
+		if(treeString.length() > 0)
+			rs.add("treestring", treeString);
+			
+		
+		// Get the list to be returned to R.
+		rl = rs.getReturnList();
+		
+	} catch(std::exception& ex) {
+		exceptionMesg = copyMessageToR(ex.what());
+	} catch(...) {
+		exceptionMesg = copyMessageToR("unknown reason");
+	}
+    
+    if(exceptionMesg != NULL)
+		error(exceptionMesg);
+	
+    return rl;
+	
+}
+
+RcppExport SEXP ReadCharsWithNCL(SEXP params) {
+	
+    SEXP  rl=R_NilValue; // Use this when there is nothing to be returned.
+    char* exceptionMesg=NULL;
+    try {
+		
+		
+		// Get parameters in params - only 1 is gotten now
+		RcppParams rparam(params);
+		string filename = rparam.getStringValue("filename");
+		
+		BASICCMDLINE reader;
+		
+		//this is where the reader would be passed the filename to read
+		//reader.Run(filename.c_str()); //Will not compile
+		//reader.Run(NULL);
+		reader.Initialize(const_cast < char* > (filename.c_str()));
+		
+		NxsString charStringNxs;
+		reader.RReturnCharacters(charStringNxs,false, true, false);
+		string charString=charStringNxs.c_str();
+		
+		// Build result set to be returned as a list to R.
+		RcppResultSet rs;
+		
+		//if the various strings are nonempty, add them to the ResultSet
+		if(charString.length() > 0)
+			rs.add("charstring", charString);
+		
+		
+		// Get the list to be returned to R.
+		rl = rs.getReturnList();
+		
+	} catch(std::exception& ex) {
+		exceptionMesg = copyMessageToR(ex.what());
+	} catch(...) {
+		exceptionMesg = copyMessageToR("unknown reason");
+	}
+    
+    if(exceptionMesg != NULL)
+		error(exceptionMesg);
+	
+    return rl;
+	
+}
+
+
 /*
  * Sample function illustrates how to use the Rcpp R/C++ interface library.
  */

@@ -252,8 +252,8 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 	{
 		if (1==characters->GetDataType()) { //standard datatype
 		//if((characters->GetDatatypeName())=="standard") { 
-			nexuscharacters=characters->GetDatatypeName();
-			nexuscharacters+=" <- data.frame(";
+			//nexuscharacters=characters->GetDatatypeName();
+			nexuscharacters+="data.frame(";
 			
 			if (allchar) {
 				nchartoreturn=characters->GetNCharTotal();
@@ -321,9 +321,12 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 					
 					NxsString levels=", levels=c(";
 					NxsString labels=", labels=c(";
-					
+					int totallabellength=0;
 					for (int l=0;l<characters->GetObsNumStates(character); l++) {
+						labels+='"';
 						labels+= characters->GetStateLabel(character,l);
+						totallabellength+=(characters->GetStateLabel(character,l)).length();
+						labels+='"';
 						levels+= l;
 						if (l+1<characters->GetObsNumStates(character)) {
 							labels+=',';
@@ -332,14 +335,15 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 					}
 					levels+=')';
 					labels+=')';
-					if (labels.length()>levels.length()) {
+					cout<<"labels.length="<<labels.length()<<endl<<"levels.length="<<levels.length()<<endl<<"total label length="<<totallabellength<<endl;
+					if (totallabellength>characters->GetObsNumStates(character)) {
 						nexuscharacters+=levels;
 						nexuscharacters+=labels;
 					}
 				}
 				nexuscharacters+=")\n";
 			}
-			nexuscharacters+=", row.names(c(";
+			nexuscharacters+=", row.names=c(";
 			for (int taxon=0;taxon<ntax;taxon++) {
 				nexuscharacters+='"';
 				nexuscharacters+=characters->GetTaxonLabel(taxon);
@@ -348,9 +352,7 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 					nexuscharacters+=',';
 				}
 			}
-			nexuscharacters+=')';
-			
-			nexuscharacters+=")\n";
+			nexuscharacters+="))";
 		}
 		else if (2==characters->GetDataType()) { //dna
 	//	if((characters->GetDatatypeName())=="dna") { 
@@ -426,7 +428,9 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 					NxsString labels=", labels=c(";
 					
 					for (int l=0;l<characters->GetObsNumStates(character); l++) {
+						labels+='"';
 						labels+= characters->GetStateLabel(character,l);
+						labels+='"';
 						levels+= l;
 						if (l+1<characters->GetObsNumStates(character)) {
 							labels+=',';
@@ -442,7 +446,7 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 				}
 				nexuscharacters+=")\n";
 			}
-			nexuscharacters+=", row.names(c(";
+			nexuscharacters+=", row.names=c(";
 			for (int taxon=0;taxon<ntax;taxon++) {
 				nexuscharacters+='"';
 				nexuscharacters+=characters->GetTaxonLabel(taxon);
@@ -451,9 +455,8 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 					nexuscharacters+=',';
 				}
 			}
-			nexuscharacters+=')';
 			
-			nexuscharacters+=")\n";
+			nexuscharacters+="))";
 			
 		}
 		else if (3==characters->GetDataType()) { //rna
