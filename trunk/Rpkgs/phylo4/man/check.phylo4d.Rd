@@ -25,14 +25,14 @@ attach_data(object,
 
 \arguments{
   \item{object}{A phylo4 object}
-  \item{use.tip.names}{Use tip data names if present (default\=\code{TRUE})}
-  \item{missing.tip.data}{Can tip data taxa be a subset of tree taxa\? (default\=\code{fail})}
-  \item{extra.tip.data}{Can tip data taxa be a superset of tree taxa\? (default\=\code{fail})}
-  \item{missing.tip.names}{Can tip data be supplied without taxa names\? (default\=\code{fail})}
-  \item{use.node.names}{Use node data names if present (default\=\code{FALSE})}
-  \item{missing.node.data}{Can node data taxa be a subset of tree taxa\? (default\=\code{fail})}
-  \item{extra.node.data}{Can node data taxa be a superset of tree taxa\? (default\=\code{fail})}
-  \item{missing.node.names}{Can node data be supplied without taxa names\? (default\=\code{fail})}
+  \item{use.tip.names}{Use tip data names if present (default=\code{TRUE})}
+  \item{missing.tip.data}{Can tip data taxa be a subset of tree taxa? (default=\code{fail})}
+  \item{extra.tip.data}{Can tip data taxa be a superset of tree taxa? (default=\code{fail})}
+  \item{missing.tip.names}{Can tip data be supplied without taxa names? (default=\code{fail})}
+  \item{use.node.names}{Use node data names if present (default=\code{FALSE})}
+  \item{missing.node.data}{Can node data taxa be a subset of tree taxa? (default=\code{fail})}
+  \item{extra.node.data}{Can node data taxa be a superset of tree taxa? (default=\code{fail})}
+  \item{missing.node.names}{Can node data be supplied without taxa names? (default=\code{fail})}
 }
 \value{
   \code{check_data} returns an error string (describing problems) or \code{TRUE} if everything is OK. If option \code{fail} is specified and a problem is encountered, returns an error string. If option \code{warn} is specified and a problem is encountered, returns \code{TRUE} plus a warning message.

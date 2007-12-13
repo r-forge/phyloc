@@ -136,8 +136,8 @@ setMethod("NodeLabels","phylo4", function(x) {
 setAs("phylo","phylo4",
       function(from,to) {
         newobj <- phylo4(from$edge, from$edge.length,
-                         from$tip.label, node.label=NULL,
-                         edge.label=NULL,
+                         from$tip.label, node.label=from$node.label,
+                         edge.label=from$edge.label, ## ???
                          root.edge=from$root.edge)
         attribs = attributes(from)
         attribs$names <- NULL
