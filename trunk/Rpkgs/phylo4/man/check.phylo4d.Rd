@@ -18,24 +18,26 @@ check_data(object,
 }
 
 attach_data(object,
-    use.tip.names=c(TRUE,FALSE),
-		use.node.names=c(FALSE,TRUE),
-		use.edge.names=c(FALSE,TRUE))
+    use.tip.names=TRUE,
+		use.node.names=FALSE,
+		use.edge.names=FALSE)
 )
 
 \arguments{
   \item{object}{A phylo4 object}
-  \item{use.tip.names}{Use tip data names if present (default\=TRUE)}
-  \item{missing.tip.data}{Can tip data taxa be a subset of tree taxa\? (default\=fail)}
-  \item{extra.tip.data}{Can tip data taxa be a superset of tree taxa\? (default\=fail)}
-  \item{missing.tip.names}{Can tip data be supplied without taxa names\? (default\=fail)}
-  \item{use.node.names}{Use node data names if present (default\=FALSE)}
-  \item{missing.node.data}{Can node data taxa be a subset of tree taxa\? (default\=fail)}
-  \item{extra.node.data}{Can node data taxa be a superset of tree taxa\? (default\=fail)}
-  \item{missing.node.names}{Can node data be supplied without taxa names\? (default\=fail)}
+  \item{use.tip.names}{Use tip data names if present (default\=\code{TRUE})}
+  \item{missing.tip.data}{Can tip data taxa be a subset of tree taxa\? (default\=\code{fail})}
+  \item{extra.tip.data}{Can tip data taxa be a superset of tree taxa\? (default\=\code{fail})}
+  \item{missing.tip.names}{Can tip data be supplied without taxa names\? (default\=\code{fail})}
+  \item{use.node.names}{Use node data names if present (default\=\code{FALSE})}
+  \item{missing.node.data}{Can node data taxa be a subset of tree taxa\? (default\=\code{fail})}
+  \item{extra.node.data}{Can node data taxa be a superset of tree taxa\? (default\=\code{fail})}
+  \item{missing.node.names}{Can node data be supplied without taxa names\? (default\=\code{fail})}
 }
 \value{
-  \code{check_data} returns an error string (describing problems) or TRUE if everything is OK. If option \code{fail} is specified and a problem is encountered, returns an error string. If option \code{warn} is specified and a problem is encountered, returns TRUE plus a warning message.
+  \code{check_data} returns an error string (describing problems) or \code{TRUE} if everything is OK. If option \code{fail} is specified and a problem is encountered, returns an error string. If option \code{warn} is specified and a problem is encountered, returns \code{TRUE} plus a warning message.
+  
+  By default, tip data names are used to attach the tip data to the tree, must be present, and must match the set of tree taxa exactly. By default node data names are not used to attach the data to the tree, and thus node data names are not required.
   
   \code{attach_data} returns the phylo4 object with tipdata and nodedata (if present) attached to the phylo4 tree.
 }

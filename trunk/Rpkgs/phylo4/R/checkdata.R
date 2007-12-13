@@ -19,63 +19,53 @@ check_data0 <- function(object) {
 
 
 check_data <- function(object,
-		use.tip.names=c(TRUE,FALSE),
+		use.tip.names=TRUE,
 		missing.tip.data=c("fail","OK","warn"),
 		extra.tip.data=c("fail","OK","warn"),
 		missing.tip.names=c("fail","OK","warn"),
-		use.node.names=c(FALSE,TRUE),
+		use.node.names=FALSE,
 		missing.node.data=c("OK","warn","fail"),		
 		extra.node.data=c("OK","warn","fail"),												
-		missing.node.names=c("OK","warn","fail"))
-## 		use.edge.names=c(FALSE,TRUE),
-## 		missing.edge.data=c("OK","warn","fail"),
-## 		extra.edge.data=c("OK","warn","fail"),													 
-## 		missing.edge.names=c("OK","warn","fail"))											 
+		missing.node.names=c("OK","warn","fail"))							 
 
-                       {
+{
 		
 	## tip default: use names, require names, must match exactly
-	use.tip.names=match.arg(use.tip.names)
-	missing.tip.data <- match.arg(missing.tip)
-	extra.tip.data <- match.arg(extra.tip)
+	#use.tip.names=match.arg(use.tip.names)
+	missing.tip.data <- match.arg(missing.tip.data)
+	extra.tip.data <- match.arg(extra.tip.data)
 	missing.tip.names <- match.arg(missing.tip.names)
 	
 	## node default: don't use node names, don't require names, do not need to match exactly
-	use.node.names=match.arg(use.node.names)
-	missing.node.data <- match.arg(missing.node)
-	extra.node.data <- match.arg(extra.node)
+	#use.node.names=match.arg(use.node.names)
+	missing.node.data <- match.arg(missing.node.data)
+	extra.node.data <- match.arg(extra.node.data)
 	missing.node.names <- match.arg(missing.tip.names)
 	
-	## edge default: don't use edge names, don't require names, do not need to match exactly
-## 	use.edge.names=match.arg(use.edge.names)
-## 	missing.edge.data <- match.arg(missing.edge)
-## 	extra.edge.data <- match.arg(extra.edge)
-## 	missing.edge.names <- match.arg(missing.tip.names)
-	
 	## clean empty names - if data are imported as 'all' but only tips or nodes have names, clean up
-	if (all(row.names(object@tipdata)==""))
-		row.names(object@tipdata) <- NULL
-	if (all(row.names(object@nodedata)==""))
-		row.names(object@nodedata) <- NULL
+	if (all(row.names(object@tip.data)==""))
+		row.names(object@tip.data) <- NULL
+	if (all(row.names(object@node.data)==""))
+		row.names(object@node.data) <- NULL
 	
 	## for each set of data, check for names, missing and extra data and take appropriate actions
 	
 	## tip data checks
-	## if tipdata exist
-	if (!is.null(object@tipdata)) {
+	## if tip.data exist
+	if (!is.null(object@tip.data)) {
 		## if we want to use tip.names
 		if (use.tip.names) {
 			## check for names
-			if (!is.null(row.names(object@tipdata))) {
+			if (!is.null(row.names(object@tip.data))) {
 				## check for missing or extra tip data (relative to tree taxa)
-				if (setequal(row.names(object@tipdata), object@tip.label)) {
+				if (setequal(row.names(object@tip.data), object@tip.label)) {
 					##names are perfect match - ok
 					return(TRUE)
 				}
 				else {
-					#we know the tree taxa and tipdata taxa are not a perfect match
-					#if tree taxa are subset of tipdata, check missing.tip arg and act accordingly
-					if (all(row.names(object@tipdata) %in% object@tip.label)) {
+					#we know the tree taxa and tip.data taxa are not a perfect match
+					#if tree taxa are subset of tip.data, check missing.tip arg and act accordingly
+					if (all(row.names(object@tip.data) %in% object@tip.label)) {
 						#we know it's not an exact match - we have missing.tip.data - take action
 						#fail
 						if (missing.tip.data == "fail") {
@@ -88,8 +78,8 @@ check_data <- function(object,
 						}
 						#else ok
 					}
-					#if tipdata taxa are subset of tree taxa, check extra.tip arg and act accordingly
-					if (all(object@tip.label %in% row.names(object@tipdata))) {
+					#if tip.data taxa are subset of tree taxa, check extra.tip arg and act accordingly
+					if (all(object@tip.label %in% row.names(object@tip.data))) {
 						#we know it's not an exact match - we have extra.tip.data - take action
 						#fail
 						if (missing.tip.data == "fail") {
@@ -114,7 +104,7 @@ check_data <- function(object,
 					return(TRUE)
 				}
 				#don't use tip names or attempt to sort - but check to make sure dimensions match
-				if (!(phylo4::nTips(tree)==length(object@tipdata))) {
+				if (!(phylo4::nTips(tree)==length(object@tip.data))) {
 					return("Tip data do not have names and do not match number of phylo4 tips.")
 				}
 			}
@@ -123,27 +113,27 @@ check_data <- function(object,
 	else
 	{
 		#don't use tip names or attempt to sort - but check to make sure dimensions match
-		if (!(phylo4::nTips(tree)==length(object@tipdata))) {
+		if (!(phylo4::nTips(tree)==length(object@tip.data))) {
 			return("Tip data do not have names and do not match number of phylo4 tips.")
 		}
 	}
 
 	## node data checks
-	## if tipdata exist
-	if (!is.null(object@nodedata)) {
+	## if tip.data exist
+	if (!is.null(object@node.data)) {
 		## if we want to use node.names
 		if (use.node.names) {
 			## check for names
-			if (!is.null(row.names(object@nodedata))) {
+			if (!is.null(row.names(object@node.data))) {
 				## check for missing or extra node data (relative to tree taxa)
-				if (setequal(row.names(object@nodedata), object@node.label)) {
+				if (setequal(row.names(object@node.data), object@node.label)) {
 					##names are perfect match - ok
 					return(TRUE)
 				}
 				else {
-					#we know the tree taxa and nodedata taxa are not a perfect match
-					#if tree taxa are subset of nodedata, check missing.node arg and act accordingly
-					if (all(row.names(object@nodedata) %in% object@node.label)) {
+					#we know the tree taxa and node.data taxa are not a perfect match
+					#if tree taxa are subset of node.data, check missing.node arg and act accordingly
+					if (all(row.names(object@node.data) %in% object@node.label)) {
 						#we know it's not an exact match - we have missing.node.data - take action
 						#fail
 						if (missing.node.data == "fail") {
@@ -156,8 +146,8 @@ check_data <- function(object,
 						}
 						#else ok
 					}
-					#if nodedata taxa are subset of tree taxa, check extra.node arg and act accordingly
-					if (all(object@node.label %in% row.names(object@nodedata))) {
+					#if node.data taxa are subset of tree taxa, check extra.node arg and act accordingly
+					if (all(object@node.label %in% row.names(object@node.data))) {
 						#we know it's not an exact match - we have extra.node.data - take action
 						#fail
 						if (missing.node.data == "fail") {
@@ -182,7 +172,7 @@ check_data <- function(object,
 					return(TRUE)
 				}
 				#don't use node names or attempt to sort - but check to make sure dimensions match
-				if (!(nNodes(tree)==length(object@nodedata))) {
+				if (!(nNodes(tree)==length(object@node.data))) {
 					return("Node data do not have names and do not match number of phylo4 nodes.")
 				}
 			}
@@ -191,129 +181,45 @@ check_data <- function(object,
 	else
 	{
 		#don't use node names or attempt to sort - but check to make sure dimensions match
-		if (!(nNodes(tree)==length(object@nodedata))) {
+		if (!(nNodes(tree)==length(object@node.data))) {
 			return("Node data do not have names and do not match number of phylo4 nodes.")
 		}
 	}
-
-## edge data checks
-	## edge data checks
-	## if tipdata exist
-## 	if (!is.null(object@edgedata)) {
-## 		## if we want to use edge.names
-## 		if (use.edge.names) {
-## 			## check for names
-## 			if (!is.null(row.names(object@edgedata))) {
-## 				## check for missing or extra edge data (relative to tree taxa)
-## 				if (setequal(row.names(object@edgedata), object@edge.label)) {
-## 					##names are perfect match - ok
-## 					return(TRUE)
-## 				}
-## 				else {
-## 					#we know the tree taxa and edgedata taxa are not a perfect match
-## 					#if tree taxa are subset of edgedata, check missing.edge arg and act accordingly
-## 					if (all(row.names(object@edgedata) %in% object@edge.label)) {
-## 						#we know it's not an exact match - we have missing.edge.data - take action
-## 						#fail
-## 						if (missing.edge.data == "fail") {
-## 							return("Edge data names do not exactly match phylo4 edge labels.")
-## 						}
-## 						#warn
-## 						else if (missing.edge.data == "warn") {
-## 							warning("Edge data names do not exactly match phylo4 edge labels.")
-## 							return(TRUE)
-## 						}
-## 						#else ok
-## 					}
-## 					#if edgedata taxa are subset of tree taxa, check extra.edge arg and act accordingly
-## 					if (all(object@edge.label %in% row.names(object@edgedata))) {
-## 						#we know it's not an exact match - we have extra.edge.data - take action
-## 						#fail
-## 						if (missing.edge.data == "fail") {
-## 							return("Edge data are a superset of phylo4 edges.")
-## 						}
-## 						else if (missing.edge.data == "warn") {
-## 							warning("Edge data are a superset of phylo4 edges.")
-## 							return(TRUE)
-## 						}
-## 						#else ok
-## 					}
-## 					return(TRUE)
-## 				}
-## 			}
-## 			else {
-## 				#no edge.names
-## 				if (missing.edge.names == "fail") {
-## 					return("Edge data do not have names.")
-## 				}
-## 				else if (missing.edge.names == "warn") {
-## 					warning("Edge data do not have names.")
-## 					return(TRUE)
-##                                       }
-## 				#don't use edge names or attempt to sort - but check to make sure dimensions match
-## 				if (!(length(object@edge.length)==length(object@edgedata))) {
-## 					return("Edge data do not have names and do not match number of phylo4 edges.")
-## 				}
-## 			}
-## 		}
-## 	}
-## 	else
-## 	{
-## 		#don't use edge names or attempt to sort - but check to make sure dimensions match
-## 		if (!(length(object@edge.length)==length(object@edgedata))) {
-## 			return("Edge data do not have names and do not match number of phylo4 edges.")
-                        
-## 		}
-                
-##               }
-
-      }
+}
 
 
 attach_data <- function(object,
-		use.tip.names=c(TRUE,FALSE),
-		use.node.names=c(FALSE,TRUE),
-		use.edge.names=c(FALSE,TRUE))							 
+		use.tip.names=TRUE,
+		use.node.names=FALSE,
+		use.edge.names=FALSE)							 
 {
 	
-	## assumes data have already been checked by check_data
-	use.tip.names=match.arg(use.tip.names)
-	use.node.names=match.arg(use.node.names)
-	use.node.names=match.arg(use.edge.names)
+	## assumes data have already been checked by check_data!
 	
 	## clean empty names - if data are imported as 'all' but only tips or nodes have names, clean up
-	if (all(row.names(object@tipdata)==""))
-		row.names(object@tipdata) <- NULL
-	if (all(row.names(object@nodedata)==""))
-		row.names(object@nodedata) <- NULL
+	if (all(row.names(object@tip.data)==""))
+		row.names(object@tip.data) <- NULL
+	if (all(row.names(object@node.data)==""))
+		row.names(object@node.data) <- NULL
 	
 	## for each set of data, take appropriate actions
 	
 	## tip data operations:
-	## if tipdata exist
-	if (!is.null(object@tipdata)) {
+	## if tip.data exist
+	if (!is.null(object@tip.data)) {
 		## if we want to use tip.names
 		if (use.tip.names) {
-			tipdata <- tipdata[match(row.names(object@tipdata),object@tip.label),]
-			row.names(tipdata) <- object@tip.label
+			tip.data <- tip.data[match(row.names(object@tip.data),object@tip.label),]
+			row.names(tip.data) <- object@tip.label
 		}
 	}
 	
 	## node data operations
-	if (!is.null(object@nodedata)) {
+	if (!is.null(object@node.data)) {
 		## if we want to use tip.names
 		if (use.tip.names) {
-			nodedata <- nodedata[match(row.names(object@nodedata),object@node.label),]
-			row.names(nodedata) <- object@node.label
-		}
-	}
-
-	## edge data operations
-	if (!is.null(object@edgedata)) {
-		## if we want to use tip.names
-		if (use.edge.names) {
-			edgedata <- edgedata[match(row.names(object@edgedata),object@edge.label),]
-			row.names(edgedata) <- object@edge.label
+			node.data <- node.data[match(row.names(object@node.data),object@node.label),]
+			row.names(node.data) <- object@node.label
 		}
 	}
 	
