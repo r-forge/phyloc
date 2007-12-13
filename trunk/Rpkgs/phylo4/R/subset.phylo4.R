@@ -3,7 +3,7 @@
 ################
 #
 
-setGeneric("subset")
+setGeneric("subset",signature(...))
 
 setMethod("subset", "phylo4",
   function(object,tips.include=NULL,tips.exclude=NULL,node.subtree=NULL){
