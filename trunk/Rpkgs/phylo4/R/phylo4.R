@@ -131,12 +131,9 @@ setMethod("NodeLabels","phylo4", function(x) {
 
 ## convert from phylo4 to phylo
 as.phylo4.phylo <- function(x,...) {
-  newobj <- new("phylo4",
-      edge=x$edge,
-      edge.length=x$edge.length,
-      Nnode=x$Nnode,
-      tip.label=x$tip.label,
-      root.edge=if(is.null(x$root.edge)) as.integer(NA) else x$root.edge)
+  newobj <- phylo4(x$edge, x$edge.length,
+                   x$tip.label, node.label=NULL,
+                   edge.label=NULL, root.edge=x$root.edge)
   attribs = attributes(x)
   attribs$names <- NULL
   knownattr <- c("logLik","order","origin","para","xi")
