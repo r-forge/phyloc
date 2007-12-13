@@ -95,6 +95,7 @@ class BASICCMDLINE
 		void				PrintMessage(bool linefeed = true);
 		virtual void		Report(ostream &out);
 		void				Run(char *infile_name);
+		void				Initialize(char *infile_name);
 		void				SkippingBlock(NxsString blockName);
 		void				SkippingCommand(NxsString commandName);
 		void				SkippingDisabledBlock(NxsString blockName);
@@ -104,6 +105,7 @@ class BASICCMDLINE
 		void				RReturnCharacters(NxsString & nexuscharacters, bool allchar, bool polymorphictomissing, bool levelsall);
 		void				RReturnTrees(NxsString & nexustrees);
 		void				RReturnDistances(NxsString & nexusdistances);
+		string				TestRunning();
 		
 	protected:
 

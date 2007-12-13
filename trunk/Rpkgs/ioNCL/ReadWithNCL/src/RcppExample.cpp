@@ -43,23 +43,30 @@ RcppExport SEXP ReadWithNCL(SEXP params) {
 		//this is where the reader would be passed the filename to read
 		//reader.Run(filename.c_str()); //Will not compile
 		//reader.Run(NULL);
-		reader.Run(const_cast < char* > (filename.c_str()));
+		reader.Initialize(const_cast < char* > (filename.c_str()));
 	
 		string filenameString = "I was told to read a file named ";
 		filenameString += filename;
 	
 		//Various calls to the reader can be made here to fill the various strings
-		string treeString = "This was passed in the tree string";
-		//reader.GetTreesString()
+		//string treeString = "This was passed in the tree string";
+		NxsString treeStringNxs;
+		reader.RReturnTrees(treeStringNxs);
+		string treeString=treeStringNxs.c_str();
 	
 		string otherString = "";
 	
-		string discreteString = "This was passed in the discrete string";
-		//reader.GetDiscreteString()
+		//string discreteString = "This was passed in the discrete string";
+		
+		NxsString characterStringNxs;
+		reader.RReturnCharacters(characterStringNxs,false, true, false);
+		//string characterString=characterStringNxs.c_str();
 		
 		string continuousString = "This was passed in the continuous string";
-		//reader.GetContinuousString()
+		//reader.GetContinuousString();
 	
+		//Just to test to see if reader is running
+		string testString = reader.TestRunning();
 	
 		// Build result set to be returned as a list to R.
 		RcppResultSet rs;
@@ -71,10 +78,13 @@ RcppExport SEXP ReadWithNCL(SEXP params) {
 			rs.add("treestring", treeString);
 		if(otherString.length() > 0)
 			rs.add("otherstring", otherString);
-		if(discreteString.length() > 0)
-			rs.add("discretestring", discreteString);
+		if(characterStringNxs.length() > 0)
+			rs.add("characterstring", characterStringNxs.c_str());
 		if(continuousString.length() > 0)
 			rs.add("continuousstring", continuousString);
+		if(testString.length() > 0)
+			rs.add("teststring", testString);
+
 		
 		// Get the list to be returned to R.
 		rl = rs.getReturnList();

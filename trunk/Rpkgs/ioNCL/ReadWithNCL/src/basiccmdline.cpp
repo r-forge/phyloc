@@ -248,9 +248,10 @@ void BASICCMDLINE::HandleReturnData(
 void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, bool polymorphictomissing, bool levelsall) {
 	int nchartoreturn=0;
 	int ntax = taxa->GetNumTaxonLabels(); 
-/*	if (!characters->IsEmpty())
+	if (!characters->IsEmpty())
 	{
-		if (1==characters->GetDatatype()) { //standard datatype
+		//if (1==characters->GetDatatype()) { //standard datatype
+		if((characters->GetDatatypeName())=="standard") { 
 			nexuscharacters=characters->GetDatatypeName();
 			nexuscharacters+=" <- data.frame(taxa=c(";
 			
@@ -347,7 +348,9 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 			}
 			nexuscharacters+=")\n";
 		}
-		else if (2==characters->GetDatatype()) { //dna
+		//else if (2==characters->GetDatatype()) { //dna
+		if((characters->GetDatatypeName())=="dna") { 
+
 			nexuscharacters=characters->GetDatatypeName();
 			nexuscharacters+=" <- data.frame(taxa=c(";
 			
@@ -445,15 +448,19 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 			nexuscharacters+=")\n";
 			
 		}
-		else if (3==characters->GetDatatype()) { //rna
+		else if ((characters->GetDatatypeName())=="rna") { //rna
 		}
-		else if (4==characters->GetDatatype()) { //nucleotide
+		else if ((characters->GetDatatypeName())=="nucleotide") { //nucleotide
 		}
-		else if (5==characters->GetDatatype()) { //protein
+		else if ((characters->GetDatatypeName())=="protein") { //protein
 		}
-		else if (6==characters->GetDatatype()) { //continuous
+		else if ((characters->GetDatatypeName())=="continuous") { //continuous
+		} 
+		else {
+				message="Error: character matrix loaded, but does not match any category (dna, standard, etc.)";
+			PrintMessage();
 		}
-	}*/
+	}
 }
 
 void BASICCMDLINE::RReturnTrees(NxsString & nexustrees) {
@@ -514,6 +521,11 @@ void BASICCMDLINE::RReturnDistances(NxsString  & nexusdistances) {
 		}
 		nexusdistances+="), Upper = FALSE, Diag = FALSE, class = \"dist\")\n";
 	}
+}
+
+string BASICCMDLINE::TestRunning() {
+	string output="The NCL has been loaded";
+	return output;
 }
 
 //Break into separate functions,Input is string reference rather than return string
@@ -1369,6 +1381,34 @@ void BASICCMDLINE::Run(
 		HandleNextCommand();
 	}
 }
+
+void BASICCMDLINE::Initialize(
+					   char *infile_name)	/* the name of the NEXUS data file to execute (can be NULL) */
+{
+	taxa			= new NxsTaxaBlock();
+	trees			= new NxsTreesBlock(taxa);
+	assumptions		= new NxsAssumptionsBlock(taxa);
+	characters		= new NxsCharactersBlock(taxa, assumptions);
+	distances		= new NxsDistancesBlock(taxa);
+	data			= new NxsDataBlock(taxa, assumptions);
+	
+	Add(taxa);
+	Add(trees);
+	Add(assumptions);
+	Add(characters);
+	Add(distances);
+	Add(data);
+	Add(this);
+	
+	if (infile_name != NULL)
+	{
+		strcpy(next_command, "exe ");
+		strncat(next_command, infile_name, 252);
+		PreprocessNextCommand();
+		HandleNextCommand();
+	}
+}
+
 
 /*----------------------------------------------------------------------------------------------------------------------
  |	Called when program does not recognize a block name encountered in a NEXUS file. Virtual function that overrides 
