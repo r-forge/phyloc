@@ -333,8 +333,8 @@ as.phylo4 <- function (x, ...)
 
 ## extend: phylo with data
 setClass("phylo4d",
-         representation(tipdata="data.frame",
-                        nodedata="data.frame"),
+         representation(tip.data="data.frame",
+                        node.data="data.frame"),
 ##                        edgedata="data.frame"),
          validity = function(object) {
            ## FIXME: finish this by intercepting FALSE, char string, etc.
@@ -347,35 +347,11 @@ setGeneric("tdata", function(x,...) {
   standardGeneric("tdata")
 })
 setMethod("tdata","phylo4d", function(x,which="tip",...) {
-  switch(which,tip=x@tipdata,node=x@nodedata,
-         allnode=rbind(x@tipdata,x@nodedata))
+  switch(which,tip=x@tip.data,node=x@node.data,
+         allnode=rbind(x@tip.data,x@node.data))
   ##         edge=x@edgedata)
 })
 
-
-phylo4d <- function(tree,data, ## edgedata=data.frame(),
-                    which="tip") {
-  if (which=="tip") {
-    tipdata <- data
-    nodedata <- data.frame()
-  } else if (which=="node") {
-    nodedata <- data
-    tipdata <- data.frame()
-  } else if (which=="all") {
-    tipdata <- data[1:phylo4::nTips(tree),]
-    nodedata <- data[(phylo4::nTips(tree)+1):(phylo4::nTips(tree)+nNodes(tree)),]
-  }
-  new("phylo4d",
-      edge=tree@edge,
-      edge.length=tree@edge.length,
-      Nnode=tree@Nnode,
-      tip.label=tree@tip.label,
-      node.label=tree@node.label,
-      root.edge=tree@root.edge,
-      tipdata=tipdata,
-      nodedata=nodedata)
-##      edgedata=edgedata)
-}
 
 
 ## I think node = internal nodes only, and edge = tips+nodes, right?
@@ -452,7 +428,7 @@ setMethod("summary", "phylo4d", function(object){
 setClass("multiPhylo4",
          representation(phylolist="list",
                         tree.names="character",
-                        tipdata="data.frame"),
+                        tip.data="data.frame"),
          contains="phylo4")
 
 
@@ -470,10 +446,10 @@ setMethod("show", "phylo4d", function(object){
 
   # print traits
   cat("\n#Traits#\n")
-  cat("\ntipdata: data.frame containing", ncol(tdata(x,"tip")), "traits for", nrow(tdata(x,"tip")),"tips" )
-  cat("\nnodedata: data.frame containing", ncol(tdata(x,"node")), "traits for", nrow(tdata(x,"node")),"nodes" )
-##  cat("\nedgedata: data.frame containing", ncol(tdata(x,"edge")), "variables for", nrow(tdata(x,"edge")),"edges" )
-  
+  cat("\ntip.data: data.frame containing", ncol(tdata(x,"tip")), "traits for", nrow(tdata(x,"tip")),"tips" )
+  cat("\nnode.data: data.frame containing", ncol(tdata(x,"node")), "traits for", nrow(tdata(x,"node")),"nodes" )
+
+  cat("\n")
 }) # end summary phylo4d
 
 ## ?? setMethod("print", "phylo4", o)
@@ -619,6 +595,8 @@ setMethod("phylo4d", c("phylo4"), function(x,...){
   res@root.edge <- x@root.edge
 
   tip.data <-list(...)$"tip.data"
+  if(is.null(tip.data)) tip.data <-list(...)$"tipdata"
+  
   if(is.matrix( tip.data) | is.null(tip.data))  tip.data <- as.data.frame(tip.data)
   if(!is.data.frame(tip.data)) stop("tip.data is not NULL or a data.frame")
   res@tip.data <- tip.data
