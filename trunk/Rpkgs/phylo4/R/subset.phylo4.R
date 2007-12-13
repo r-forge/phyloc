@@ -24,7 +24,7 @@ setMethod("subset", "phylo4",
       if(!(node.subtree %in% 1:(phylo4::nTips(x)+nNodes(x)))) {
         stop("Node number supplied not present in phylogeny")
       }
-
+    }
+    
     return(x)
-
 })
