@@ -250,20 +250,11 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 	int ntax = taxa->GetNumTaxonLabels(); 
 	if (!characters->IsEmpty())
 	{
-		//if (1==characters->GetDatatype()) { //standard datatype
-		if((characters->GetDatatypeName())=="standard") { 
+		if (1==characters->GetDataType()) { //standard datatype
+		//if((characters->GetDatatypeName())=="standard") { 
 			nexuscharacters=characters->GetDatatypeName();
-			nexuscharacters+=" <- data.frame(taxa=c(";
+			nexuscharacters+=" <- data.frame(";
 			
-			for (int taxon=0;taxon<ntax;taxon++) {
-				nexuscharacters+='"';
-				nexuscharacters+=characters->GetTaxonLabel(taxon);
-				nexuscharacters+='"';
-				if (taxon+1<ntax) {
-					nexuscharacters+=',';
-				}
-			}
-			nexuscharacters+=')';
 			if (allchar) {
 				nchartoreturn=characters->GetNCharTotal();
 			}
@@ -272,7 +263,9 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 			}
 			for (int character=0; character<nchartoreturn; character++) { //We only pass the non-eliminated chars
 				NxsString charlabel=characters->GetCharLabel(character);
-				nexuscharacters+=", ";
+				if (character>0) {
+					nexuscharacters+=", ";
+				}
 				if (charlabel.length()>1) {
 					nexuscharacters+="'";
 					nexuscharacters+=charlabel;
@@ -289,11 +282,11 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 					int statenumber=characters->GetInternalRepresentation(taxon,character,0);
 					
 					if(characters->IsMissingState(taxon,character)) {
-						nexuscharacters+='<NA>';
+						nexuscharacters+="NA";
 					}
 					else if (characters->GetNumStates(taxon,character)>1) {
 						if(polymorphictomissing) {
-							nexuscharacters+='<NA>';
+							nexuscharacters+="NA";
 						}
 						else {
 							nexuscharacters+='{';
@@ -346,23 +339,25 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 				}
 				nexuscharacters+=")\n";
 			}
+			nexuscharacters+=", row.names(c(";
+			for (int taxon=0;taxon<ntax;taxon++) {
+				nexuscharacters+='"';
+				nexuscharacters+=characters->GetTaxonLabel(taxon);
+				nexuscharacters+='"';
+				if (taxon+1<ntax) {
+					nexuscharacters+=',';
+				}
+			}
+			nexuscharacters+=')';
+			
 			nexuscharacters+=")\n";
 		}
-		//else if (2==characters->GetDatatype()) { //dna
-		if((characters->GetDatatypeName())=="dna") { 
+		else if (2==characters->GetDataType()) { //dna
+	//	if((characters->GetDatatypeName())=="dna") { 
 
 			nexuscharacters=characters->GetDatatypeName();
-			nexuscharacters+=" <- data.frame(taxa=c(";
+			nexuscharacters+=" <- data.frame(";
 			
-			for (int taxon=0;taxon<ntax;taxon++) {
-				nexuscharacters+='"';
-				nexuscharacters+=characters->GetTaxonLabel(taxon);
-				nexuscharacters+='"';
-				if (taxon+1<ntax) {
-					nexuscharacters+=',';
-				}
-			}
-			nexuscharacters+=')';
 			if (allchar) {
 				nchartoreturn=characters->GetNCharTotal();
 			}
@@ -371,7 +366,9 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 			}
 			for (int character=0; character<nchartoreturn; character++) { //We only pass the non-eliminated chars
 				NxsString charlabel=characters->GetCharLabel(character);
-				nexuscharacters+=", ";
+				if (character>0) {
+					nexuscharacters+=", ";
+				}
 				if (charlabel.length()>1) {
 					nexuscharacters+="'";
 					nexuscharacters+=charlabel;
@@ -388,11 +385,11 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 					int statenumber=characters->GetInternalRepresentation(taxon,character,0);
 					
 					if(characters->IsMissingState(taxon,character)) {
-						nexuscharacters+='<NA>';
+						nexuscharacters+="NA";
 					}
 					else if (characters->GetNumStates(taxon,character)>1) {
 						if(polymorphictomissing) {
-							nexuscharacters+='<NA>';
+							nexuscharacters+="NA";
 						}
 						else {
 							nexuscharacters+='{';
@@ -445,16 +442,27 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 				}
 				nexuscharacters+=")\n";
 			}
+			nexuscharacters+=", row.names(c(";
+			for (int taxon=0;taxon<ntax;taxon++) {
+				nexuscharacters+='"';
+				nexuscharacters+=characters->GetTaxonLabel(taxon);
+				nexuscharacters+='"';
+				if (taxon+1<ntax) {
+					nexuscharacters+=',';
+				}
+			}
+			nexuscharacters+=')';
+			
 			nexuscharacters+=")\n";
 			
 		}
-		else if ((characters->GetDatatypeName())=="rna") { //rna
+		else if (3==characters->GetDataType()) { //rna
 		}
-		else if ((characters->GetDatatypeName())=="nucleotide") { //nucleotide
+		else if (4==characters->GetDataType()) { //nucleotide
 		}
-		else if ((characters->GetDatatypeName())=="protein") { //protein
+		else if (5==characters->GetDataType()) { //protein
 		}
-		else if ((characters->GetDatatypeName())=="continuous") { //continuous
+		else if (6==characters->GetDataType()) { //continuous
 		} 
 		else {
 				message="Error: character matrix loaded, but does not match any category (dna, standard, etc.)";
