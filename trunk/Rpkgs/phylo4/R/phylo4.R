@@ -266,7 +266,13 @@ setMethod("summary","phylo4", function (object, quiet=FALSE)
               res$var.el <- NULL
               res$sumry.el <- NULL
             }
+
+            # polytomies
+            # I'll finish this - Tibo
             
+
+            
+            # model info
             res$loglik <- attr(x, "loglik")
             res$para <- attr(x, "para")
             res$xi <- attr(x, "xi")
@@ -278,6 +284,7 @@ setMethod("summary","phylo4", function (object, quiet=FALSE)
             cat("\nPhylogenetic tree:", res$name, "\n\n")
             cat("  Number of tips:", res$nb.tips, "\n")
             cat("  Number of nodes:", res$nb.nodes, "\n")
+            cat("  ")
             if(is.null(x$edge.length)) {
               cat("  No branch lengths.\n")
             } else {
@@ -589,15 +596,57 @@ phylo4 <- function(edge, edge.length=NULL, tip.label=NULL, node.label=NULL,
 ######################
 # phylo4d constructor
 ######################
+# TEST ME 
+# '...' recognized args for data are tipdata and nodedata.
+# other recognized options are those known by the phylo4 constructor
 #
-# TEST ME . wait for validity check
-phylo4d <- function(edge, edge.length=NULL, tip.label=NULL, node.label=NULL,
-                   edge.label=NULL, root.edge=NULL,...){
+
+# generic
+setGeneric("phylo4d", function(x,...) { standardGeneric("phylo4d")} )
+
+# first arg is a phylo4
+setMethod("phylo4d", c("phylo4"), function(x,...){
+
+  if(!check_phylo4(x)) stop("invalid phylo4 object provided in x")
   
+  res <- new("phylo4d")
+  res@edge <- x@edge
+  res@edge.length <- x@edge.length
+  res@Nnode <- x@Nnode
+  res@tip.label <- x@tip.label
+  res@node.label <- x@node.label
+  res@edge.label <- x@edge.label
+  res@root.edge <- x@root.edge
 
-}
+  tip.data <-list(...)$"tip.data"
+  if(is.matrix( tip.data) | is.null(tip.data))  tip.data <- as.data.frame(tip.data)
+  if(!is.data.frame(tip.data)) stop("tip.data is not NULL or a data.frame")
+  res@tip.data <- tip.data
+  
+  node.data <-list(...)$"node.data"
+  if(is.matrix( node.data) | is.null(node.data))  node.data <- as.data.frame(node.data)
+  if(!is.data.frame(node.data)) stop("node.data is not NULL or a data.frame")
+  res@node.data <- node.data  
+ 
+  if(!check_phylo4(res)) stop("invalid phylo4d object created")
+  return(res)
+  
+})
 
+# first arg is a matrix of edges
+setMethod("phylo4d", c("matrix"), function(x,...){
+  tree <- phylo4(edge=x,...)
+  res <- phylo4d(tree,...)
+  return(res)
+})
 
+# first arg is a phylo
+setMethod("phylo4d", c("ANY"), function(x,...){
+  if(!inherits(x,"phylo")) stop("only implemented for phylo class")
+  tree <- as(x, "phylo4")
+  res <- phylo4d(tree,...)
+  return(res)
+})
 
 
 ## extend: multiPhylo4
