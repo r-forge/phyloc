@@ -6,13 +6,13 @@
   a data frame to create a combined object of class \code{phylo4d}
 }
 \usage{
-phylo4d(tree, data, edgedata = data.frame(), which = "tip")
+phylo4d(tree, data, which = "tip")
 }
 \arguments{
   \item{tree}{an object of class \code{phylo4}}
   \item{data}{a data frame for node data (either tips, internal nodes,
     or all)}
-  \item{edgedata}{a data frame for edge traits}
+%  \item{edgedata}{a data frame for edge traits}
   \item{which}{character: "tip", "node", or "all" depending on
     which data are specified}
 }

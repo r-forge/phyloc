@@ -26,12 +26,13 @@ check_data <- function(object,
 		use.node.names=c(FALSE,TRUE),
 		missing.node.data=c("OK","warn","fail"),		
 		extra.node.data=c("OK","warn","fail"),												
-		missing.node.names=c("OK","warn","fail"),
-		use.edge.names=c(FALSE,TRUE),
-		missing.edge.data=c("OK","warn","fail"),
-		extra.edge.data=c("OK","warn","fail"),													 
-		missing.edge.names=c("OK","warn","fail"))											 
-{
+		missing.node.names=c("OK","warn","fail"))
+## 		use.edge.names=c(FALSE,TRUE),
+## 		missing.edge.data=c("OK","warn","fail"),
+## 		extra.edge.data=c("OK","warn","fail"),													 
+## 		missing.edge.names=c("OK","warn","fail"))											 
+
+                       {
 		
 	## tip default: use names, require names, must match exactly
 	use.tip.names=match.arg(use.tip.names)
@@ -46,10 +47,10 @@ check_data <- function(object,
 	missing.node.names <- match.arg(missing.tip.names)
 	
 	## edge default: don't use edge names, don't require names, do not need to match exactly
-	use.node.names=match.arg(use.edge.names)
-	missing.edge.data <- match.arg(missing.edge)
-	extra.edge.data <- match.arg(extra.edge)
-	missing.edge.names <- match.arg(missing.tip.names)
+## 	use.edge.names=match.arg(use.edge.names)
+## 	missing.edge.data <- match.arg(missing.edge)
+## 	extra.edge.data <- match.arg(extra.edge)
+## 	missing.edge.names <- match.arg(missing.tip.names)
 	
 	## clean empty names - if data are imported as 'all' but only tips or nodes have names, clean up
 	if (all(row.names(object@tipdata)==""))
@@ -198,73 +199,75 @@ check_data <- function(object,
 ## edge data checks
 	## edge data checks
 	## if tipdata exist
-	if (!is.null(object@edgedata)) {
-		## if we want to use edge.names
-		if (use.edge.names) {
-			## check for names
-			if (!is.null(row.names(object@edgedata))) {
-				## check for missing or extra edge data (relative to tree taxa)
-				if (setequal(row.names(object@edgedata), object@edge.label)) {
-					##names are perfect match - ok
-					return(TRUE)
-				}
-				else {
-					#we know the tree taxa and edgedata taxa are not a perfect match
-					#if tree taxa are subset of edgedata, check missing.edge arg and act accordingly
-					if (all(row.names(object@edgedata) %in% object@edge.label)) {
-						#we know it's not an exact match - we have missing.edge.data - take action
-						#fail
-						if (missing.edge.data == "fail") {
-							return("Edge data names do not exactly match phylo4 edge labels.")
-						}
-						#warn
-						else if (missing.edge.data == "warn") {
-							warning("Edge data names do not exactly match phylo4 edge labels.")
-							return(TRUE)
-						}
-						#else ok
-					}
-					#if edgedata taxa are subset of tree taxa, check extra.edge arg and act accordingly
-					if (all(object@edge.label %in% row.names(object@edgedata))) {
-						#we know it's not an exact match - we have extra.edge.data - take action
-						#fail
-						if (missing.edge.data == "fail") {
-							return("Edge data are a superset of phylo4 edges.")
-						}
-						else if (missing.edge.data == "warn") {
-							warning("Edge data are a superset of phylo4 edges.")
-							return(TRUE)
-						}
-						#else ok
-					}
-					return(TRUE)
-				}
-			}
-			else {
-				#no edge.names
-				if (missing.edge.names == "fail") {
-					return("Edge data do not have names.")
-				}
-				else if (missing.edge.names == "warn") {
-					warning("Edge data do not have names.")
-					return(TRUE)
-				}
-				#don't use edge names or attempt to sort - but check to make sure dimensions match
-				if (!(length(object@edge.length)==length(object@edgedata))) {
-					return("Edge data do not have names and do not match number of phylo4 edges.")
-				}
-			}
-		}
-	}
-	else
-	{
-		#don't use edge names or attempt to sort - but check to make sure dimensions match
-		if (!(length(object@edge.length)==length(object@edgedata))) {
-			return("Edge data do not have names and do not match number of phylo4 edges.")
-		}
-	}
+## 	if (!is.null(object@edgedata)) {
+## 		## if we want to use edge.names
+## 		if (use.edge.names) {
+## 			## check for names
+## 			if (!is.null(row.names(object@edgedata))) {
+## 				## check for missing or extra edge data (relative to tree taxa)
+## 				if (setequal(row.names(object@edgedata), object@edge.label)) {
+## 					##names are perfect match - ok
+## 					return(TRUE)
+## 				}
+## 				else {
+## 					#we know the tree taxa and edgedata taxa are not a perfect match
+## 					#if tree taxa are subset of edgedata, check missing.edge arg and act accordingly
+## 					if (all(row.names(object@edgedata) %in% object@edge.label)) {
+## 						#we know it's not an exact match - we have missing.edge.data - take action
+## 						#fail
+## 						if (missing.edge.data == "fail") {
+## 							return("Edge data names do not exactly match phylo4 edge labels.")
+## 						}
+## 						#warn
+## 						else if (missing.edge.data == "warn") {
+## 							warning("Edge data names do not exactly match phylo4 edge labels.")
+## 							return(TRUE)
+## 						}
+## 						#else ok
+## 					}
+## 					#if edgedata taxa are subset of tree taxa, check extra.edge arg and act accordingly
+## 					if (all(object@edge.label %in% row.names(object@edgedata))) {
+## 						#we know it's not an exact match - we have extra.edge.data - take action
+## 						#fail
+## 						if (missing.edge.data == "fail") {
+## 							return("Edge data are a superset of phylo4 edges.")
+## 						}
+## 						else if (missing.edge.data == "warn") {
+## 							warning("Edge data are a superset of phylo4 edges.")
+## 							return(TRUE)
+## 						}
+## 						#else ok
+## 					}
+## 					return(TRUE)
+## 				}
+## 			}
+## 			else {
+## 				#no edge.names
+## 				if (missing.edge.names == "fail") {
+## 					return("Edge data do not have names.")
+## 				}
+## 				else if (missing.edge.names == "warn") {
+## 					warning("Edge data do not have names.")
+## 					return(TRUE)
+##                                       }
+## 				#don't use edge names or attempt to sort - but check to make sure dimensions match
+## 				if (!(length(object@edge.length)==length(object@edgedata))) {
+## 					return("Edge data do not have names and do not match number of phylo4 edges.")
+## 				}
+## 			}
+## 		}
+## 	}
+## 	else
+## 	{
+## 		#don't use edge names or attempt to sort - but check to make sure dimensions match
+## 		if (!(length(object@edge.length)==length(object@edgedata))) {
+## 			return("Edge data do not have names and do not match number of phylo4 edges.")
+                        
+## 		}
+                
+##               }
 
-}
+      }
 
 
 attach_data <- function(object,

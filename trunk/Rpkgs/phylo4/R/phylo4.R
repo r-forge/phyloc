@@ -76,7 +76,7 @@ setGeneric("isRooted", function(x) {
 setMethod("isRooted","phylo4", function(x) {
   !is.na(x@root.edge) ||  ## root edge explicitly defined
   ## HACK: make sure we find the right "nTips"
-  tabulate(edges(x)[, 1])[nTips(x)+1] <= 2
+  tabulate(edges(x)[, 1])[phylo4::nTips(x)+1] <= 2
   ## root node (first node after last tip) has <= 2 descendants
   ## FIXME (?): fails with empty tree
 })
@@ -322,8 +322,8 @@ as.phylo4 <- function (x, ...)
 ## extend: phylo with data
 setClass("phylo4d",
          representation(tipdata="data.frame",
-                        nodedata="data.frame",
-                        edgedata="data.frame"),
+                        nodedata="data.frame"),
+##                        edgedata="data.frame"),
          validity = function(object) {
            ## FIXME: finish this by intercepting FALSE, char string, etc.
            check_data(object)
@@ -336,12 +336,13 @@ setGeneric("tdata", function(x,...) {
 })
 setMethod("tdata","phylo4d", function(x,which="tip",...) {
   switch(which,tip=x@tipdata,node=x@nodedata,
-         allnode=rbind(x@tipdata,x@nodedata),
-         edge=x@edgedata)
+         allnode=rbind(x@tipdata,x@nodedata))
+  ##         edge=x@edgedata)
 })
 
 
-phylo4d <- function(tree,data,edgedata=data.frame(),which="tip") {
+phylo4d <- function(tree,data, ## edgedata=data.frame(),
+                    which="tip") {
   if (which=="tip") {
     tipdata <- data
     nodedata <- data.frame()
@@ -349,8 +350,8 @@ phylo4d <- function(tree,data,edgedata=data.frame(),which="tip") {
     nodedata <- data
     tipdata <- data.frame()
   } else if (which=="all") {
-    tipdata <- data[1:nTips(tree),]
-    nodedata <- data[(nTips(tree)+1):(nTips(tree)+nNodes(tree)),]
+    tipdata <- data[1:phylo4::nTips(tree),]
+    nodedata <- data[(phylo4::nTips(tree)+1):(phylo4::nTips(tree)+nNodes(tree)),]
   }
   new("phylo4d",
       edge=tree@edge,
@@ -360,8 +361,8 @@ phylo4d <- function(tree,data,edgedata=data.frame(),which="tip") {
       node.label=tree@node.label,
       root.edge=tree@root.edge,
       tipdata=tipdata,
-      nodedata=nodedata,
-      edgedata=edgedata)
+      nodedata=nodedata)
+##      edgedata=edgedata)
 }
 
 
@@ -373,7 +374,7 @@ setMethod("summary", "phylo4d", function(object){
   tdata(x, "tip") -> tips
   tdata(x, "allnode") -> allnodes
   tdata(x, "edge") -> edges
-  cat("Phylogenetic tree with", nTips(x), " species and", nNodes(x), "internal nodes\n\n")
+  cat("Phylogenetic tree with", phylo4::nTips(x), " species and", nNodes(x), "internal nodes\n\n")
   cat("  Tree plus data object of type:", class(x), "\n")
   cat("  Species Names                :", labels(x), "\n")
   if (hasEdgeLength(x)){ 
@@ -384,7 +385,7 @@ setMethod("summary", "phylo4d", function(object){
   cat("\nComparative data\n")
   if (nrow(tips)>0) 
     {
-      cat("\nTips: data.frame with", nTips(x), "species and", ncol(tips), "variables \n")
+      cat("\nTips: data.frame with", phylo4::nTips(x), "species and", ncol(tips), "variables \n")
       print(summary(tips))
     }
   if (nrow(allnodes)>0) 
@@ -459,7 +460,7 @@ setMethod("show", "phylo4d", function(object){
   cat("\n#Traits#\n")
   cat("\ntipdata: data.frame containing", ncol(tdata(x,"tip")), "traits for", nrow(tdata(x,"tip")),"tips" )
   cat("\nnodedata: data.frame containing", ncol(tdata(x,"node")), "traits for", nrow(tdata(x,"node")),"nodes" )
-  cat("\nedgedata: data.frame containing", ncol(tdata(x,"edge")), "variables for", nrow(tdata(x,"edge")),"edges" )
+##  cat("\nedgedata: data.frame containing", ncol(tdata(x,"edge")), "variables for", nrow(tdata(x,"edge")),"edges" )
   
 }) # end summary phylo4d
 
