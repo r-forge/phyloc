@@ -137,7 +137,7 @@ check_data <- function(object,
 						#we know it's not an exact match - we have missing.node.data - take action
 						#fail
 						if (missing.node.data == "fail") {
-							return("Node data names do not exactly match phylo4 node labels.")
+							stop("Node data names do not exactly match phylo4 node labels.")
 						}
 						#warn
 						else if (missing.node.data == "warn") {
@@ -151,7 +151,7 @@ check_data <- function(object,
 						#we know it's not an exact match - we have extra.node.data - take action
 						#fail
 						if (missing.node.data == "fail") {
-							return("Node data are a superset of phylo4 nodes.")
+							stop("Node data are a superset of phylo4 nodes.")
 						}
 						else if (missing.node.data == "warn") {
 							warning("Node data are a superset of phylo4 nodes.")
@@ -173,7 +173,7 @@ check_data <- function(object,
 				}
 				#don't use node names or attempt to sort - but check to make sure dimensions match
 				if (!(nNodes(tree)==length(object@node.data))) {
-					return("Node data do not have names and do not match number of phylo4 nodes.")
+					stop("Node data do not have names and do not match number of phylo4 nodes.")
 				}
 			}
 		}
@@ -182,7 +182,7 @@ check_data <- function(object,
 	{
 		#don't use node names or attempt to sort - but check to make sure dimensions match
 		if (!(nNodes(tree)==length(object@node.data))) {
-			return("Node data do not have names and do not match number of phylo4 nodes.")
+			stop("Node data do not have names and do not match number of phylo4 nodes.")
 		}
 	}
 }
@@ -191,7 +191,8 @@ check_data <- function(object,
 attach_data <- function(object,
 		use.tip.names=TRUE,
 		use.node.names=FALSE,
-		use.edge.names=FALSE)							 
+		use.edge.names=FALSE,
+		...)							 
 {
 	
 	## assumes data have already been checked by check_data!
