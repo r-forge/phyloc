@@ -3,6 +3,7 @@ require(ape)
 
 setOldClass("phylo")
 setOldClass("multi.tree")
+setOldClass("multiPhylo")
 
 setClass("phylo4",
          representation(edge="matrix",

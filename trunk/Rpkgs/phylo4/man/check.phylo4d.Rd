@@ -15,13 +15,11 @@ check_data(object,
 		missing.node.data=c("OK","warn","fail"),		
 		extra.node.data=c("OK","warn","fail"),												
 		missing.node.names=c("OK","warn","fail"))
-}
-
 attach_data(object,
     use.tip.names=TRUE,
 		use.node.names=FALSE,
 		use.edge.names=FALSE)
-)
+}
 
 \arguments{
   \item{object}{A phylo4 object}

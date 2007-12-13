@@ -28,6 +28,6 @@ phylo4d(tree, data, which = "tip")
 \examples{
 library(ape)
 example(read.tree)
-phylo4d(as(tree.owls.bis,"phylo4"),data=data.frame(wing=1:3))
+phylo4d(as(tree.owls.bis,"phylo4"),data.frame(wing=1:3))
 }
 \keyword{misc}
