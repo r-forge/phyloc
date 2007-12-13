@@ -38,7 +38,7 @@ case, first rows should correspond to tips, last rows to nodes.}
 \value{
   An object of class \linkS4class{phylo4d}.
 }
-\seealso{the \linkS4class{phylo4d} class, the \link{\code{check_data}}
+\seealso{the \linkS4class{phylo4d} class, the \code{\link{check_data}}
   function to check the validity of \code{phylo4d} objects.}
 \author{Ben Bolker, Thibaut Jombart}
 \note{
