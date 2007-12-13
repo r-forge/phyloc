@@ -11,13 +11,6 @@ check_phylo4 <- function(object) {
 }
 
 
-## VERY limited: required of all phylo4d objects
-## check_data0 <- function(object) {
-	## check consistency 
-##	return(TRUE)
-}
-
-
 check_data <- function(object,
 		use.tip.names=TRUE,
 		missing.tip.data=c("fail","OK","warn"),
