@@ -641,8 +641,7 @@ setMethod("phylo4d", c("matrix"), function(x,...){
 })
 
 # first arg is a phylo
-setMethod("phylo4d", c("ANY"), function(x,...){
-  if(!inherits(x,"phylo")) stop("only implemented for phylo class")
+setMethod("phylo4d", c("phylo"), function(x,...){
   tree <- as(x, "phylo4")
   res <- phylo4d(tree,...)
   return(res)

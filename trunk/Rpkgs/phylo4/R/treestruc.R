@@ -19,31 +19,33 @@ hasSingles <- function(object) {
 }
 
 
+### TO BE FINISHED
+
 # Returns a vector of logical 
 # TRUE = this edge goes from an internal node to another
-internEdge <- function(object){
-  if(!check_phylo4(object)) stop("to be used with a phylo4 object")
-  x <- object
-  isTips <- (tabulate(x@edge[,1]) == 0)
-  tips <- x@edge[isTips, 1]
-  inter <- is.na(match(x@edge[,2],tips))
-  return(inter)
-}
+#internEdge <- function(object){
+#  if(!check_phylo4(object)) stop("to be used with a phylo4 object")
+#  x <- object
+#  isTips <- (tabulate(x@edge[,1]) == 0)
+#  tips <- x@edge[isTips, 1]
+#  inter <- is.na(match(x@edge[,2],tips))
+#  return(inter)
+#}
 
 # Returns a vector of logical 
 # TRUE = this edge goes from an internal node to a tip
-terminEdge <- function(object){
-  return(!internEdge(object))
-}
+#terminEdge <- function(object){
+#  return(!internEdge(object))
+#}
 
-isPoly <- function(object, position=c("all", "terminal", "internal")){
-  if(!check_phylo4(object)) stop("to be used with a phylo4 object")
-  x <- object
-  pos <- match.arg(position)
-  res <- (tabulate(x@edge[,1]) > 2)
+#isPoly <- function(object, position=c("all", "terminal", "internal")){
+#  if(!check_phylo4(object)) stop("to be used with a phylo4 object")
+#  x <- object
+#  pos <- match.arg(position)
+#  res <- (tabulate(x@edge[,1]) > 2)
 
   # all polytomies 
-  if(pos=="all") return(res)
+#  if(pos=="all") return(res)
 
   # find which edge ends at a tip
   
@@ -51,18 +53,4 @@ isPoly <- function(object, position=c("all", "terminal", "internal")){
   
   # external polytomies
   
-}
-
-
-findPoly <- function(){}
-
-  isPoly <- (tabulate(x@edge[,1]) > 2)
-  tips <- which(tabulate(x@edge[,1]) == 0)
-  tips <- x@edge[isTips, 1]
-
-
-            isTerminal <- 
-            res@poly.tip <- which(isPoly & isTip)
-            res@poly.node <- which(isPoly & !isTip)
-            if(length(res@poly.tip) == 0) res@poly.tip <- NULL
-            if(length(res@poly.node) == 0) res@poly.node <- NULL
+#}
