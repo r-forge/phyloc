@@ -126,7 +126,8 @@ getRowNames <- function(mesqMatrix){
 
 #========================== Giving Data To Mesquite ========================
 
-#==== Creates taxa block in Mesquite with taxon names as indicated by the array
+# ==== Creates taxa block in Mesquite with taxon names as indicated by
+# the array
 mesquiteTaxaBlock <- function(mesquite=.mesquite(),
                               nameArray=NULL,
                               blockName=NULL){
@@ -141,10 +142,10 @@ mesquiteTaxaBlock <- function(mesquite=.mesquite(),
   taxa
 }
 
-#==== Creates categorical matrix in Mesquite.  Requires corresponding taxa block in Mesquite to have already been created.
+# ==== Creates categorical matrix in Mesquite.
 mesquiteCategoricalMatrix <- function(mesquite=.mesquite(),
                                       charMatrix,
-                                      matrixName="MatrixFromR",
+                                      matrixName=NULL,
                                       numCols=dim(charMatrix)[2],
                                       taxaBlock,
                                       blockName=NULL) {
@@ -152,32 +153,47 @@ mesquiteCategoricalMatrix <- function(mesquite=.mesquite(),
     taxaBlock <- mesquiteTaxaBlock(mesquite,
                                    nameArray=taxaBlock, blockName=blockName);
   }
+  if (is.null(matrixName)) {
+    matrixName <- paste(".matrix.",as.integer(runif(1,min=1,max=2^31)),sep="");
+  }
   catMatrix <- .jcall(mesquite,
                       "Lmesquite/categ/lib/CategoricalData;",
                       "loadCategoricalMatrix",
-                      taxaBlock,
+                      .jcast(taxaBlock, new.class="mesquite/lib/Taxa"),
                       matrixName,
                       as.integer(numCols),
                       as.integer(t(charMatrix)));
   catMatrix
 }
 
-# ==== Creates tree in Mesquite from newick string. 
+# ==== Creates tree in Mesquite from newick string or from phylo object
 mesquiteTree <- function(mesquite=.mesquite(),
-                         newick,
-                         treeName="TreeFromR",
-                         taxaBlock,
+                         tree,
+                         treeName=NULL,
+                         taxaBlock=NULL,
                          blockName=NULL){
+  if (is.character(tree)) {
+    tree <- read.tree(text=tree);
+  }
+  if (class(tree) != "phylo") {
+    stop("tree argument must be string or class phylo, not ",class(tree),"\n");
+  }
+  if (is.null(taxaBlock)) {
+    taxaBlock <- tree$tip.label;
+  }
   if (is.character(taxaBlock)) {
     taxaBlock <- mesquiteTaxaBlock(mesquite,
                                    nameArray=taxaBlock, blockName=blockName);
+  }
+  if (is.null(treeName)) {
+    treeName <- paste(".tree.",as.integer(runif(1,min=1,max=2^31)),sep="");
   }
   tree <- .jcall(mesquite,
                  "Lmesquite/lib/MesquiteTree;",
                  "loadTree",
                  taxaBlock,
                  treeName,
-                 newick);
+                 write.tree(tree));
   tree
 }
 

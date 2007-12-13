@@ -10,32 +10,29 @@ mesquiteApply.TreeAndCategChar <- function(mesquite=.mesquite(),
                                            tree,
                                            categMatrix,
                                            charIndex=1,
-                                           taxaBlock=NULL,
                                            runnerMethod,
-                                           returnType="D",
+                                           returnType="mesquite.rmLink.common.RNumericMatrix",
                                            castMatrixType=NULL,
+                                           taxaBlock=NULL,
                                            module.script=NULL) {
-  blockName <- paste(".block.",as.integer(runif(1,min=1,max=2^31)),sep="");
+  if (class(tree) != "jobjRef") {
+    tree <- mesquiteTree(mesquite, tree=tree, taxaBlock=taxaBlock);
+  }
   if (is.matrix(categMatrix)) {
-    if (is.character(taxaBlock)) {
-      taxaBlock <- mesquiteTaxaBlock(mesquite,
-                                     nameArray=taxaBlock, blockName=blockName);
+    if (is.null(taxaBlock) || (class(taxaBlock) != "jobjRef")) {
+      taxaBlock <- tree$getTaxa();
     }
     categMatrix <- mesquiteCategoricalMatrix(mesquite,
                                              charMatrix=categMatrix,
                                              taxaBlock=taxaBlock);
   }
-  if (is.character(tree)) {
-    if (is.character(taxaBlock)) {
-      taxaBlock <- mesquiteTaxaBlock(mesquite,
-                                     nameArray=taxaBlock, blockName=blockName);
-    }
-    tree <- mesquiteTree(mesquite, newick=tree, taxaBlock=taxaBlock);
-  }
   need.stop <- FALSE;
   if (is.character(module)) {
     module <- startMesquiteModule(module,script=module.script);
     need.stop <- TRUE;
+  }
+  if (length(grep("\\.",returnType)) > 0) {
+    returnType <- paste("L",gsub("\\.","/",returnType),";",sep="");
   }
   result <- .jcall(.mesquite(),
                    returnType,
@@ -52,13 +49,13 @@ mesquiteApply.TreeAndCategChar <- function(mesquite=.mesquite(),
   result
 }
 
-mesquiteApply.TreeAndCategChar.Number <- function(mesquite=.mesquite(),
-                                                  module,
-                                                  tree,
-                                                  categMatrix,
-                                                  charIndex=1,
-                                                  taxaBlock=NULL,
-                                                  module.script=NULL) {
+mesquiteApply.NumberForTreeAndCategChar <- function(mesquite=.mesquite(),
+                                                    module,
+                                                    tree,
+                                                    categMatrix,
+                                                    charIndex=1,
+                                                    taxaBlock=NULL,
+                                                    module.script=NULL) {
   mesquiteApply.TreeAndCategChar(mesquite,
                                  module=module,
                                  tree=tree,
@@ -84,7 +81,6 @@ mesquiteApply.AncestralStateCategChar <- function(mesquite=.mesquite(),
                                  charIndex=charIndex,
                                  taxaBlock=taxaBlock,
                                  runnerMethod="ancestralStatesCategorical",
-                                 returnType="Lmesquite/lib/characters/CharacterHistory;",
                                  module.script=module.script);
 }
 
@@ -100,6 +96,7 @@ bisseLikelihood <-  function(tree,
                                            charIndex=charIndex,
                                            taxaBlock=taxaBlock,
                                            runnerMethod="numberForTreeAndCharacter",
+                                           castMatrixType="mesquite/lib/characters/CharacterData",
                                            module.script=script);
   result
 }
@@ -117,7 +114,6 @@ ancestralStatesCategorical <-  function(tree,
                                            charIndex=charIndex,
                                            taxaBlock=taxaBlock,
                                            runnerMethod="ancestralStatesCategorical",
-                                           returnType="Lmesquite/rmLink/common/RContMatrix;",
                                            module.script=script);
   result
 }
