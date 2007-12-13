@@ -22,7 +22,6 @@ DropTip <- function(phy,tip,...) {
 setMethod("prune","phylo4",
           function(phy, tip, trim.internal = TRUE, subtree = FALSE,
                    root.edge = 0,...) {
-##            browser()
             DropTip(phy,tip,trim.internal, subtree, root.edge)
           })
 

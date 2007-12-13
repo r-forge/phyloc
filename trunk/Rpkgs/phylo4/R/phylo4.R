@@ -76,7 +76,7 @@ setGeneric("isRooted", function(x) {
   standardGeneric("isRooted")
 })
 
-##  trace("isRooted",browser)
+
 setMethod("isRooted","phylo4", function(x) {
   !is.na(x@root.edge) ||  ## root edge explicitly defined
   ## HACK: make sure we find the right "nTips"
@@ -343,8 +343,7 @@ setClass("phylo4d",
          validity = function(object) {
            ## FIXME: finish this by intercepting FALSE, char string, etc.
            check1 <- check_data(object)
-           check2 <- check_phylo4(object)
-           browser()
+           check2 <- check_phylo4(object)          
          },                   
          contains="phylo4")
 
