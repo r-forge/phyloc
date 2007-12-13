@@ -1,28 +1,46 @@
-\name{phylo4d}
-\alias{phylo4d}
+\name{phylo4d-methods}
+\docType{methods}
+\alias{phylo4d-methods}
 \alias{phylo4d,phylo4-method}
-\alias{phylo4d,phylo-method}
 \alias{phylo4d,matrix-method}
-\title{Combine tree with data}
+\alias{phylo4d,phylo-method}
+\title{Combine a phylogenetic tree with data}
 \description{
-  Merges a phylogenetic tree (class \code{phylo4}) with
+  \code{phylo4d} is a generic constructor which merges a phylogenetic tree with
   a data frame to create a combined object of class \code{phylo4d}
 }
+\section{Methods}{
+  \describe{
+\item{x = "phylo4"}{merges a tree of class \code{phylo4} with a
+  data.frame into a \code{phylo4d} object}
+
+\item{x = "matrix"}{merges a matrix of tree edges similar to the edge
+  slot of a \code{phylo4} object (or to \$edge of a \code{phylo} object) with a
+  data.frame into a \code{phylo4d} object}
+
+\item{x = "phylo"}{merges a tree of class \code{phylo} with a
+  data.frame into a \code{phylo4d} object }    
+   }
+ }
+ 
 \usage{
-phylo4d(tree, data, which = "tip")
+phylo4d(x, tip.data = NULL, node.data = NULL,
+        all.data = NULL,...)
 }
 \arguments{
-  \item{tree}{an object of class \code{phylo4}}
-  \item{data}{a data frame for node data (either tips, internal nodes,
-    or all)}
-%  \item{edgedata}{a data frame for edge traits}
-  \item{which}{character: "tip", "node", or "all" depending on
-    which data are specified}
+  \item{x}{an object of class \code{phylo4}, \code{phylo} or a matrix of
+  edges (see above)}
+\item{tip.data}{a data frame for tips data}
+\item{node.data}{a data frame for nodes data}
+\item{all.data}{a data frame for all (i.e. tips and nodes) data. In such
+case, first rows should correspond to tips, last rows to nodes.}
 }
 \value{
-  An object of class \code{phylo4d}
+  An object of class \linkS4class{phylo4d}.
 }
-\author{Ben Bolker}
+\seealso{the \linkS4class{phylo4d} class, the \link{\code{check_data}}
+  function to check the validity of \code{phylo4d} objects.}
+\author{Ben Bolker, Thibaut Jombart}
 \note{
   Checking on matches will be done by the validity checker
   (label matches between data and tree tips, number of rows
