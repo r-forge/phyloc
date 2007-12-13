@@ -1,7 +1,10 @@
 \name{phylo4-class}
 \docType{class}
+\alias{phylo4}
+\alias{phylo-class}
 \alias{phylo4-class}
 \alias{phylo4d-class}
+\alias{multiPhylo-class}
 \alias{multiPhylo4-class}
 \alias{$,phylo4-method}
 \alias{print,phylo4-method}
@@ -67,8 +70,7 @@
    The \code{names} method returns a vector of characters corresponding
    to the names of the slots.
   }
-  \author{Ben Bolker, Thibaut Jombart}
-    
+  \author{Ben Bolker, Thibaut Jombart}   
 \examples{
   library(ape)
   example(read.tree)

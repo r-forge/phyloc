@@ -1,5 +1,8 @@
 \name{phylo4d}
 \alias{phylo4d}
+\alias{phylo4d,phylo4-method}
+\alias{phylo4d,phylo-method}
+\alias{phylo4d,matrix-method}
 \title{Combine tree with data}
 \description{
   Merges a phylogenetic tree (class \code{phylo4}) with

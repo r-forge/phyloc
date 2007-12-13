@@ -1,10 +1,17 @@
 \name{prune-methods}
 \docType{methods}
+\alias{prune}
 \alias{prune-methods}
+\alias{prune,phylo-method}
 \alias{prune,phylo4-method}
+\alias{prune,phylo4d-method}
+\alias{DropTip}
 \title{Methods for dropping tips}
 \description{
-  Methods for pruning phylogenies
+  Methods for pruning phylogenies: remove terminal branches of
+  a phylogenetic tree,
+  possibly removing the corresponding internal branches.
+  Preserve match to edge and node data.
 }
 \section{Methods}{
   \describe{
@@ -16,8 +23,9 @@
 \note{At the moment, this simply wraps \code{ape::drop.tip}.
     Renamed from \code{drop.tip} to \code{prune} in order to
     avoid conflicts with ape.}
-\usage{\S4methods{prune}{phylo4}(phy, tip, trim.internal = TRUE, subtree = FALSE,
+\usage{\S4method{prune}{phylo4}(phy, tip, trim.internal = TRUE, subtree = FALSE,
          root.edge = 0)
+       DropTip(phy,tip,\dots)
 }
 \arguments{
   \item{phy}{an object of class \code{"phylo4"}}
@@ -30,10 +38,7 @@
   \item{root.edge}{an integer giving the number of internal branches to
     be used to build the new root edge. This has no effect if
     \code{trim.internal = FALSE}}
-}
-\description{
-  This function removes the terminal branches of a phylogenetic tree,
-  possibly removing the corresponding internal branches
+  \item{\dots}{additional arguments}
 }
 \details{
   The argument \code{tip} can be either character or numeric. In the
@@ -59,9 +64,6 @@
   an object of class \code{"phylo4"}
 }
 \author{Emmanuel Paradis \email{Emmanuel.Paradis@mpl.ird.fr}}
-\seealso{
-  \code{\link{bind.tree}}, \code{\link{root}}
-}
 \examples{
 require(ape)
 data(bird.families)

@@ -12,10 +12,10 @@ check_phylo4 <- function(object) {
 
 
 ## VERY limited: required of all phylo4d objects
-check_data0 <- function(object) {
+## check_data0 <- function(object) {
 	## check consistency 
-	return(TRUE)
-}
+##	return(TRUE)
+## }
 
 
 check_data <- function(object,
@@ -104,7 +104,7 @@ check_data <- function(object,
 					return(TRUE)
 				}
 				#don't use tip names or attempt to sort - but check to make sure dimensions match
-				if (!(phylo4::nTips(tree)==length(object@tip.data))) {
+				if (!(phylo4::nTips(object)==length(object@tip.data))) {
 					return("Tip data do not have names and do not match number of phylo4 tips.")
 				}
 			}
@@ -113,7 +113,7 @@ check_data <- function(object,
 	else
 	{
 		#don't use tip names or attempt to sort - but check to make sure dimensions match
-		if (!(phylo4::nTips(tree)==length(object@tip.data))) {
+		if (!(phylo4::nTips(object)==length(object@tip.data))) {
 			return("Tip data do not have names and do not match number of phylo4 tips.")
 		}
 	}
@@ -172,7 +172,7 @@ check_data <- function(object,
 					return(TRUE)
 				}
 				#don't use node names or attempt to sort - but check to make sure dimensions match
-				if (!(nNodes(tree)==length(object@node.data))) {
+				if (!(nNodes(object)==length(object@node.data))) {
 					stop("Node data do not have names and do not match number of phylo4 nodes.")
 				}
 			}
@@ -181,7 +181,7 @@ check_data <- function(object,
 	else
 	{
 		#don't use node names or attempt to sort - but check to make sure dimensions match
-		if (!(nNodes(tree)==length(object@node.data))) {
+		if (!(nNodes(object)==length(object@node.data))) {
 			stop("Node data do not have names and do not match number of phylo4 nodes.")
 		}
 	}

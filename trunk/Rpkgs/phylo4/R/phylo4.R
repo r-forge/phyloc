@@ -2,7 +2,7 @@ require(methods)
 require(ape)
 
 setOldClass("phylo")
-setOldClass("multi.tree")
+## setOldClass("multi.tree")
 setOldClass("multiPhylo")
 
 setClass("phylo4",
@@ -155,14 +155,14 @@ setAs("phylo","phylo4",
 setAs("multiPhylo4","multiPhylo",
       function(from,to) {
         newobj <- new("multiPhylo4",
-                      phylolist=lapply(as.phylo4.phylo,from),
+                      phylolist=lapply(from,as,to="phylo4"),
                       tree.names=names(from),
                       tip.data=data.frame())
       })
 
 setAs("multiPhylo","multiPhylo4",
       function(from,to) {
-        y <- lapply(from@phylolist,as.phylo.phylo4)
+        y <- lapply(as,from@phylolist,to="phylo")
         names(y) <- from@tree.names
         if (nrow(from@tip.data)>0) warning("discarded tip data")
         class(y) <- "multiPhylo"
@@ -322,12 +322,12 @@ setMethod("summary","phylo4", function (object, quiet=FALSE)
 
 
 ## S3 generic for conversion to S4
-as.phylo4 <- function (x, ...) 
-{
-    if (class(x) == "phylo4") 
-      return(x)
-    UseMethod("as.phylo4")
-  }
+## as.phylo4 <- function (x, ...) 
+## {
+##     if (class(x) == "phylo4") 
+##       return(x)
+##     UseMethod("as.phylo4")
+##   }
 
 ###################################
 ## extensions

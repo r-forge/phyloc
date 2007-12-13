@@ -14,11 +14,11 @@ check_data(object,
 		use.node.names=FALSE,
 		missing.node.data=c("OK","warn","fail"),		
 		extra.node.data=c("OK","warn","fail"),												
-		missing.node.names=c("OK","warn","fail"))
+		missing.node.names=c("OK","warn","fail"),\dots)
 attach_data(object,
     use.tip.names=TRUE,
 		use.node.names=FALSE,
-		use.edge.names=FALSE)
+		use.edge.names=FALSE,\dots)
 }
 
 \arguments{
@@ -30,7 +30,9 @@ attach_data(object,
   \item{use.node.names}{Use node data names if present (default=\code{FALSE})}
   \item{missing.node.data}{Can node data taxa be a subset of tree taxa? (default=\code{fail})}
   \item{extra.node.data}{Can node data taxa be a superset of tree taxa? (default=\code{fail})}
-  \item{missing.node.names}{Can node data be supplied without taxa names? (default=\code{fail})}
+  \item{missing.node.names}{Can node data be supplied without taxa
+    names? (default=\code{fail})}
+  \item{\dots}{Further arguments (for consistency)}
 }
 \value{
   \code{check_data} returns an error string (describing problems) or \code{TRUE} if everything is OK. If option \code{fail} is specified and a problem is encountered, returns an error string. If option \code{warn} is specified and a problem is encountered, returns \code{TRUE} plus a warning message.
