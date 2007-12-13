@@ -22,12 +22,12 @@ if (!is.null(node.subtree)) {
   if(!(node.subtree %in% 1:nNodes(object))) {
     stop("Node number supplied not present in phylogeny")
   }
-	while(length(intN <- x[x>phylo4::nTips(object)]) > 0){		
+	while(length(intN <- object[object>phylo4::nTips(object)]) > 0){		
 		minIntN <- min(intN)
 		childOfMinIntN <- with(phy, edge[,2][which(edge[,1]==minIntN)])
-		x <- c(x[x != minIntN], childOfMinIntN)
+		object <- c(object[object != minIntN], childOfMinIntN)
 	}
-  prune(object,object@tip.label[-unique(x)])
+  prune(object,object@tip.label[-unique(object)])
 }
 
 return(object)
