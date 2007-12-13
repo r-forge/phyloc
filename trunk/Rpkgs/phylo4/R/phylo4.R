@@ -583,7 +583,7 @@ phylo4 <- function(edge, edge.length=NULL, tip.label=NULL, node.label=NULL,
 #
 
 # generic
-setGeneric("phylo4d", function(x,...) { standardGeneric("phylo4d")} )
+setGeneric("phylo4d", function(x, tip.data=NULL, node.data=NULL, all.data=NULL,...) { standardGeneric("phylo4d")} )
 
 # first arg is a phylo4
 setMethod("phylo4d", c("phylo4"), function(x, tip.data=NULL, node.data=NULL, all.data=NULL, ...){
@@ -626,14 +626,14 @@ setMethod("phylo4d", c("phylo4"), function(x, tip.data=NULL, node.data=NULL, all
 })
 
 # first arg is a matrix of edges
-setMethod("phylo4d", c("matrix"), function(x,...){
+setMethod("phylo4d", c("matrix"), function(x, tip.data=NULL, node.data=NULL, all.data=NULL, ...){
   tree <- phylo4(edge=x,...)
   res <- phylo4d(tree,...)
   return(res)
 })
 
 # first arg is a phylo
-setMethod("phylo4d", c("phylo"), function(x,...){
+setMethod("phylo4d", c("phylo"), function(x, tip.data=NULL, node.data=NULL, all.data=NULL, ...){
   tree <- as(x, "phylo4")
   res <- phylo4d(tree,...)
   return(res)
