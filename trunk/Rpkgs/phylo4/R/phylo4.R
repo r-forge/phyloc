@@ -357,7 +357,13 @@ setClass("phylo4d",
 setGeneric("tdata", function(x,...) {
   standardGeneric("tdata")
 })
-setMethod("tdata","phylo4d", function(x,which="tip",...) {
+setMethod("tdata","phylo4d", function(x,which=c("tip","node","allnode"),...) {
+  which <- match.arg(which)
+  if (which=="allnode") {
+    namesmatch <- all(colnames(x@tip.data)==colnames(x@node.data))
+    classmatch <- all(sapply(x@tip.data,class)==sapply(x@node.data,class))
+    if (!(classmatch && namesmatch)) stop("no match")
+  }
   switch(which,tip=x@tip.data,node=x@node.data,
          allnode=rbind(x@tip.data,x@node.data))
   ##         edge=x@edgedata)

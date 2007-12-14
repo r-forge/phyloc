@@ -26,6 +26,7 @@ setMethod("prune","phylo4",
           })
 
 ## trace("prune", browser, signature = "phylo4d")
+## untrace("prune", signature = "phylo4d")
 setMethod("prune","phylo4d",
           function(phy, tip, trim.internal = TRUE, subtree = FALSE,
                    root.edge = 0,...) {
@@ -36,9 +37,9 @@ setMethod("prune","phylo4d",
             rownames(phy@node.data) <- phy@node.label
             phytr <- DropTip(phy,tip,trim.internal, subtree, root.edge)
             ## this DROPS data
-            phytr@tip.data=phy@tip.data[phytr@tip.label,]
+            phytr@tip.data=phy@tip.data[phytr@tip.label,,drop=FALSE]
             m1  = match(phytr@node.label,tags)
-            phytr@node.data=phy@node.data[m1,]
+            phytr@node.data=phy@node.data[m1,,drop=FALSE]
             phytr@node.label=oldnodelabels[m1]
             rownames(phytr@node.data)=phytr@node.label
             phytr@node.label=oldnodelabels
