@@ -553,7 +553,6 @@ setMethod("phylo4d", c("phylo4"), function(x, tip.data=NULL, node.data=NULL, all
   res@tip.data <- tip.data
   res@node.data <- node.data
 
-  # WAIT FOR CHECK DATA TO BE FIXED
   check_data(res, ...)
   res <- attach_data(res,...)
   return(res)  
