@@ -292,27 +292,26 @@ setMethod("summary","phylo4", function (object, quiet=FALSE)
             # if quiet, stop here                                        
             if(quiet) return(invisible(res))
             
-            # now, print to screen is !quiet
-            cat("\nPhylogenetic tree:", res$name, "\n\n")
-            cat("  Number of tips:", res$nb.tips, "\n")
-            cat("  Number of nodes:", res$nb.nodes, "\n")
-            cat("  ")
-            if(is.null(x$edge.length)) {
-              cat("  No branch lengths.\n")
-            } else {
-              cat("  Branch lengths:\n")
-              cat("    mean:", res$mean.el, "\n")
-              cat("    variance:", res$var.el, "\n")
-              cat("    distribution summary:\n")
-              print(res$sumry.el)
-            }
-            
             if(!is.null(x$root.edge)){
               cat("  Root edge:", x$root.edge, "\n")
             } else {
               cat("  No root edge.\n")
             }
-                       
+            # now, print to screen is !quiet
+            cat("\n Phylogenetic tree :", res$name, "\n\n")
+            cat(" Number of tips    :", res$nb.tips, "\n")
+            cat(" Number of nodes   :", res$nb.nodes, "\n")
+            # cat("  ")
+            if(is.null(x$edge.length)) {
+              cat(" Branch lengths      : No branch lengths.\n")
+            } else {
+              cat(" Branch lengths:\n")
+              cat("        mean         :", res$mean.el, "\n")
+              cat("        variance     :", res$var.el, "\n")
+              cat("        distribution :\n")
+              print(res$sumry.el)
+            }
+                                   
             if (!is.null(attr(x, "loglik"))) {
               cat("Phylogeny estimated by maximum likelihood.\n")
               cat("  log-likelihood:", attr(x, "loglik"), "\n\n")
@@ -328,9 +327,6 @@ setMethod("summary","phylo4", function (object, quiet=FALSE)
             return(invisible(res))
           } # end summary phylo4
           ) # end setMethod summary phylo4
-
-
-
 
 ## S3 generic for conversion to S4
 ## as.phylo4 <- function (x, ...) 
