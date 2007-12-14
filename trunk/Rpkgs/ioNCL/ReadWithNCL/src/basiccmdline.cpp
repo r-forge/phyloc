@@ -272,7 +272,7 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 					nexuscharacters+="'";
 				}
 				else {
-					nexuscharacters+="char";
+					nexuscharacters+="standard_char_";
 					nexuscharacters+=character+1;
 				}
 				nexuscharacters+=" = ";
@@ -335,7 +335,7 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 					}
 					levels+=')';
 					labels+=')';
-					cout<<"labels.length="<<labels.length()<<endl<<"levels.length="<<levels.length()<<endl<<"total label length="<<totallabellength<<endl;
+					//cout<<"labels.length="<<labels.length()<<endl<<"levels.length="<<levels.length()<<endl<<"total label length="<<totallabellength<<endl;
 					if (totallabellength>characters->GetObsNumStates(character)) {
 						nexuscharacters+=levels;
 						nexuscharacters+=labels;
@@ -357,8 +357,115 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 		else if (2==characters->GetDataType()) { //dna
 	//	if((characters->GetDatatypeName())=="dna") { 
 
-			nexuscharacters=characters->GetDatatypeName();
-			nexuscharacters+=" <- data.frame(";
+			nexuscharacters+="data.frame(";
+			nexuscharacters+="dna_alignment_1=c(";
+			
+			
+			if (allchar) {
+				nchartoreturn=characters->GetNCharTotal();
+			}
+			else {
+				nchartoreturn=characters->GetNChar();
+			}
+			for (int taxon=0;taxon<ntax;taxon++) {
+				nexuscharacters+='"';
+				for (int character=0; character<nchartoreturn; character++) { 
+					int numstates=characters->GetNumStates(taxon,character);
+					if (characters->IsGapState(taxon,character)) {
+						nexuscharacters+="-";
+					}
+					else if (characters->IsMissingState(taxon,character)) {
+						nexuscharacters+="?";
+					}
+					else if ( numstates == 1) {
+						nexuscharacters+=characters->GetState(taxon,character,0);
+					}
+					else {
+						bool hasA=false;
+						bool hasT=false;
+						bool hasG=false;
+						bool hasC=false;
+						for (int i=0;i<numstates;i++) {
+							unsigned currentstate=characters->GetState(taxon,character,i);
+							if (currentstate=='A') {
+								hasA=true;
+							}
+							else if (currentstate=='T') {
+								hasT=true;
+							}
+							else if (currentstate=='G') {
+								hasG=true;
+							}
+							else if (currentstate=='C') {
+								hasC=true;
+							}
+							else {
+								cout<<"Error: currentstate "<<currentstate<<" does not match ATGC"<<endl;
+							}
+						}
+						if (hasA && hasG && !hasT && !hasC) {
+							nexuscharacters+="R";
+						}
+						else if (!hasA && !hasG && hasC && hasT) {
+							nexuscharacters+="Y";
+						}
+						else if (hasA && !hasG && hasC && !hasT) {
+							nexuscharacters+="M";
+						}
+						else if (!hasA && hasG && !hasC && hasT) {
+							nexuscharacters+="K";
+						}
+						else if (!hasA && hasG && hasC && !hasT) {
+							nexuscharacters+="S";
+						}
+						else if (hasA && !hasG && !hasC && hasT) {
+							nexuscharacters+="W";
+						}
+						else if (hasA && !hasG && hasC && hasT) {
+							nexuscharacters+="H";
+						}
+						else if (!hasA && hasG && hasC && hasT) {
+							nexuscharacters+="B";
+						}
+						else if (hasA && hasG && hasC && !hasT) {
+							nexuscharacters+="V";
+						}
+						else if (hasA && hasG && !hasC && hasT) {
+							nexuscharacters+="D";
+						}
+						else if (hasA && hasG && hasC && hasT) {
+							nexuscharacters+="N";
+						}
+						else {
+							nexuscharacters+="N";
+						}
+					}
+				}
+				nexuscharacters+='"';
+				if (taxon+1<ntax) {
+					nexuscharacters+=',';
+				}
+			}
+
+			nexuscharacters+="), row.names=c(";
+			for (int taxon=0;taxon<ntax;taxon++) {
+				nexuscharacters+='"';
+				nexuscharacters+=characters->GetTaxonLabel(taxon);
+				nexuscharacters+='"';
+				if (taxon+1<ntax) {
+					nexuscharacters+=',';
+				}
+			}
+			nexuscharacters+="))";
+			
+		}
+		else if (3==characters->GetDataType()) { //rna
+		}
+		else if (4==characters->GetDataType()) { //nucleotide
+		}
+		else if (5==characters->GetDataType()) { //protein
+		}
+		else if (6==characters->GetDataType()) { //continuousnexuscharacters+="data.frame(";
 			
 			if (allchar) {
 				nchartoreturn=characters->GetNCharTotal();
@@ -377,74 +484,27 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 					nexuscharacters+="'";
 				}
 				else {
-					nexuscharacters+="char";
+					nexuscharacters+="continuous_char_";
 					nexuscharacters+=character+1;
 				}
 				nexuscharacters+=" = ";
 				
-				nexuscharacters+="factor(c(";
+				nexuscharacters+="c(";
 				for (int taxon=0;taxon<ntax;taxon++) {
-					int statenumber=characters->GetInternalRepresentation(taxon,character,0);
-					
-					if(characters->IsMissingState(taxon,character)) {
-						nexuscharacters+="NA";
-					}
-					else if (characters->GetNumStates(taxon,character)>1) {
-						if(polymorphictomissing) {
+					double state=characters->GetSimpleContinuousValue(taxon,character);
+					cout<<"State at "<<taxon+1<<" char "<<character+1<<" = "<<state<<endl;
+					if (state==DBL_MAX) {
 							nexuscharacters+="NA";
-						}
-						else {
-							nexuscharacters+='{';
-							for (int k=0;k<characters->GetNumStates(taxon,character);k++) {
-								nexuscharacters+=characters->GetInternalRepresentation(taxon,character,0);
-								if (k+1<characters->GetNumStates(taxon,character)) {
-									nexuscharacters+=',';
-								}
-							}
-							nexuscharacters+='}';
-						}
 					}
 					else {
-						nexuscharacters+=statenumber;
+						nexuscharacters+=state;
 					}
+					
 					if (taxon+1<ntax) {
 						nexuscharacters+=',';
 					}
 				}
-				nexuscharacters+=')';
-				if (levelsall) {
-					nexuscharacters+=", levels=c(";
-					for (int l=0;l<characters->GetMaxObsNumStates(); l++) {
-						nexuscharacters+=l;
-						if (l+1<characters->GetMaxObsNumStates()) {
-							nexuscharacters+=',';
-						}
-					}
-					nexuscharacters+=')';
-				}
-				else {
-					
-					NxsString levels=", levels=c(";
-					NxsString labels=", labels=c(";
-					
-					for (int l=0;l<characters->GetObsNumStates(character); l++) {
-						labels+='"';
-						labels+= characters->GetStateLabel(character,l);
-						labels+='"';
-						levels+= l;
-						if (l+1<characters->GetObsNumStates(character)) {
-							labels+=',';
-							levels+=',';
-						}
-					}
-					levels+=')';
-					labels+=')';
-					if (labels.length()>levels.length()) {
-						nexuscharacters+=levels;
-						nexuscharacters+=labels;
-					}
-				}
-				nexuscharacters+=")\n";
+				nexuscharacters+=")";
 			}
 			nexuscharacters+=", row.names=c(";
 			for (int taxon=0;taxon<ntax;taxon++) {
@@ -455,17 +515,9 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 					nexuscharacters+=',';
 				}
 			}
-			
 			nexuscharacters+="))";
-			
-		}
-		else if (3==characters->GetDataType()) { //rna
-		}
-		else if (4==characters->GetDataType()) { //nucleotide
-		}
-		else if (5==characters->GetDataType()) { //protein
-		}
-		else if (6==characters->GetDataType()) { //continuous
+			message="Warning: Continuous characters do not work";
+			PrintMessage();
 		} 
 		else {
 				message="Error: character matrix loaded, but does not match any category (dna, standard, etc.)";
