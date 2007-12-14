@@ -1,0 +1,41 @@
+replacement methods
+   (in root.edge<- style, perhaps also setRoot style)
+  
+
+summary: if tip and node don't have identical colnames,
+   don't try to get alldata
+
+and/or: more stringent tests e.g.
+ column names match in tip and node (if all.data)?
+
+ORDER: cladewise, pruningwise, drag reorder from ape
+
+match w/ OUCH:  root node doesn't have corresponding
+   entry in the edge matrix: ouch adds a row to the edge matrix
+   (1-row data frame matching 
+
+rewrite methods in native phylo4 as necessary/desirable
+
+plot method for phylo4d: what would be a good default?
+
+figure out best way to deal with namespace/conflicts
+(override ape methods)
+
+identify.node
+
+implement "data class" by wrapping data.frame and
+writing an [ accessor method
+
+check multiPhylo!
+"unpack"/"pack" methods
+
+tree walking/generic manipulation methods
+
+TreeLib wrapper???
+
+I/O
+
+more tree manipulation methods
+compare: Mesquite, ape (check O'Meara list)
+
+change name to phylobase)
