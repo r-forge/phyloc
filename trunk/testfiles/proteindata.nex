@@ -1,0 +1,264 @@
+#NEXUS
+[written Fri Dec 14 11:03:00 EST 2007 by Mesquite  version 2.0 (build i71) at user-67-159-88-74.wireless.duke.edu/67.159.88.74]
+
+BEGIN TAXA;
+	TITLE Taxa;
+	DIMENSIONS NTAX=10;
+	TAXLABELS
+		taxon_1 taxon_2 taxon_3 taxon_4 taxon_5 taxon_6 taxon_7 taxon_8 taxon_9 taxon_10 
+	;
+
+END;
+
+
+BEGIN CHARACTERS;
+	TITLE  DNA;
+	DIMENSIONS  NCHAR=100;
+	FORMAT DATATYPE = DNA GAP = - MISSING = ?;
+	MATRIX
+	taxon_1   T-AAC??GATCCTGCTCCAACCGTCCACTTGTAGTCCAAAGCCTGCCCGACAAATTTAAAATCATTCGACGAAGTACTAACAATGGTGATACTGAAACCT
+
+	taxon_2   G?TGAAT?TGCGGTCAGCTGGCTGTCCAAATCGCGTGACACTATTACTTGTCTGTACCCGCTACTTGCCACACAGTAGTGGCGCGGGTTAGTCAGAGCCG
+
+	taxon_3   AAACCGAATTYTCTAAACACGATTAGGTTCCCGTAATTTCAACACGCGTCGAGTCCAGACCTCATTGAGCCGGTAGCAAGCACCCTCTAGCAGAATGTTA
+
+	taxon_4   TT(A,G)TAGATGRATTTATATTCTCGCGGACCAAAAACAAGCCTCGGACAGCCCAAAGAGAGTGAGGAGACGTACTTCGCCACGCGCGACGGGTAAGGCATCT
+
+	taxon_5   CAGGACCTGTCGGTCGATCAGCTAATCTACGGTATGCAATGCGTAGAAACCTGGAAGGCAGGCCAAAGTCACGTACGCCCGCGCGTCCTCGCCACAGAAA
+
+	taxon_6   ATGAGTTTTGCCAAGCCCAAGGCGACAGGCGTACGGATAATCGGATGCCTTGAGTTTTCCTTAAGAATTTGGCGATAACAATCATGACTATACTCCACCG
+
+	taxon_7   TTTTGGTGGATTTGCATCGGACGAAGCTCTAAGGGAGTGTTCCCTACAACACGAGGTTGCACCATTTAGCCAAGAATCAACAGGTCATTGTACGCTTGAG
+
+	taxon_8   AGAAAGTCTGTGTCCTTGGCGCGTTCGGTGCCCCGACGTACATAACCGGGTATAGACACACGATGATCCCCATGTTAATGACGGAACTAAGCCGTGTTTG
+
+	taxon_9   TTTGGGTGGATTTGCATCGGACGAAGCTCTAAGGGAGTGTTACCTACAACAGGAGGGTGCACCATTTATCCAAGAATCAACAGGTCATTGTACGCTTGAG
+
+	taxon_10  ACCCGTGATACTCTGAAGCGTCTTGAGATGACAGTACGTAGCGTCCGCCGACAATCTAGCAAATTTGATACGGATGGAAGATCTACTCGGGTCATGATAC
+
+
+;
+
+
+
+END;
+
+BEGIN CHARACTERS;
+	TITLE  Protein;
+	DIMENSIONS  NCHAR=10;
+	FORMAT DATATYPE = Protein GAP = - MISSING = ?;
+	MATRIX
+	taxon_1   W-MLSFARQD
+
+	taxon_2   S?VQGTIAFS
+
+	taxon_3   (A,D)FPFKFMPIH
+
+	taxon_4   FSP?IGLYNP
+
+	taxon_5   VFLNTPTQGR
+
+	taxon_6   PPEVVKHVWN
+
+	taxon_7   ATQMPRFCHP
+
+	taxon_8   PGRIAVTDQP
+
+	taxon_9   DRYCGQSWLW
+
+	taxon_10  MWMDCMTPSM
+
+
+;
+
+
+END;
+
+BEGIN CODONS;
+CODESET * UNTITLED  (CHARACTERS = DNA)  =  universal:  1 -  100;
+CODESET * UNTITLED  (CHARACTERS = Protein)  =  universal:  1 -  10;
+
+
+END;
+
+BEGIN TREES;
+	Title Untitled_Tree_Block;
+	LINK Taxa = Taxa;
+	TRANSLATE
+		1 taxon_1,
+		2 taxon_2,
+		3 taxon_3,
+		4 taxon_4,
+		5 taxon_5,
+		6 taxon_6,
+		7 taxon_7,
+		8 taxon_8,
+		9 taxon_9,
+		10 taxon_10;
+	TREE Tree1 = (((2:0.9967694926727316,8:0.9967694926727316):5.558248098199949,((((3:4.191040356602373,1:4.191040356602373):0.5679768914744667,10:4.75901724807684):0.49853561444487793,6:5.2575528625217185):0.7752263707209084,(5:5.777488690732236,4:5.777488690732236):0.25529054251039024):0.5222383576300557):3.4449824091273165,(7:0.013021869174435718,9:0.013021869174435718):9.98697813082556);
+
+END;
+
+
+BEGIN ASSUMPTIONS;
+	TYPESET * UNTITLED  (CHARACTERS = DNA)  =  unord:  1 -  100;
+TYPESET * UNTITLED  (CHARACTERS = Protein)  =  unord:  1 -  10;
+
+END;
+
+BEGIN MESQUITECHARMODELS;
+	ProbModelSet * UNTITLED  (CHARACTERS = DNA)  =  'Jukes-Cantor':  1 -  100;
+ProbModelSet * UNTITLED  (CHARACTERS = Protein)  =  'Mk1 (est.)':  1 -  10;
+END;
+
+Begin MESQUITE;
+		MESQUITESCRIPTVERSION 2;
+		TITLE AUTO;
+		tell ProjectCoordinator;
+		getEmployee #mesquite.minimal.ManageTaxa.ManageTaxa;
+		tell It;
+			setID 0 5084474973019614033;
+		endTell;
+		getEmployee #mesquite.charMatrices.ManageCharacters.ManageCharacters;
+		tell It;
+			setID 0 1773379047865885760;
+			checksum 0 2419509146 null;
+			setID 1 5181574816307634826;
+			checksum 1 1626562420 null;
+		endTell;
+		getEmployee  #mesquite.charMatrices.BasicDataWindowCoord.BasicDataWindowCoord;
+		tell It;
+			showDataWindow #1773379047865885760 #mesquite.charMatrices.BasicDataWindowMaker.BasicDataWindowMaker;
+			tell It;
+				getWindow;
+				tell It;
+					setExplanationSize 30;
+					setAnnotationSize 20;
+					setFontIncAnnot 0;
+					setFontIncExp 0;
+					setSize 881 674;
+					setLocation 125 22;
+					setFont SanSerif;
+					setFontSize 10;
+					getToolPalette;
+					tell It;
+						setTool mesquite.charMatrices.BasicDataWindowMaker.BasicDataWindow.ibeam;
+					endTell;
+					setTool mesquite.charMatrices.BasicDataWindowMaker.BasicDataWindow.ibeam;
+					colorCells  #mesquite.charMatrices.ColorByState.ColorByState;
+					setBackground White;
+					toggleShowNames on;
+					toggleTight off;
+					toggleShowChanges off;
+					toggleSeparateLines off;
+					toggleShowStates on;
+					toggleAutoWCharNames off;
+					toggleShowDefaultCharNames off;
+					toggleConstrainCW on;
+					setColumnWidth 16;
+					toggleBirdsEye off;
+					toggleColorsPanel off;
+					birdsEyeWidth 2;
+					toggleLinkedScrolling on;
+					toggleScrollLinkedTables off;
+				endTell;
+				showWindow;
+				hideWindow;
+				getEmployee #mesquite.categ.StateNamesStrip.StateNamesStrip;
+				tell It;
+					showStrip off;
+				endTell;
+				getEmployee #mesquite.charMatrices.AnnotPanel.AnnotPanel;
+				tell It;
+					togglePanel off;
+				endTell;
+				getEmployee #mesquite.charMatrices.CharReferenceStrip.CharReferenceStrip;
+				tell It;
+					showStrip off;
+				endTell;
+				getEmployee #mesquite.charMatrices.ColorCells.ColorCells;
+				tell It;
+					setColor Red;
+					removeColor off;
+				endTell;
+				getEmployee #mesquite.charMatrices.QuickKeySelector.QuickKeySelector;
+				tell It;
+					autotabOff;
+				endTell;
+				getEmployee #mesquite.align.AlignToDropped.AlignToDropped;
+				tell It;
+					gapCosts 8 3 2 2;
+					subCosts  10 5 10 10 10 5 5 10 10 10 5 10;
+				endTell;
+			endTell;
+			showDataWindow #5181574816307634826 #mesquite.charMatrices.BasicDataWindowMaker.BasicDataWindowMaker;
+			tell It;
+				getWindow;
+				tell It;
+					setExplanationSize 30;
+					setAnnotationSize 20;
+					setFontIncAnnot 0;
+					setFontIncExp 0;
+					setSize 881 674;
+					setLocation 125 22;
+					setFont SanSerif;
+					setFontSize 10;
+					getToolPalette;
+					tell It;
+						setTool mesquite.charMatrices.BasicDataWindowMaker.BasicDataWindow.ibeam;
+					endTell;
+					setTool mesquite.charMatrices.BasicDataWindowMaker.BasicDataWindow.ibeam;
+					colorCells  #mesquite.charMatrices.ColorByState.ColorByState;
+					setBackground White;
+					toggleShowNames on;
+					toggleTight off;
+					toggleShowChanges off;
+					toggleSeparateLines off;
+					toggleShowStates on;
+					toggleAutoWCharNames off;
+					toggleShowDefaultCharNames off;
+					toggleConstrainCW on;
+					toggleBirdsEye off;
+					toggleColorsPanel off;
+					birdsEyeWidth 2;
+					toggleLinkedScrolling on;
+					toggleScrollLinkedTables off;
+				endTell;
+				showWindow;
+				getWindow;
+				tell It;
+					forceAutosize;
+				endTell;
+				hideWindow;
+				getEmployee #mesquite.categ.StateNamesStrip.StateNamesStrip;
+				tell It;
+					showStrip off;
+				endTell;
+				getEmployee #mesquite.charMatrices.AnnotPanel.AnnotPanel;
+				tell It;
+					togglePanel off;
+				endTell;
+				getEmployee #mesquite.charMatrices.CharReferenceStrip.CharReferenceStrip;
+				tell It;
+					showStrip off;
+				endTell;
+				getEmployee #mesquite.charMatrices.ColorCells.ColorCells;
+				tell It;
+					setColor Red;
+					removeColor off;
+				endTell;
+				getEmployee #mesquite.charMatrices.QuickKeySelector.QuickKeySelector;
+				tell It;
+					autotabOff;
+				endTell;
+				getEmployee #mesquite.align.AlignToDropped.AlignToDropped;
+				tell It;
+					gapCosts 8 3 2 2;
+					subCosts  5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5;
+				endTell;
+			endTell;
+		endTell;
+		endTell;
+end;
+
+

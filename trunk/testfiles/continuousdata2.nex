@@ -1,0 +1,114 @@
+#NEXUS
+[written Fri Dec 14 13:48:37 EST 2007 by Mesquite  version 2.0 (build i71) at user-67-159-88-74.wireless.duke.edu/67.159.88.74]
+
+BEGIN TAXA;
+	TITLE test;
+	DIMENSIONS NTAX=10;
+	TAXLABELS
+		taxon_1 taxon_2 taxon_3 taxon_4 taxon_5 taxon_6 taxon_7 taxon_8 taxon_9 taxon_10 
+	;
+
+END;
+
+
+BEGIN CHARACTERS;
+	TITLE  ContChar;
+	DIMENSIONS  NCHAR=10;
+	FORMAT DATATYPE = CONTINUOUS;
+	MATRIX
+	taxon_1    6 6.3261846344956965 0.0 0.4068337661911422 -0.2161527047469689 -1.3705063247625326 -0.12748694756134105 -3.5851343051665885 3.2948841447940085 -4.063892315728269
+	taxon_2    -2.1584854668243723 1.9763589894787397 -1.998625653807181 -0.23379633798290153 6.893294751028758 2.573242089630969 1.6894785928766678 7.8428281281636 -1.165097625120508 -4.899602504941364
+	taxon_3    -0.21556085084938265 4.757248020516261 -4.553969897810205 2.157737263033676 5.088024373697643 1.6268842113428155 0.03244353693045121 5.124883886590234 -0.6282743417062555 -3.4785569996419343
+	taxon_4    1.354778150140934 3.9145071866808188 6.894561929869036 -1.2471084767620755 0.12042789552440425 6.514014257656297 0.33837900136660654 -0.20088579787156302 4.190544989047753 -4.063246457520154
+	taxon_5    1.3186479299204819 -0.05129055551614058 1.8253197256625997 -4.902847012215555 -0.8630162679571814 1.2830816422469604 0.5830488802545664 1.3190792567311749 -2.3268651139293284 1.566437204551531
+	taxon_6    -1.541559062948059 7.712765769534698 -3.227996933221663 -0.8766852049436741 6.462587467815854 -0.8636641563610095 -2.1975623470594225 6.768750887786593 1.8397263469187486 -3.3790864206374476
+	taxon_7    0.03552623659483822 2.559567079976376 -2.461680969934369 -0.7397350478350446 3.505985333739099 0.42058528514492977 1.0042591292642529 6.928184532907877 -1.767199641585778 -1.7685188213844318
+	taxon_8    -1.8245602040954652 4.628970506157257 -3.946043182640543 -2.9532175518482107 4.627842755138896 1.130716229462849 -0.3906638927145216 6.278934852973947 3.2755919555916866 -2.925851668410678
+	taxon_9    1.4744230929499715 4.271707556068129 -3.2124851021309824 -3.982745210219964 6.055063959184254 -0.5547602117971164 0.7686563971134713 4.921982685636445 2.445378678956816 -2.850597057353542
+	taxon_10   1.1937997101137128 -0.04177247217751575 1.9362489495869422 -4.849241181599407 -0.7431551171212496 1.3074445336815201 0.5670898829336825 1.3054506532439434 -2.241773972575033 1.6466278002256913
+
+;
+
+END;
+BEGIN ASSUMPTIONS;
+	TYPESET * UNTITLED   =  Squared:  1 -  10;
+
+END;
+
+BEGIN MESQUITECHARMODELS;
+	ProbModelSet * UNTITLED   =  Brownian_default:  1 -  10;
+END;
+
+Begin MESQUITE;
+		MESQUITESCRIPTVERSION 2;
+		TITLE AUTO;
+		tell ProjectCoordinator;
+		getEmployee #mesquite.minimal.ManageTaxa.ManageTaxa;
+		tell It;
+			setID 0 6983010473406359518;
+		endTell;
+		getEmployee #mesquite.charMatrices.ManageCharacters.ManageCharacters;
+		tell It;
+			setID 0 5433914879811492307;
+			checksum 0 1643127765 null;
+		endTell;
+		getEmployee  #mesquite.charMatrices.BasicDataWindowCoord.BasicDataWindowCoord;
+		tell It;
+			showDataWindow #5433914879811492307 #mesquite.charMatrices.BasicDataWindowMaker.BasicDataWindowMaker;
+			tell It;
+				getWindow;
+				tell It;
+					setExplanationSize 30;
+					setAnnotationSize 20;
+					setFontIncAnnot 0;
+					setFontIncExp 0;
+					setSize 700 500;
+					setLocation 8 22;
+					setFont SanSerif;
+					setFontSize 10;
+					getToolPalette;
+					tell It;
+						setTool mesquite.charMatrices.BasicDataWindowMaker.BasicDataWindow.ibeam;
+					endTell;
+					setActive;
+					setTool mesquite.charMatrices.BasicDataWindowMaker.BasicDataWindow.ibeam;
+					colorCells  #mesquite.charMatrices.NoColor.NoColor;
+					setBackground White;
+					toggleShowNames on;
+					toggleTight off;
+					toggleShowChanges on;
+					toggleSeparateLines off;
+					toggleShowStates on;
+					toggleAutoWCharNames on;
+					toggleShowDefaultCharNames off;
+					toggleConstrainCW on;
+					toggleBirdsEye off;
+					toggleColorsPanel off;
+					birdsEyeWidth 2;
+					toggleLinkedScrolling on;
+					toggleScrollLinkedTables off;
+				endTell;
+				showWindow;
+				getWindow;
+				tell It;
+					forceAutosize;
+				endTell;
+				getEmployee #mesquite.charMatrices.AnnotPanel.AnnotPanel;
+				tell It;
+					togglePanel off;
+				endTell;
+				getEmployee #mesquite.charMatrices.CharReferenceStrip.CharReferenceStrip;
+				tell It;
+					showStrip off;
+				endTell;
+				getEmployee #mesquite.charMatrices.ColorCells.ColorCells;
+				tell It;
+					setColor Red;
+					removeColor off;
+				endTell;
+			endTell;
+		endTell;
+		endTell;
+end;
+
+
