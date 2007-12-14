@@ -48,6 +48,4 @@ one do it in phylo4?
 
 digits= arg for some summaries etc.?
 
-add vector method for data in phylo4d constructor
-
-should tdata simply rbind tip and node data!
+should tdata simply rbind tip and node data!>>>>>>> .r206

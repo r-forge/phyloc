@@ -605,6 +605,11 @@ setMethod("phylo4d", c("phylo4"), function(x, tip.data=NULL, node.data=NULL, all
 
   # handle data
   if(all(is.null(c(tip.data, node.data, all.data)))) stop("no data provided; please use phylo4 class")
+
+  # convert vector to data.frames
+  if(is.vector(tip.data)) tip.data <- as.data.frame(tip.data)
+  if(is.vector(node.data)) node.data <- as.data.frame(node.data)
+  if(is.vector(all.data)) all.data <- as.data.frame(all.data)
   
   if(!is.null(all.data)){
     if(!is.data.frame(all.data)) stop("all.data must be a data.frame")
