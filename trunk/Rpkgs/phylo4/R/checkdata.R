@@ -62,7 +62,7 @@ check_data <- function(object,
 						#we know it's not an exact match - we have missing.tip.data - take action
 						#fail
 						if (missing.tip.data == "fail") {
-							return("Tip data names do not exactly match phylo4 tip labels.")
+							stop("Tip data names do not exactly match phylo4 tip labels.")
 						}
 						#warn
 						else if (missing.tip.data == "warn") {
@@ -76,7 +76,7 @@ check_data <- function(object,
 						#we know it's not an exact match - we have extra.tip.data - take action
 						#fail
 						if (missing.tip.data == "fail") {
-							return("Tip data are a superset of phylo4 tips.")
+							stop("Tip data are a superset of phylo4 tips.")
 						}
 						else if (missing.tip.data == "warn") {
 							warning("Tip data are a superset of phylo4 tips.")
@@ -90,7 +90,7 @@ check_data <- function(object,
 			else {
 				#no tip.names
 				if (missing.tip.names == "fail") {
-					return("Tip data do not have names.")
+					stop("Tip data do not have names.")
 				}
 				else if (missing.tip.names == "warn") {
 					warning("Tip data do not have names.")
@@ -98,7 +98,7 @@ check_data <- function(object,
 				}
 				#don't use tip names or attempt to sort - but check to make sure dimensions match
 				if (!(phylo4::nTips(object)==length(object@tip.data))) {
-					return("Tip data do not have names and do not match number of phylo4 tips.")
+					stop("Tip data do not have names and do not match number of phylo4 tips.")
 				}
 			}
 		}
@@ -107,7 +107,7 @@ check_data <- function(object,
 	{
 		#don't use tip names or attempt to sort - but check to make sure dimensions match
 		if (!(phylo4::nTips(object)==length(object@tip.data))) {
-			return("Tip data do not have names and do not match number of phylo4 tips.")
+			stop("Tip data do not have names and do not match number of phylo4 tips.")
 		}
 	}
 
@@ -158,7 +158,7 @@ check_data <- function(object,
 			else {
 				#no node.names
 				if (missing.node.names == "fail") {
-					return("Node data do not have names.")
+					stop("Node data do not have names.")
 				}
 				else if (missing.node.names == "warn") {
 					warning("Node data do not have names.")
