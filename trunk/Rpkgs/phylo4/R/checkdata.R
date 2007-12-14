@@ -44,7 +44,7 @@ check_data <- function(object,
 		if (use.tip.names) {
 		
 		#check for default names
-		if (all(row.names(object@tip.data) == 1:phylo4::nTips(object))) {
+		if (all(row.names(object@tip.data) == 1:length(row.names(object@tip.data)))) {
 				#no tip.names
 				if (default.tip.names == "fail") {
 					stop("Tip data have default names and may not match tip labels. Consider using the use.tip.names=FALSE option.")
@@ -81,10 +81,10 @@ check_data <- function(object,
 				if (all(object@tip.label %in% row.names(object@tip.data))) {
 					#we know it's not an exact match - we have extra.tip.data - take action
 					#fail
-					if (missing.tip.data == "fail") {
+					if (extra.tip.data == "fail") {
 						stop("Tip data are a superset of phylo4 tips.")
 					}
-					else if (missing.tip.data == "warn") {
+					else if (extra.tip.data == "warn") {
 						warning("Tip data are a superset of phylo4 tips.")
 						return(TRUE)
 					}
@@ -109,7 +109,7 @@ check_data <- function(object,
 		if (use.node.names) {
 		
 		#check for default names
-		if (all(row.names(object@node.data) == 1:phylo4::nNodes(object))) {
+		if (all(row.names(object@node.data) == 1:length(row.names(object@node.data)))) {
 				#no node.names
 				if (default.node.names == "fail") {
 					stop("Node data have default names and may not match node labels. Consider using the use.node.names=FALSE option.")
@@ -146,10 +146,10 @@ check_data <- function(object,
 				if (all(object@node.label %in% row.names(object@node.data))) {
 					#we know it's not an exact match - we have extra.node.data - take action
 					#fail
-					if (missing.node.data == "fail") {
+					if (extra.node.data == "fail") {
 						stop("Node data are a superset of phylo4 nodes.")
 					}
-					else if (missing.node.data == "warn") {
+					else if (extra.node.data == "warn") {
 						warning("Node data are a superset of phylo4 nodes.")
 						return(TRUE)
 					}
@@ -172,7 +172,6 @@ check_data <- function(object,
 attach_data <- function(object,
 		use.tip.names=TRUE,
 		use.node.names=FALSE,
-		use.edge.names=FALSE,
 		...)							 
 {
 	

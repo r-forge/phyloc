@@ -53,11 +53,11 @@ p4 <- as(p3,"phylo4")
 #create phylo4d objects
 p4d <- phylo4d(p4,dat)
 p4d.sorted <- phylo4d(p4,dat[5:1,])
-p4d.nonames <- phylo4d(p4,dat.defaultnames)
+try(p4d.nonames <- phylo4d(p4,dat.defaultnames))
 p4d.nonames <- phylo4d(p4,dat.defaultnames,use.tip.names=FALSE)
-p4d.subset <- phylo4d(p4,dat.subset)
-p4d.subset <- phylo4d(p4,dat.subset,missing.tip.data="warn")
-p4d.superset <- phylo4d(p4,dat.superset)
+try(p4d.subset <- phylo4d(p4,dat.subset))
+p4d.subset <- phylo4d(p4,dat.subset,missing.tip.data="OK")
+try(p4d.superset <- phylo4d(p4,dat.superset))
 p4d.superset <- phylo4d(p4,dat.superset,extra.tip.data="OK")
 }
 \keyword{misc}
