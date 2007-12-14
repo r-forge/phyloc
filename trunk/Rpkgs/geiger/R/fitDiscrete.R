@@ -1,11 +1,18 @@
 `fitDiscrete` <-
-function(phy, data, model=c("ER", "SYM", "ARD"), treeTransform=c("none", "lambda", "kappa", "delta", "linearChange", "exponentialChange", "twoRate"), data.names=NULL)
+function(phy, data, model=c("ER", "SYM", "ARD"), treeTransform=c("none", "lambda", "kappa", "delta", "linearChange", "exponentialChange", "twoRate"), data.names=NULL, plotlnl=F, qLimits=c(0.0001, 1000), pLimits=c(0.00001, 10))
 {
 	
 	model<-match.arg(model)
 
-	treeTransform<-match.arg(treeTransform)
+	
 
+	
+	treeTransform<-match.arg(treeTransform)
+	if(treeTransform=="twoRate" & plotlnl==T) {
+				cat("Plotting surfaces not supported for twoRate tree transformation\n")
+				plotlnl=F
+	}
+	
 	if(!is.ultrametric(phy)) {
 		cat("Warning: some tree transformations in GEIGER might not be sensible for nonultrametric trees.")
 		}
@@ -26,37 +33,37 @@ function(phy, data, model=c("ER", "SYM", "ARD"), treeTransform=c("none", "lambda
 		}	
 		if(treeTransform=="lambda") {
 			f<-function(x) {
-				likelihoodDiscrete(td$phy, td$data[,i], exp(x[-1]), lambda=exp(x[1]))
+				likelihoodDiscrete(td$phy, td$data[,i], exp(x[-1]), lambda=exp(x[1]), model=model)
 			}	
 			nep=1; pLow=-10; pHigh=log(1); pStart=0.1;
 		}
 		if(treeTransform=="delta") {
 			f<-function(x) {
-				likelihoodDiscrete(td$phy, td$data[,i], exp(x[-1]), delta=exp(x[1]))
+				likelihoodDiscrete(td$phy, td$data[,i], exp(x[-1]), delta=exp(x[1]), model=model)
 				}
 			nep=1; pLow=-10; pHigh=log(1);pStart=0.1;
 		}
 		if(treeTransform=="kappa") {
 			f<-function(x) {
-				likelihoodDiscrete(td$phy, td$data[,i], exp(x[-1]), kappa=exp(x[1]))
+				likelihoodDiscrete(td$phy, td$data[,i], exp(x[-1]), kappa=exp(x[1]), model=model)
 				}
 			nep=1; pLow=-10; pHigh=log(1);pStart=0.1;
 		}
 		if(treeTransform=="linearChange") {
 			f<-function(x) {
-				likelihoodDiscrete(td$phy, td$data[,i], exp(x[-1]), endRate=exp(x[1]), linear=T)
+				likelihoodDiscrete(td$phy, td$data[,i], exp(x[-1]), endRate=exp(x[1]), linear=T, model=model)
 				}
 			nep=1; pLow=-10; pHigh=log(1);pStart=0.1;
 		}
 		if(treeTransform=="exponentialChange") {
 			f<-function(x) {
-				likelihoodDiscrete(td$phy, td$data[,i], exp(x[-1]), endRate=exp(x[1]))
+				likelihoodDiscrete(td$phy, td$data[,i], exp(x[-1]), endRate=exp(x[1]), model=model)
 				}
 			nep=1; pLow=-10; pHigh=log(1);pStart=0.1;
 		}
 		if(treeTransform=="twoRate") {
 			f<-function(x) {
-				likelihoodDiscrete(td$phy, td$data[,i], exp(x[-(1:2)]), breakPoint=x[1], endRate=exp(x[2]))
+				likelihoodDiscrete(td$phy, td$data[,i], exp(x[-(1:2)]), breakPoint=x[1], endRate=exp(x[2]), model=model)
 				}
 			mv<-max(branching.times(td$phy))	
 			nep=2; pLow=0; pHigh=mv;pStart=c(0.1, 0.1);
@@ -78,20 +85,32 @@ function(phy, data, model=c("ER", "SYM", "ARD"), treeTransform=c("none", "lambda
 			lower=c(rep(pLow, nep), rep(minQ, nRateCats))
 			upper=c(rep(pHigh, nep), rep(maxQ, nRateCats))
 			
+			cat("Finding the maximum likelihood solution\n")
+			cat("[0        50      100]\n")
+			cat("[")
+			
 			for(j in 1:10) {
 				sp<-c(pStart, rep(qTries[i], nRateCats))
-				outTries[[j]]<-optim(f, par=sp, method="L",  lower=lower, upper=upper)
-				ltry[j]<-outTries[[j]]$value
-				lsol[j,]<-exp(outTries[[j]]$par)
+				te<-try(outTries[[j]]<-optim(f, par=sp, method="L",  lower=lower, upper=upper), silent=T)
+				if(class(te)!="try-error") {
+					ltry[j]<-outTries[[j]]$value
+					lsol[j,]<-exp(outTries[[j]]$par)
+				}
+				cat(".")
 
 			}
 			for(j in 1:10) {
 				sp<-c(pStart, runif(nRateCats, minQ, maxQ))
-				outTries[[10+j]]<-optim(f, par=sp, method="L",  lower=lower, upper=upper)
-				ltry[10+j]<-outTries[[10+j]]$value
-				lsol[10+j,]<-exp(outTries[[10+j]]$par)
+				te<-try(outTries[[10+j]]<-optim(f, par=sp, method="L",  lower=lower, upper=upper), silent=T)
+				if(class(te)!="try-error") {
+					ltry[10+j]<-outTries[[10+j]]$value
+					lsol[10+j,]<-exp(outTries[[10+j]]$par)
+				}
+				cat(".")
 
 			}
+			
+			cat("]\n")
 			
 			ltd<-ltry-min(ltry)
 			b<-min(which(ltry==min(ltry)))
@@ -105,8 +124,10 @@ function(phy, data, model=c("ER", "SYM", "ARD"), treeTransform=c("none", "lambda
 			
 			if(out$convergence!=0) {out$message="Warning: may not have converged to a proper solution."}
 
+			if(out$convergence==0) {out$message="R thinks that this is the right answer."}
+
 			if(treeTransform=="none") {
-				res[[i]]<-list(lnl=-out$value, q=getQ(exp(out$par), nRateCats, model), message=out$message)
+				res[[i]]<-list(lnl=-out$value, q=-getQ(exp(out$par), nRateCats, model)[1,1], message=out$message)
 			} else if(treeTransform=="twoRate") {
 				res[[i]]<-list(lnl=-out$value, q=getQ(exp(out$par[-(1:2)]), nRateCats, model), breakpoint=out$par[1], endRate=exp(out$par[2]), message=out$message)
 			} else 	res[[i]]<-list(lnl=-out$value, q=getQ(exp(out$par[-1]), nRateCats, model), treeParam=exp(out$par[1]), message=out$message)
@@ -114,7 +135,52 @@ function(phy, data, model=c("ER", "SYM", "ARD"), treeTransform=c("none", "lambda
 				
 			if(!is.null(colnames(td$data))) names(res)[i]<-colnames(td$data)[i] else names(res)[i]<-paste("Trait", i, sep="")
 		
-	
+		if((model=="SYM" | model=="ARD") & nRateCats>2) {
+				cat("Plotting surfaces currently not supported for SYM and ARD models unless your character has only two states.\n")
+				plotLnlSurf=F
+		}
+		
+		if(plotlnl) {
+			cat("Calculating surface\n")
+			if(qLimits[1]<=0) {
+				cat("Q must be positive, resetting lower plotting limit to 0.00000001")
+				qLimits[1]=0.00000001
+			}
+			if(treeTransform=="none") {
+				if(model=="ER") {
+					qx<-exp(seq(log(qLimits[1]), log(qLimits[2]), length=50))
+					lnl<-numeric(50)
+					for(j in 1:50)
+						lnl[j]<- -f(log(qx[j]))
+					
+					lnlDiff<- -out$value-lnl
+					plot(qx, lnl, log="x", type="l", xlab="Rate (q)", ylab="lnL")
+				} else {
+					qx<-exp(seq(log(qLimits[1]), log(qLimits[2]), length=20))
+					qy<-exp(seq(log(qLimits[1]), log(qLimits[2]), length=20))
+					lnl<-matrix(nrow=20, ncol=20)
+					for(j in 1:20)
+						for(k in 1:20)
+							lnl[j,k]<- -f(log(c(qx[j], qy[k])))
+					
+					lnlDiff<- -out$value-lnl
+					contour(qx, qy, lnl, xlab="Forward Rate", ylab="Backward Rate")
+				}	
+			} else {
+				px<-exp(seq(log(pLimits[1]), log(pLimits[2]), length=20))
+				qy<-exp(seq(log(qLimits[1]), log(qLimits[2]), length=20))
+				lnl<-matrix(nrow=20, ncol=20)
+				for(j in 1:20)
+					for(k in 1:20)
+						try(lnl[j,k]<- -f(log(c(px[j], qy[k]))))
+				
+				lnlDiff<- -out$value-lnl
+				contour(px, qy, lnlDiff, levels=c(1, 2, 3, 4, 8, 10, 20, 30, 40, 50, 100, 500, 1000), xlab="Tree Transform parameter estimate", ylab="Rate (q)", main="lnL Surface")		
+						
+				
+			}
+			
+		}
 		
 	}
 	return(res)
