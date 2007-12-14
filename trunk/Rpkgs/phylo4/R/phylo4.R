@@ -574,6 +574,23 @@ setMethod("phylo4d", c("phylo"), function(x, tip.data=NULL, node.data=NULL, all.
   return(res)
 })
 
+## PLOT METHODS ##
+# plot.phylo4d MAY NOT WORK. I couldn't make a phylo4d object -- mb
+# if phylo4, plot using ape's plot.phylo function
+plot.phylo4 <- function (tree, ...) {
+	plot.phylo(as(tree, "phylo"), ...)
+	}
+# if phylo4d, plot using plot.dataframe (generic) if plotdata=T else plot.tree
+plot.phylo4d <- function (treedat, plotdata=TRUE, ...) {
+    if (plotdata) {  plot( as(treedat, "data.frame"), ...)}
+    else { plot(as(tree, "phylo"), ...) }
+	}
+
+setGeneric("plot") { standardGeneric("plot") }
+setMethod("plot", "phylo4", plot.phylo4)
+setMethod("plot", "phylo4d", plot.phylo4d)
+
+
 ### coercions moved to the end
 
 ## convert from phylo4 to phylo
@@ -645,4 +662,18 @@ setAs("phylo4d","phylo",
         class(y) <- "phylo"
         y
       })
+
+## Not tested  phylo4d to data.frame (needed by plot method)
+setAs(
+      from="phylo4d",
+      to="data.frame",
+      def = function (from) {
+
+        tdata(x, "tip") -> tips
+        tdata(x, "allnode") -> allnodes
+        
+        if (nrow(tips)>0) (tips)
+        else if (nrow(allnodes)>0) (allnodes)  
+      }
+      )
 
