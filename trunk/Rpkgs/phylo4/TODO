@@ -1,3 +1,9 @@
+#####
+##### Rd files to complete
+#####
+check.phylo4d.Rd
+subset-methods.Rd
+#####
 
 HIGH (at Hackathon?): tasks in the categories of 
 "make sure package passes 'R CMD check'; try to implement a few things that can't easily
