@@ -275,16 +275,14 @@ setMethod("summary","phylo4", function (object, quiet=FALSE)
               res$mean.el <- mean(x$edge.length, na.rm=TRUE)
               res$var.el <- var(x$edge.length, na.rm=TRUE)
               res$sumry.el <- summary(x$edge.length)[-4]
-            } else{
+            } else {
               res$mean.el <- NULL
               res$var.el <- NULL
               res$sumry.el <- NULL
             }
 
-            # polytomies
+            #TODO: polytomies
             # I'll finish this - Tibo
-            
-
             
             # model info
             res$loglik <- attr(x, "loglik")
@@ -371,67 +369,67 @@ setMethod("tdata","phylo4d", function(x,which="tip",...) {
 
 
 
-setMethod("summary", "phylo4d", function(object){
-  x <- object
-  tdata(x, "tip") -> tips
-  tdata(x, "allnode") -> allnodes
-  cat("Phylogenetic tree with", phylo4::nTips(x), " species and", nNodes(x), "internal nodes\n\n")
-  cat("  Tree plus data object of type:", class(x), "\n")
-  cat("  Species Names                :", labels(x), "\n")
-  if (hasEdgeLength(x)){ 
-    cat("  Has Branch Lengths (first 10):", EdgeLength(x)[1:min(length(EdgeLength(x)),10)], "\n")
-  } 
-  cat("  Rooted                       :", isRooted(x), "\n\n\n")
- 
-  cat("\nComparative data\n")
-  if (nrow(tips)>0) 
-    {
-      cat("\nTips: data.frame with", phylo4::nTips(x), "species and", ncol(tips), "variables \n")
-      print(summary(tips))
-    }
-  if (nrow(allnodes)>0) 
-    {
-      cat("\nNodes: data.frame with", nEdges(x), "species and internal nodes and", ncol(allnodes), "variables \n")                  ## May have to fix once  Node=Edge issue is settled
-      print(summary(allnodes))
-    }
-  
-}) # end summary phylo4d
-
+# setMethod("summary", "phylo4d", function(object){
+#   x <- object
+#   tdata(x, "tip") -> tips
+#   tdata(x, "allnode") -> allnodes
+#   cat("Phylogenetic tree with", phylo4::nTips(x), " species and", nNodes(x), "internal nodes\n\n")
+#   cat("  Tree plus data object of type:", class(x), "\n")
+#   cat("  Species Names                :", labels(x), "\n")
+#   if (hasEdgeLength(x)){ 
+#     cat("  Has Branch Lengths (first 10):", EdgeLength(x)[1:min(length(EdgeLength(x)),10)], "\n")
+#   } 
+#   cat("  Rooted                       :", isRooted(x), "\n\n\n")
+#  
+#   cat("\nComparative data\n")
+#   if (nrow(tips)>0) 
+#     {
+#       cat("\nTips: data.frame with", phylo4::nTips(x), "species and", ncol(tips), "variables \n")
+#       print(summary(tips))
+#     }
+#   if (nrow(allnodes)>0) 
+#     {
+#       cat("\nNodes: data.frame with", nEdges(x), "species and internal nodes and", ncol(allnodes), "variables \n")                  ## May have to fix once  Node=Edge issue is settled
+#       print(summary(allnodes))
+#     }
+#   
+# }) # end summary phylo4d
+# 
 
 ## Alternative phylo4d summary method, using phylo4 summary
-## Marguerite
-#setMethod("summary", "phylo4d", function(object){
-#  x <- object
+## Marguerite Butler & Peter Cowan
+setMethod("summary", "phylo4d", function(object){
+ x <- object
 
-#  summary(as(x, "phylo4"))
+ summary(as(object, "phylo4"))
 
-#  tdata(x, "tip") -> tips
-#  tdata(x, "allnode") -> allnodes
-#  tdata(x, "edge") -> edges
+ tdata(object, "tip") -> tips
+ tdata(object, "allnode") -> allnodes
 
-# cat("\nComparative data\n")
-# if (nrow(tips)>0) 
-# {
-#   cat("\nTips: data.frame with", nTips(x), "species and", ncol(tips), "variables \n")
-#   print(summary(tips))
-# }
-# if (nrow(allnodes)>0) 
-# {
-#    cat("\nNodes: data.frame with", nEdges(x), "species and internal nodes and", ncol(allnodes), "variables \n")                  ## May have to fix once  Node=Edge issue is settled
-# 	print(summary(allnodes))
-# }
-# if (nrow(edges)>0) 
-# {
-#    cat("\nNodes: data.frame with", nEdges(x), "internal nodes and ", ncol(edges), "variables \n")                             ## May have to fix once  Node=Edge issue is settled
-# 	print(summary(allnodes))
-# }
+cat("\nComparative data:\n")
+if (nrow(tips) > 0) 
+{
+  cat("\nTips: data.frame with", nTips(object), "taxa and", ncol(tips), "variables \n\n")
+  print(summary(tips))
+}
+if (nrow(allnodes) > 0) 
+{
+   cat("\nNodes: data.frame with", nEdges(object), "taxa and internal nodes and", ncol(allnodes), "variables \n\n")                  ## May have to fix once  Node=Edge issue is settled
+    print(summary(allnodes))
+}
 
-#}) # end summary phylo4d
+{
+   cat("\nNodes: data.frame with", nEdges(object) - nTips(object), "internal nodes and", ncol(allnodes) - ncol(tips), "variables \n")                             ## May have to fix once  Node=Edge issue is settled
+    print(summary(allnodes))
+}
 
-
+}) # end summary phylo4d
 
 ## extend: phylo with model fit (???)
 ## hacked with logLik attribute from ape, but otherwise not done
+
+
+
   
 setClass("multiPhylo4",
          representation(phylolist="list",
