@@ -64,21 +64,21 @@ check_data <- function(object,
 			else {
 				#we know the tree taxa and tip.data taxa are not a perfect match
 				#if tree taxa are subset of tip.data, check missing.tip arg and act accordingly
-				if (all(row.names(object@tip.data) %in% object@tip.label)) {
+				if (!all(row.names(object@tip.data) %in% object@tip.label)) {
 					#we know it's not an exact match - we have missing.tip.data - take action
 					#fail
 					if (missing.tip.data == "fail") {
-						stop("Tip data names do not exactly match phylo4 tip labels.")
+						stop("Tip data names are a subset of phylo4 tip labels.")
 					}
 					#warn
 					else if (missing.tip.data == "warn") {
-						warning("Tip data names do not exactly match phylo4 labels.")
+						warning("Tip data names are a subset of phylo4 labels.")
 						return(TRUE)
 					}
 					#else ok
 				}
 				#if tip.data taxa are subset of tree taxa, check extra.tip arg and act accordingly
-				if (all(object@tip.label %in% row.names(object@tip.data))) {
+				if (!all(object@tip.label %in% row.names(object@tip.data))) {
 					#we know it's not an exact match - we have extra.tip.data - take action
 					#fail
 					if (extra.tip.data == "fail") {
@@ -129,21 +129,21 @@ check_data <- function(object,
 			else {
 				#we know the tree taxa and node.data taxa are not a perfect match
 				#if tree taxa are subset of node.data, check missing.node arg and act accordingly
-				if (all(row.names(object@node.data) %in% object@node.label)) {
+				if (!all(row.names(object@node.data) %in% object@node.label)) {
 					#we know it's not an exact match - we have missing.node.data - take action
 					#fail
 					if (missing.node.data == "fail") {
-						stop("Node data names do not exactly match phylo4 node labels.")
+						stop("Node data names are a subset of phylo4 node labels.")
 					}
 					#warn
 					else if (missing.node.data == "warn") {
-						warning("Node data names do not exactly match phylo4 labels.")
+						warning("Node data names are a subset match phylo4 labels.")
 						return(TRUE)
 					}
 					#else ok
 				}
 				#if node.data taxa are subset of tree taxa, check extra.node arg and act accordingly
-				if (all(object@node.label %in% row.names(object@node.data))) {
+				if (!all(object@node.label %in% row.names(object@node.data))) {
 					#we know it's not an exact match - we have extra.node.data - take action
 					#fail
 					if (extra.node.data == "fail") {
