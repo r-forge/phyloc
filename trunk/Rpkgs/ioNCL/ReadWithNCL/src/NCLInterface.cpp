@@ -596,7 +596,6 @@ void BASICCMDLINE::RReturnTrees(NxsString & nexustrees) {
 			nexustrees+=";\n";
 		}
 		nexustrees+="END;\n";
-		
 	}
 	
 }
