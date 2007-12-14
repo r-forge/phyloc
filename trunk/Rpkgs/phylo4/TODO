@@ -1,12 +1,19 @@
 
-replacement methods
-   (in root.edge<- style, perhaps also setRoot style)
+HIGH (at Hackathon?): tasks in the categories of 
+"make sure package passes 'R CMD check'; try to implement a few things that can't easily
+"be done already with other packages"
 
 summary: if tip and node don't have identical colnames,
    don't try to get alldata
-
 and/or: more stringent tests e.g.
  column names match in tip and node (if all.data)?
+
+MEDIUM: tasks in the categories "basic functionality" and
+"make sure the data structures are reasonably complete"
+   
+replacement methods
+   (in root.edge<- style, perhaps also setRoot style)
+
 
 ORDER: cladewise, pruningwise, drag reorder from ape
 

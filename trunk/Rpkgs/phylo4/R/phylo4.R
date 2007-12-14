@@ -121,77 +121,6 @@ setGeneric("NodeLabels", function(x) {
 setMethod("NodeLabels","phylo4", function(x) {
   x@node.label
 })
-
-## convert from phylo4 to phylo
-setAs("phylo","phylo4",
-      function(from,to) {
-        newobj <- phylo4(from$edge, from$edge.length,
-                         from$tip.label, node.label=from$node.label,
-                         edge.label=from$edge.label, ## ???
-                         root.edge=from$root.edge)
-        attribs = attributes(from)
-        attribs$names <- NULL
-        knownattr <- c("logLik","order","origin","para","xi")
-        known <- names(attribs)[names(attribs) %in% knownattr]
-        unknown <- names(attribs)[!names(attribs) %in% c(knownattr,"class","names")]
-        if (length(unknown)>0) {
-          warning(paste("unknown attributes ignored: ",unknown,collapse=" "))
-        }
-        for (i in known) attr(newobj,i) <- attr(from,i)
-        newobj
-      })
-
-setAs("phylo","phylo4d",
-      function(from,to) {
-        phylo4d(as(from,"phylo4"),tip.data=data.frame())
-      })
-
-setAs("multiPhylo4","multiPhylo",
-      function(from,to) {
-        newobj <- new("multiPhylo4",
-                      phylolist=lapply(from,as,to="phylo4"),
-                      tree.names=names(from),
-                      tip.data=data.frame())
-      })
-
-setAs("multiPhylo","multiPhylo4",
-      function(from,to) {
-        y <- lapply(as,from@phylolist,to="phylo")
-        names(y) <- from@tree.names
-        if (nrow(from@tip.data)>0) warning("discarded tip data")
-        class(y) <- "multiPhylo"
-        y
-      })
-
-setAs("phylo4","phylo",
-      function(from,to) {
-        y <- list(edge=from@edge,
-                  edge.length=from@edge.length,
-                  Nnode=from@Nnode,
-                  tip.label=from@tip.label)
-        class(y) <- "phylo"
-        warning("losing data while coercing phylo4 to phylo")
-        y
-      })
-
-## coerce phylo4d to phylo4 -- on purpose, so no warning
-extract.tree <- function(from) {
-  phylo4(edge=from@edge,
-         edge.length=from@edge.length,
-         Nnode=from@Nnode,
-         tip.label=from@tip.label)
-}
-
-setAs("phylo4d","phylo",
-      function(from,to) {
-        y <- list(edge=from@edge,
-                  edge.length=from@edge.length,
-                  Nnode=from@Nnode,
-                  tip.label=from@tip.label)
-        class(y) <- "phylo"
-        y
-      })
-
                 
 ## hack to allow access with $
 setMethod("$","phylo4",function(x,name) {
@@ -647,10 +576,75 @@ setMethod("phylo4d", c("phylo"), function(x, tip.data=NULL, node.data=NULL, all.
   return(res)
 })
 
+### coercions moved to the end
 
-## extend: multiPhylo4
+## convert from phylo4 to phylo
+setAs("phylo","phylo4",
+      function(from,to) {
+        newobj <- phylo4(from$edge, from$edge.length,
+                         from$tip.label, node.label=from$node.label,
+                         edge.label=from$edge.label, ## ???
+                         root.edge=from$root.edge)
+        attribs = attributes(from)
+        attribs$names <- NULL
+        knownattr <- c("logLik","order","origin","para","xi")
+        known <- names(attribs)[names(attribs) %in% knownattr]
+        unknown <- names(attribs)[!names(attribs) %in% c(knownattr,"class","names")]
+        if (length(unknown)>0) {
+          warning(paste("unknown attributes ignored: ",unknown,collapse=" "))
+        }
+        for (i in known) attr(newobj,i) <- attr(from,i)
+        newobj
+      })
 
-## how does multi.phylo extend any of the other
-##  (single) classes? -- can it extend more
-##  than one other class?  (provided all are
-##  of the same type?)
+setAs("phylo","phylo4d",
+      function(from,to) {
+        phylo4d(as(from,"phylo4"),tip.data=data.frame())
+      })
+
+setAs("multiPhylo4","multiPhylo",
+      function(from,to) {
+        newobj <- new("multiPhylo4",
+                      phylolist=lapply(from,as,to="phylo4"),
+                      tree.names=names(from),
+                      tip.data=data.frame())
+      })
+
+setAs("multiPhylo","multiPhylo4",
+      function(from,to) {
+        y <- lapply(as,from@phylolist,to="phylo")
+        names(y) <- from@tree.names
+        if (nrow(from@tip.data)>0) warning("discarded tip data")
+        class(y) <- "multiPhylo"
+        y
+      })
+
+setAs("phylo4","phylo",
+      function(from,to) {
+        y <- list(edge=from@edge,
+                  edge.length=from@edge.length,
+                  Nnode=from@Nnode,
+                  tip.label=from@tip.label)
+        class(y) <- "phylo"
+        warning("losing data while coercing phylo4 to phylo")
+        y
+      })
+
+## coerce phylo4d to phylo4 -- on purpose, so no warning
+extract.tree <- function(from) {
+  phylo4(edge=from@edge,
+         edge.length=from@edge.length,
+         Nnode=from@Nnode,
+         tip.label=from@tip.label)
+}
+
+setAs("phylo4d","phylo",
+      function(from,to) {
+        y <- list(edge=from@edge,
+                  edge.length=from@edge.length,
+                  Nnode=from@Nnode,
+                  tip.label=from@tip.label)
+        class(y) <- "phylo"
+        y
+      })
+
