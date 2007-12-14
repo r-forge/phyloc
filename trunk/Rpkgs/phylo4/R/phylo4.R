@@ -291,7 +291,7 @@ setMethod("tdata","phylo4d", function(x,which=c("tip","node","allnode"),...) {
   if (which=="allnode") {
     namesmatch <- all(colnames(x@tip.data)==colnames(x@node.data))
     classmatch <- all(sapply(x@tip.data,class)==sapply(x@node.data,class))
-    if (!(classmatch && namesmatch)) stop("no match")
+    if (!(classmatch && namesmatch)) stop("Node and tip columns do not match, access tip and node data separately")
   }
   switch(which,tip=x@tip.data,node=x@node.data,
          allnode=rbind(x@tip.data,x@node.data))
@@ -335,24 +335,20 @@ setMethod("summary", "phylo4d", function(object){
  summary(as(object, "phylo4"))
 
  tdata(object, "tip") -> tips
- tdata(object, "allnode") -> allnodes
+ tdata(object, "node") -> nodes
 
 cat("\nComparative data:\n")
 if (nrow(tips) > 0) 
 {
   cat("\nTips: data.frame with", nTips(object), "taxa and", ncol(tips), "variables \n\n")
   print(summary(tips))
-}
-if (nrow(allnodes) > 0) 
-{
-   cat("\nNodes: data.frame with", nEdges(object), "taxa and internal nodes and", ncol(allnodes), "variables \n\n")                  ## May have to fix once  Node=Edge issue is settled
-    print(summary(allnodes))
-}
+}else {cat('\nObject contains no tip data.')}
 
+if (nrow(nodes) > 0) 
 {
-   cat("\nNodes: data.frame with", nEdges(object) - nTips(object), "internal nodes and", ncol(allnodes) - ncol(tips), "variables \n")                             ## May have to fix once  Node=Edge issue is settled
-    print(summary(allnodes))
-}
+  cat("\nNodes: data.frame with", nNodes(object), "internal nodes and", ncol(nodes), "variables \n\n")                  ## May have to fix once  Node=Edge issue is settled
+  print(summary(allnodes))
+} else {cat('\nObject contains no node data.')}
 
 }) # end summary phylo4d
 
