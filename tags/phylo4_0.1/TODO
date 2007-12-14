@@ -1,0 +1,64 @@
+#####
+##### Rd files to complete
+#####
+check.phylo4d.Rd
+subset-methods.Rd
+#####
+
+HIGH (at Hackathon?): tasks in the categories of 
+"make sure package passes 'R CMD check'; try to implement a few things that can't easily
+"be done already with other packages"
+
+summary: if tip and node don't have identical colnames,
+   don't try to get alldata
+and/or: more stringent tests e.g.
+ column names match in tip and node (if all.data)?
+
+MEDIUM: tasks in the categories "basic functionality" and
+"make sure the data structures are reasonably complete"
+   
+replacement methods
+   (in root.edge<- style, perhaps also setRoot style)
+
+
+ORDER: cladewise, pruningwise, drag reorder from ape
+
+match w/ OUCH:  root node doesn't have corresponding
+   entry in the edge matrix: ouch adds a row to the edge matrix
+   (1-row data frame matching node column info)
+
+rewrite methods in native phylo4 as necessary/desirable
+
+plot method for phylo4d: what would be a good default?
+
+figure out best way to deal with namespace/conflicts
+(override ape methods)
+
+identify.node
+
+implement "data class" by wrapping data.frame and
+writing an [ accessor method
+
+check multiPhylo!
+"unpack"/"pack" methods
+
+lapply/multiple-tree methods, or at least documentation
+  on how to do it
+
+tree walking/generic manipulation methods
+
+TreeLib wrapper???
+
+I/O
+
+more tree manipulation methods
+compare: Mesquite, ape (check O'Meara list)
+
+change name to phylobase
+
+compare Sidlauskas wiki documentation, how would
+one do it in phylo4?
+
+digits= arg for some summaries etc.?
+
+should tdata simply rbind tip and node data!>>>>>>> .r206
