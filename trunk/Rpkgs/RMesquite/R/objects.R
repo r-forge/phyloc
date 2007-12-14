@@ -168,7 +168,7 @@ mesquiteTaxaBlock <- function(mesquite=.mesquite(),
 mesquiteCategoricalMatrix <- function(mesquite=.mesquite(),
                                       charMatrix,
                                       matrixName=NULL,
-                                      numCols=dim(charMatrix)[2],
+                                      numCols=if (is.matrix(charMatrix)) dim(charMatrix)[2] else 1,
                                       taxaBlock,
                                       blockName=NULL) {
   if (is.character(taxaBlock)) {
