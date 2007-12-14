@@ -138,12 +138,18 @@ from.RNumericMatrix <- function(obj) {
                                                            "D",
                                                            "getDoubleValue")));
   if (length(row.names) < 2) {
-    res <- vals;
-    names(res) <- col.names;
-    return(res);
+    ans <- vals;
+    names(ans) <- col.names;
+    return(ans);
   }
-  matrix(vals, nrow=length(row.names), byrow=FALSE,
-         dimnames=list(row.names,col.names));
+  ans <- matrix(vals, nrow=length(row.names), byrow=FALSE);
+  if (!all(is.na(row.names))) {
+    rownames(ans) <- row.names;
+  }
+  if (!all(is.na(col.names))) {
+    colnames(ans) <- col.names;
+  }
+  ans
 }
 
 #========================== Giving Data To Mesquite ========================
@@ -215,7 +221,7 @@ mesquiteTree <- function(mesquite=.mesquite(),
                  "loadTree",
                  taxaBlock,
                  treeName,
-                 write.tree(tree));
+                 paste(write.tree(tree),collapse=""));
   tree
 }
 

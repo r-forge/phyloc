@@ -18,7 +18,7 @@ mesquiteApply.TreeAndCategChar <- function(mesquite=.mesquite(),
   if (class(tree) != "jobjRef") {
     tree <- mesquiteTree(mesquite, tree=tree, taxaBlock=taxaBlock);
   }
-  if (is.matrix(categMatrix)) {
+  if (class(categMatrix) != "jobjRef") {
     if (is.null(taxaBlock) || (class(taxaBlock) != "jobjRef")) {
       taxaBlock <- tree$getTaxa();
     }
@@ -106,10 +106,15 @@ bisseLikelihood <-  function(tree,
 # for categorical matrices
 ancestralStatesCategorical <-  function(tree,
                                         categMatrix,
+                                        method="ML",
                                         charIndex=1,
                                         taxaBlock=NULL,
                                         script=NULL) {
-  result <- mesquiteApply.TreeAndCategChar(module="#MargProbAncStates",
+  methods <- c("#MargProbAncStates","#ParsAncestralStates");
+  m.short <- c("ML","Parsimony");
+  i <- charmatch(method,m.short,nomatch=0);
+  if (i > 0) method <- methods[i];
+  result <- mesquiteApply.TreeAndCategChar(module=method,
                                            tree=tree,
                                            categMatrix=categMatrix,
                                            charIndex=charIndex,
