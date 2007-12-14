@@ -19,9 +19,13 @@
 #include <fstream>
 
 #include "Rcpp.hpp"
+
+//TODO - figure out where/why length is getting defined as Rf_length so that
+//this isn't necessary to compile
 #define  Rf_length length
+
 #include "ncl.h"
-#include "basiccmdline.h"
+#include "NCLInterface.h"
 
 using namespace std;
 
