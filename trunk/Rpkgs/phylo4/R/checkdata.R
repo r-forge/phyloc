@@ -55,6 +55,7 @@ check_data <- function(object,
 				}
 			}
 			
+			# TODO add check for when length is equal but there is no overlap in names
 			## check tip names
 			## check for missing or extra tip data (relative to tree taxa)
 			if (setequal(row.names(object@tip.data), object@tip.label)) {
