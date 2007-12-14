@@ -191,8 +191,8 @@ attach_data <- function(object,
 		## if we want to use tip.names
 		if (use.tip.names) {
 			object@tip.data <- object@tip.data[match(object@tip.label,row.names(object@tip.data)),,drop=FALSE]
-			row.names(object@tip.data) <- object@tip.label
 		}
+		row.names(object@tip.data) <- object@tip.label
 	}
 	
 	## node data operations
@@ -200,8 +200,8 @@ attach_data <- function(object,
 		## if we want to use tip.names
 		if (use.node.names) {
 			object@node.data <- object@node.data[match(object@node.label,row.names(object@node.data)),,drop=FALSE]
-			row.names(object@node.data) <- object@node.label
 		}
+		row.names(object@node.data) <- object@node.label
 	}
 	
 	return(object)
