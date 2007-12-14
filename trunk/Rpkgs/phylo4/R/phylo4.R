@@ -544,8 +544,8 @@ setMethod("phylo4d", c("phylo4"), function(x, tip.data=NULL, node.data=NULL, all
   
   if(!is.null(all.data)){
     if(!is.data.frame(all.data)) stop("all.data must be a data.frame")
-    tip.data <- all.data[1:phylo4::nTips(x) , ]
-    node.data <- all.data[-(1:phylo4::nTips(x)) , ]
+    tip.data <- all.data[1:phylo4::nTips(x) , , drop=FALSE]
+    node.data <- all.data[-(1:phylo4::nTips(x)) , , drop=FALSE]
   }
 
   # now at least one data.frame is provided
@@ -556,8 +556,9 @@ setMethod("phylo4d", c("phylo4"), function(x, tip.data=NULL, node.data=NULL, all
   
   res@tip.data <- tip.data
   res@node.data <- node.data
-  
-  check_data(res, ...)
+
+  # WAIT FOR CHECK DATA TO BE FIXED
+  # check_data(res, ...)
   res <- attach_data(res,...)
   return(res)  
 })
