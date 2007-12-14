@@ -355,12 +355,19 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 			}
 			nexuscharacters+="))";
 		}
-		else if (2==characters->GetDataType()) { //dna
+		else if (2==characters->GetDataType() || 3==characters->GetDataType() || 4==characters->GetDataType()) { //dna, rna, nucleotide
 	//	if((characters->GetDatatypeName())=="dna") { 
 
 			nexuscharacters+="data.frame(";
-			nexuscharacters+="dna_alignment_1=c(";
-			
+			if (2==characters->GetDataType()) {
+				nexuscharacters+="dna_alignment_1=c(";
+			}
+			else if (3==characters->GetDataType()) {
+				nexuscharacters+="rna_alignment_1=c(";
+			}
+			else {
+				nexuscharacters+="nucleotide_alignment_1=c(";
+			}
 			
 			if (allchar) {
 				nchartoreturn=characters->GetNCharTotal();
@@ -460,10 +467,6 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 			nexuscharacters+="), stringsAsFactors=FALSE)";
 			
 		}
-		else if (3==characters->GetDataType()) { //rna
-		}
-		else if (4==characters->GetDataType()) { //nucleotide
-		}
 		else if (5==characters->GetDataType()) { //protein
 			nexuscharacters+="data.frame(";
 			nexuscharacters+="aa_alignment_1=c(";
@@ -537,7 +540,7 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 				nexuscharacters+="c(";
 				for (int taxon=0;taxon<ntax;taxon++) {
 					double state=characters->GetSimpleContinuousValue(taxon,character);
-					cout<<"State at "<<taxon+1<<" char "<<character+1<<" = "<<state<<endl;
+					//cout<<"State at "<<taxon+1<<" char "<<character+1<<" = "<<state<<endl;
 					if (state==DBL_MAX) {
 							nexuscharacters+="NA";
 					}
@@ -561,8 +564,8 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 				}
 			}
 			nexuscharacters+="))";
-			message="Warning: Continuous characters do not work";
-			PrintMessage();
+			//message="Warning: Continuous characters do not work";
+			//PrintMessage();
 		} 
 		else {
 				message="Error: character matrix loaded, but does not match any category (dna, standard, etc.)";
@@ -813,8 +816,8 @@ NxsString BASICCMDLINE::ReturnDataForR(bool allchar, bool polymorphictomissing, 
 	{
 	}
 	
-	message=outputforR;
-	PrintMessage();
+	//message=outputforR;
+	//PrintMessage();
 	return outputforR;
 }
 

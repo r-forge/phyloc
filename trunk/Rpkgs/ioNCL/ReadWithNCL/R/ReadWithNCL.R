@@ -159,6 +159,8 @@ read.nexustreestring <- function(X)
 {
 #Returns list of phylo objects (not multi.phylo, and always a list, even if there is only one element
 #X is a character vector, each element is one line from a treefile
+#This is based almost entirely on read.nexus from APE (Emmanuel Paradis).
+	
 ## first remove all the comments
 #	print(X)
 #	print(mode(X))
