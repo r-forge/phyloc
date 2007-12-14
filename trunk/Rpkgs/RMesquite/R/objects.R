@@ -82,40 +82,6 @@ getDNAMatrices <- function(taxaBlock){
 	matrices
 }
 
-#==== Converts Mesquite Continous matrix to R matrix
-convertContinuousMatrix <- function(mesqContMatrix){
-	#Hilmar: to be cleaned
-	mat <- .jcall(.mesquite(), "[D", "convertMatrix", mesqContMatrix)
-	rn <- getRowNames(mesqMatrix = mesqContMatrix)
-	dim(mat) <- c(getNumberOfTaxa(taxaBlock = tb), getNumberOfCharacters(mesqMatrix = mesqContMatrix))
-	rownames(mat) <- rn
-	cn <- getColumnNames(mesqMatrix = mesqContMatrix)
-	colnames(mat) <- cn
-	mat
-}
-#==== Converts Mesquite Categorical matrix to R matrix
-convertCategoricalMatrix <- function(mesqCategMatrix){
-	#Hilmar: to be cleaned
-	mat <- .jcall(.mesquite(), "[S", "convertMatrix", mesqCategMatrix)
-	rn <- getRowNames(mesqMatrix = mesqCategMatrix)
-	dim(mat) <- c(getNumberOfTaxa(taxaBlock = tb), getNumberOfCharacters(mesqMatrix = mesqCategMatrix))
-	rownames(mat) <- rn
-	cn <- getColumnNames(mesqMatrix = mesqCategMatrix)
-	colnames(mat) <- cn
-	mat
-}
-#==== Converts Mesquite DNA matrix to R matrix
-convertDNAMatrix <- function(mesqDNAMatrix){
-	#Hilmar: to be cleaned
-	mat <- .jcall(.mesquite(), "[S", "convertMatrix", mesqDNAMatrix)
-	rn <- getRowNames(mesqMatrix = mesqDNAMatrix)
-	dim(mat) <- c(getNumberOfTaxa(taxaBlock = tb), getNumberOfCharacters(mesqMatrix = mesqDNAMatrix))
-	rownames(mat) <- rn
-	cn <- getColumnNames(mesqMatrix = mesqDNAMatrix)
-	colnames(mat) <- cn
-	mat
-}
-
 #==== Gets number of characters in Mesquite matrix
 getNumberOfCharacters <- function(mesqMatrix){
 	#Hilmar: to be cleaned
@@ -137,7 +103,16 @@ getRowNames <- function(mesqMatrix){
 	str
 }
 
-#================== Converting return types from Mesquite ==================
+#================== Converting types from and to Mesquite ==================
+
+.jclassOf <- function(obj,package.path=TRUE) {
+  cl <- .jcall(obj,"Ljava/lang/Class;","getClass");
+  cl.name <- .jcall(cl,"Ljava/lang/String;","getName");
+  if (!package.path) {
+    cl.name <- sub(".*\\.","",cl.name);
+  }
+  cl.name
+}
 
 from.RNumericMatrix <- function(obj) {
   if (class(obj) != "jobjRef") {
@@ -164,6 +139,66 @@ from.RNumericMatrix <- function(obj) {
     colnames(ans) <- col.names;
   }
   ans
+}
+
+from.CharacterMatrix <- function(obj,
+                                 class.name=.jclassOf(obj,package.path=FALSE)) {
+  if (class(obj) != "jobjRef") {
+    stop("need to pass java object reference, not ",class(obj));
+  }
+  charM <- .jnew("mesquite/rmLink/common/RCharacterData",
+                 .jcast(obj,"mesquite/lib/characters/CharacterData"));
+  col.names <- .jcall(charM, "[Ljava/lang/String;","getColumnNames");
+  row.names <- .jcall(charM, "[Ljava/lang/String;","getRowNames");
+  states <- vector();
+  if (class.name == "ContinuousData") {
+    states <- .jcall(charM, "[D","asDoubleMatrix");
+  } else {
+    states <- .jcall(charM, "[Ljava/lang/String;","asStringMatrix");
+  }
+  ans <- matrix(states, nrow=length(row.names), byrow=TRUE);
+  if (!all(is.na(row.names))) {
+    rownames(ans) <- row.names;
+  }
+  if (!all(is.na(col.names))) {
+    colnames(ans) <- col.names;
+  }
+  ans  
+}
+
+as.matrix.jobjRef <- function(from) {
+  if (class(from) != "jobjRef") {
+    stop("need to pass java object reference, not ",class(from));
+  }
+  cl.name <- .jclassOf(from,package.path=FALSE);
+  if (cl.name == "RNumericMatrix") {
+    return(from.RNumericMatrix(from));
+  }
+  if (cl.name %in% c("CategoricalData","ContinuousData","DNAData")) {
+    return(from.CharacterMatrix(from,class.name=cl.name));
+  }
+  stop("currently not supported for objects of class ",.jclassOf(from));
+}
+
+as.phylo.jobjRef <- function(from) {
+  if (.jclassOf(from,package.path=FALSE) != "MesquiteTree") {
+    stop("can't coerce Java object of type ",.jclassOf(from)," to type phylo");
+  }
+  mRoot <- .jcall(from,"I","getRoot");
+  numNodes <- .jcall(from,"I","numberOfNodesInClade",mRoot);
+  numTerminals <- .jcall(from,"I","numberOfTerminalsInClade",mRoot);
+  mAPE <- .jnew("mesquite/rmLink/common/APETree",
+                .jcast(from,"mesquite/lib/Tree"));
+  edge.matrix <- .jcall(trApe,"[[I","getEdgeMatrix");
+  phylo <- list(edge=matrix(
+                  c(.jevalArray(edge.matrix[[1]]),
+                    .jevalArray(edge.matrix[[2]])),
+                  ncol=2),
+                edge.length=.jcall(mAPE,"[D","getEdgeLengths"),
+                tip.label=.jcall(mAPE,"[Ljava/lang/String;","getTipLabels"),
+                Nnode=numNodes-numTerminals);
+  class(phylo) <- "phylo";
+  phylo
 }
 
 #========================== Giving Data To Mesquite ========================
