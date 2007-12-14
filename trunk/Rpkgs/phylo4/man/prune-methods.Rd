@@ -23,9 +23,14 @@
 \note{At the moment, this simply wraps \code{ape::drop.tip}.
     Renamed from \code{drop.tip} to \code{prune} in order to
     avoid conflicts with ape.}
-\usage{\S4method{prune}{phylo4}(phy, tip, trim.internal = TRUE, subtree = FALSE,
-         root.edge = 0)
-       DropTip(phy,tip,\dots)
+  \usage{
+\S4method{prune}{phylo4}(phy, tip, trim.internal = TRUE, subtree = FALSE,
+                   root.edge = 0, \dots)
+\S4method{prune}{phylo4d}(phy, tip, trim.internal = TRUE, subtree = FALSE,
+                   root.edge = 0, \dots)
+\S4method{prune}{phylo}(phy, tip, trim.internal = TRUE, subtree = FALSE,
+                   root.edge = 0, \dots)
+DropTip(phy, tip, \dots)
 }
 \arguments{
   \item{phy}{an object of class \code{"phylo4"}}

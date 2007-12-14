@@ -28,3 +28,23 @@ setMethod("subset", "phylo4",
     
     return(x)
   })
+
+
+
+setMethod("subset", "phylo", function(x,tips.include=NULL,tips.exclude=NULL,node.subtree=NULL,...) {
+
+  x <- as(x,"phylo")
+  res <- subset(x,tips.include=NULL,tips.exclude=NULL,node.subtree=NULL,...)
+  return(res)
+  })
+
+
+
+#
+# PLEASE CODE ME 
+#
+setMethod("subset", "phylo4d", function(x,tips.include=NULL,tips.exclude=NULL,node.subtree=NULL,...) {
+
+# place commercial here.
+})
+
