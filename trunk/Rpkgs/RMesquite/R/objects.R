@@ -239,7 +239,7 @@ mesquiteCategoricalMatrix <- function(mesquite=.mesquite(),
                       .jcast(taxaBlock, new.class="mesquite/lib/Taxa"),
                       matrixName,
                       as.integer(numCols),
-                      as.integer(t(charMatrix)));
+                      as.integer(charMatrix));
   catMatrix
 }
 
