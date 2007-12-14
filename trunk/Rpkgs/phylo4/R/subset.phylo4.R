@@ -8,7 +8,7 @@ setMethod("subset", "phylo4",
       if (is.numeric(tips.include)) {
         tips.include <- x@tip.label[tips.include]
       }
-      return(prune(x,t4@tip.label[-na.omit(match(t4@tip.label,tips.include))]))
+      return(prune(x,x@tip.label[-na.omit(match(x@tip.label,tips.include))]))
     }
     
     if (!is.null(tips.exclude)) {

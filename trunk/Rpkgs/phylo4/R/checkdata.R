@@ -15,11 +15,11 @@ check_data <- function(object,
 		use.tip.names=TRUE,
 		missing.tip.data=c("fail","OK","warn"),
 		extra.tip.data=c("fail","OK","warn"),
-		missing.tip.names=c("fail","OK","warn"),
+		default.tip.names=c("warn","OK","fail"),
 		use.node.names=FALSE,
 		missing.node.data=c("OK","warn","fail"),		
 		extra.node.data=c("OK","warn","fail"),												
-		missing.node.names=c("OK","warn","fail"),...)							 
+		default.node.names=c("warn","OK","fail"),...)							 
 
 {
 		
@@ -27,13 +27,13 @@ check_data <- function(object,
 	#use.tip.names=match.arg(use.tip.names)
 	missing.tip.data <- match.arg(missing.tip.data)
 	extra.tip.data <- match.arg(extra.tip.data)
-	missing.tip.names <- match.arg(missing.tip.names)
+	default.tip.names <- match.arg(default.tip.names)
 	
 	## node default: don't use node names, don't require names, do not need to match exactly
 	#use.node.names=match.arg(use.node.names)
 	missing.node.data <- match.arg(missing.node.data)
 	extra.node.data <- match.arg(extra.node.data)
-	missing.node.names <- match.arg(missing.tip.names)
+	missing.node.names <- match.arg(default.tip.names)
 	
 	## clean empty names - if data are imported as 'all' but only tips or nodes have names, clean up
 	if (all(row.names(object@tip.data)==""))
@@ -89,30 +89,30 @@ check_data <- function(object,
 			}
 			else {
 				#no tip.names
-				if (missing.tip.names == "fail") {
+				if (default.tip.names == "fail") {
 					stop("Tip data do not have names.")
 				}
-				else if (missing.tip.names == "warn") {
+				else if (default.tip.names == "warn") {
 					warning("Tip data do not have names.")
 					return(TRUE)
 				}
 				#don't use tip names or attempt to sort - but check to make sure dimensions match
-				if (!(phylo4::nTips(object)==length(object@tip.data))) {
+				if (!(phylo4::nTips(object)==dim(object@tip.data)[1])) {
 					stop("Tip data do not have names and do not match number of phylo4 tips.")
 				}
 			}
 		}
-	}
 	else
 	{
 		#don't use tip names or attempt to sort - but check to make sure dimensions match
-		if (!(phylo4::nTips(object)==length(object@tip.data))) {
+		if (!(phylo4::nTips(object)==dim(object@tip.data)[1])) {
 			stop("Tip data do not have names and do not match number of phylo4 tips.")
 		}
 	}
+	}
 
 	## node data checks
-	## if tip.data exist
+	## if node.data exist
 	if (!all(dim(object@node.data)==0)) {
 		## if we want to use node.names
 		if (use.node.names) {
@@ -165,21 +165,20 @@ check_data <- function(object,
 					return(TRUE)
 				}
 				#don't use node names or attempt to sort - but check to make sure dimensions match
-				if (!(nNodes(object)==length(object@node.data))) {
+				if (!(nNodes(object)==dim(object@node.data)[1])) {
 					stop("Node data do not have names and do not match number of phylo4 nodes.")
 				}
 			}
 		}
-	}
 	else
 	{
 		#don't use node names or attempt to sort - but check to make sure dimensions match
-		if (!(nNodes(object)==length(object@node.data))) {
+		if (!(nNodes(object)==dim(object@node.data)[1])) {
 			stop("Node data do not have names and do not match number of phylo4 nodes.")
 		}
 	}
 }
-
+}
 
 attach_data <- function(object,
 		use.tip.names=TRUE,
@@ -191,10 +190,10 @@ attach_data <- function(object,
 	## assumes data have already been checked by check_data!
 	
 	## clean empty names - if data are imported as 'all' but only tips or nodes have names, clean up
-	if (all(row.names(object@tip.data)==""))
-		row.names(object@tip.data) <- NULL
-	if (all(row.names(object@node.data)==""))
-		row.names(object@node.data) <- NULL
+	#if (all(row.names(object@tip.data)==""))
+	#	row.names(object@tip.data) <- NULL
+	#if (all(row.names(object@node.data)==""))
+	#	row.names(object@node.data) <- NULL
 	
 	## for each set of data, take appropriate actions
 	
