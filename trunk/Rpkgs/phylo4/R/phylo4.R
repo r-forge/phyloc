@@ -340,14 +340,14 @@ setMethod("summary", "phylo4d", function(object){
 cat("\nComparative data:\n")
 if (nrow(tips) > 0) 
 {
-  cat("\nTips: data.frame with", nTips(object), "taxa and", ncol(tips), "variables \n\n")
+  cat("\nTips: data.frame with", phylo4::nTips(object), "taxa and", ncol(tips), "variables \n\n")
   print(summary(tips))
 }else {cat('\nObject contains no tip data.')}
 
 if (nrow(nodes) > 0) 
 {
   cat("\nNodes: data.frame with", nNodes(object), "internal nodes and", ncol(nodes), "variables \n\n")                  ## May have to fix once  Node=Edge issue is settled
-  print(summary(allnodes))
+  print(summary(nodes))
 } else {cat('\nObject contains no node data.')}
 
 }) # end summary phylo4d
