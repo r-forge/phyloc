@@ -10,6 +10,10 @@
 \alias{Iyule2rate}
 \alias{Iyule3rate}
 \alias{checkbasal}
+\alias{getLambda.internal}
+\alias{splitEdgeMatrix}
+\alias{gsr}
+\alias{node.sons}
 
 
 
