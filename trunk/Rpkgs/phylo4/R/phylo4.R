@@ -141,6 +141,11 @@ setAs("phylo","phylo4",
         newobj
       })
 
+setAs("phylo","phylo4d",
+      function(from,to) {
+        phylo4d(as(from,"phylo4"),tip.data=data.frame())
+      })
+
 setAs("multiPhylo4","multiPhylo",
       function(from,to) {
         newobj <- new("multiPhylo4",
@@ -160,20 +165,32 @@ setAs("multiPhylo","multiPhylo4",
 
 setAs("phylo4","phylo",
       function(from,to) {
-  y <- list(edge=from@edge,
-            edge.length=from@edge.length,
-            Nnode=from@Nnode,
-            tip.label=from@tip.label)
-  class(y) <- "phylo"
-  y
-})
+        y <- list(edge=from@edge,
+                  edge.length=from@edge.length,
+                  Nnode=from@Nnode,
+                  tip.label=from@tip.label)
+        class(y) <- "phylo"
+        warning("losing data while coercing phylo4 to phylo")
+        y
+      })
+
+## coerce phylo4d to phylo4 -- on purpose, so no warning
+extract.tree <- function(from) {
+  phylo4(edge=from@edge,
+         edge.length=from@edge.length,
+         Nnode=from@Nnode,
+         tip.label=from@tip.label)
+}
 
 setAs("phylo4d","phylo",
       function(from,to) {
-  y <- phylo4d(from,tip.data=data.frame())
-  class(y) <- "phylo"
-  y
-})
+        y <- list(edge=from@edge,
+                  edge.length=from@edge.length,
+                  Nnode=from@Nnode,
+                  tip.label=from@tip.label)
+        class(y) <- "phylo"
+        y
+      })
 
                 
 ## hack to allow access with $
