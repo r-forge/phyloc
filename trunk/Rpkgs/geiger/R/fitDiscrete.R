@@ -1,107 +1,121 @@
 `fitDiscrete` <-
-function(phy, data, model="ER", data.names=NULL, lambda=FALSE, delta=FALSE, kappa=FALSE, linearchange=FALSE, exponentialchange=FALSE, tworate=FALSE, start.rate=0.01)
+function(phy, data, model=c("ER", "SYM", "ARD"), treeTransform=c("none", "lambda", "kappa", "delta", "linearChange", "exponentialChange", "twoRate"), data.names=NULL)
 {
+	
+	model<-match.arg(model)
+
+	treeTransform<-match.arg(treeTransform)
+
+	if(!is.ultrametric(phy)) {
+		cat("Warning: some tree transformations in GEIGER might not be sensible for nonultrametric trees.")
+		}
+
 	td<-treedata(phy, data, data.names, sort=T)
 
 	res<-list()
 
 	for(i in 1:ncol(td$data))
 	{
-		
-		if(lambda + delta+ linearchange + exponentialchange + tworate >1) {
-			cat("Cannot handle more than one of (lambda, delta, linearchange, exponentialchange, tworate) at the same time\n");
-			return()
-		}
+
 	
-		if(lambda + delta+ linearchange + exponentialchange + tworate == 0) {
-			
+		if(treeTransform=="none") {
 			f<-function(x) {
 				likelihoodDiscrete(td$phy, td$data[,i], exp(x), model)
 			}
+			nep=0; pLow=-10; pHigh=log(1); pStart=NULL;		
+		}	
+		if(treeTransform=="lambda") {
+			f<-function(x) {
+				likelihoodDiscrete(td$phy, td$data[,i], exp(x[-1]), lambda=exp(x[1]))
+			}	
+			nep=1; pLow=-10; pHigh=log(1); pStart=0.1;
+		}
+		if(treeTransform=="delta") {
+			f<-function(x) {
+				likelihoodDiscrete(td$phy, td$data[,i], exp(x[-1]), delta=exp(x[1]))
+				}
+			nep=1; pLow=-10; pHigh=log(1);pStart=0.1;
+		}
+		if(treeTransform=="kappa") {
+			f<-function(x) {
+				likelihoodDiscrete(td$phy, td$data[,i], exp(x[-1]), kappa=exp(x[1]))
+				}
+			nep=1; pLow=-10; pHigh=log(1);pStart=0.1;
+		}
+		if(treeTransform=="linearChange") {
+			f<-function(x) {
+				likelihoodDiscrete(td$phy, td$data[,i], exp(x[-1]), endRate=exp(x[1]), linear=T)
+				}
+			nep=1; pLow=-10; pHigh=log(1);pStart=0.1;
+		}
+		if(treeTransform=="exponentialChange") {
+			f<-function(x) {
+				likelihoodDiscrete(td$phy, td$data[,i], exp(x[-1]), endRate=exp(x[1]))
+				}
+			nep=1; pLow=-10; pHigh=log(1);pStart=0.1;
+		}
+		if(treeTransform=="twoRate") {
+			f<-function(x) {
+				likelihoodDiscrete(td$phy, td$data[,i], exp(x[-(1:2)]), breakPoint=x[1], endRate=exp(x[2]))
+				}
+			mv<-max(branching.times(td$phy))	
+			nep=2; pLow=0; pHigh=mv;pStart=c(0.1, 0.1);
+		}
+				
 						
 			nRateCats<-getRateCats(td$data[,i], model)
 			
 			outTries<-list()
 			totalbl<-sum(td$phy$edge.length)
-			min=log(0.01/totalbl)
-			max=log(10000/totalbl)
-			ltry<-numeric(10)
-			lsol<-matrix(nrow=10, ncol=nRateCats)
+			minQ=log(0.01/totalbl)
+			maxQ=log(10000/totalbl)
+			ntries<-20
+			ltry<-numeric(ntries)
+			lsol<-matrix(nrow= ntries, ncol=nRateCats+nep)
 			sp<-numeric(nRateCats)
-
+			qTries<-exp(-7:2)
+			
+			lower=c(rep(pLow, nep), rep(minQ, nRateCats))
+			upper=c(rep(pHigh, nep), rep(maxQ, nRateCats))
+			
 			for(j in 1:10) {
-				sp<-runif(nRateCats, min, max)
-				outTries[[j]]<-optim(f, par=sp, method="L",  lower=rep(min, nRateCats), upper=rep(max, nRateCats))
+				sp<-c(pStart, rep(qTries[i], nRateCats))
+				outTries[[j]]<-optim(f, par=sp, method="L",  lower=lower, upper=upper)
 				ltry[j]<-outTries[[j]]$value
 				lsol[j,]<-exp(outTries[[j]]$par)
 
 			}
+			for(j in 1:10) {
+				sp<-c(pStart, runif(nRateCats, minQ, maxQ))
+				outTries[[10+j]]<-optim(f, par=sp, method="L",  lower=lower, upper=upper)
+				ltry[10+j]<-outTries[[10+j]]$value
+				lsol[10+j,]<-exp(outTries[[10+j]]$par)
+
+			}
 			
 			ltd<-ltry-min(ltry)
-			gc<-sum(ltd<0.1)				
+			b<-min(which(ltry==min(ltry)))
+
+			gc<-which(ltd<0.1)
+			us<-lsol[gc,1]
+			usc<-sum((us-min(us))>0.1)			
 			b<-min(which(ltry==min(ltry)))
 			out<-outTries[[b[1]]]	
-			if(gc>1) {out$message="Warning: likelihood surface is flat."}
+			if(usc>1) {out$message="Warning: likelihood surface is flat."}
 			
 			if(out$convergence!=0) {out$message="Warning: may not have converged to a proper solution."}
 
-			res[[i]]<-list(lnl=-out$value, q=getQ(exp(out$value), nRateCats, model), message=out$message)
+			if(treeTransform=="none") {
+				res[[i]]<-list(lnl=-out$value, q=getQ(exp(out$par), nRateCats, model), message=out$message)
+			} else if(treeTransform=="twoRate") {
+				res[[i]]<-list(lnl=-out$value, q=getQ(exp(out$par[-(1:2)]), nRateCats, model), breakpoint=out$par[1], endRate=exp(out$par[2]), message=out$message)
+			} else 	res[[i]]<-list(lnl=-out$value, q=getQ(exp(out$par[-1]), nRateCats, model), treeParam=exp(out$par[1]), message=out$message)
+
+				
 			if(!is.null(colnames(td$data))) names(res)[i]<-colnames(td$data)[i] else names(res)[i]<-paste("Trait", i, sep="")
-		}
+		
 	
-
-	
-		if(lambda) {
-			f<-function(x) {
-				likelihoodDiscrete(td$phy, td$data[,i], exp(x[1]), lambda=exp(x[2]))
-			}
-			out<-nlm(f, p=rep(log(start.rate), 2))
-			res[[i]]<-list(lnl=-out$minimum, q=exp(out$estimate[1]), lambda=exp(out$estimate[2]), gradient=out$gradient, code=out$code, iterations=out$iterations)
-
-		}
-		if(delta) {
-			f<-function(x) {
-				likelihoodDiscrete(td$phy, td$data[,i], exp(x[1]), delta=exp(x[2]))
-				}
-			out<-nlm(f, p=rep(log(start.rate), 2))
-			res[[i]]<-list(lnl=-out$minimum, q=exp(out$estimate[1]), delta=exp(out$estimate[2]), gradient=out$gradient, code=out$code, iterations=out$iterations)
-
-		}
-		if(kappa) {
-			f<-function(x) {
-				likelihoodDiscrete(td$phy, td$data[,i], exp(x[1]), kappa=exp(x[2]))
-				}
-			out<-nlm(f, p=rep(log(start.rate), 2))
-			res[[i]]<-list(lnl=-out$minimum, q=exp(out$estimate[1]), kappa=exp(out$estimate[2]), gradient=out$gradient, code=out$code, iterations=out$iterations)
-
-		}
 		
-		if(linearchange) {
-			f<-function(x) {
-				likelihoodDiscrete(td$phy, td$data[,i], exp(x[1]), endRate=exp(x[2]), linear=T)
-				}
-			out<-nlm(f, p=rep(log(start.rate), 2))
-			res[[i]]<-list(lnl=-out$minimum, q=exp(out$estimate[1]), endRate.linear=exp(out$estimate[2]), gradient=out$gradient, code=out$code, iterations=out$iterations)
-			
-		}
-		
-		if(exponentialchange) {
-			f<-function(x) {
-				likelihoodDiscrete(td$phy, td$data[,i], exp(x[1]), endRate=exp(x[2]))
-				}
-			out<-nlm(f, p=rep(log(start.rate), 2))
-			res[[i]]<-list(lnl=-out$minimum, q=exp(out$estimate[1]), endRate.exponential=exp(out$estimate[2]), gradient=out$gradient, code=out$code, iterations=out$iterations)
-			
-		}
-		
-		if(tworate) {
-			f<-function(x) {
-				likelihoodDiscrete(td$phy, td$data[,i], exp(x[1]), breakPoint=x[2], endRate=exp(x[3]))
-				}
-			out<-nlm(f, p=c(log(start.rate), 0.5, log(start.rate)))
-			res[[i]]<-list(lnl=-out$minimum, q=exp(out$estimate[1]), breakPoint=out$estimate[2], endRate.tworate=exp(out$estimate[3]), gradient=out$gradient, code=out$code, iterations=out$iterations)
-			
-		}
 	}
 	return(res)
 

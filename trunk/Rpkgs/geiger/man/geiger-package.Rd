@@ -46,7 +46,7 @@ round(m-m2)
 # Equal to zero because the vcv matrices are as expected.
 
 #Test models of evolution
-fit.continuous(geospiza.tree, geospiza.data[,1], rownames(geospiza.data))
+fitContinuous(geospiza.tree, geospiza.data)
 
 
 # Reconstruct evolutionary vcv matrix
