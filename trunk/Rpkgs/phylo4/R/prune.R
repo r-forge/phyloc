@@ -25,12 +25,13 @@ setMethod("prune","phylo4",
             DropTip(phy,tip,trim.internal, subtree, root.edge)
           })
 
+## trace("prune", browser, signature = "phylo4d")
 setMethod("prune","phylo4d",
           function(phy, tip, trim.internal = TRUE, subtree = FALSE,
                    root.edge = 0,...) {
             oldnodelabels <- phy@node.label
             ## need unique labels to match data correctly
-            tags <- paste("N",1:nNode(phy),sep="")
+            tags <- paste("N",1:nNodes(phy),sep="")
             phy@node.label <- tags
             rownames(phy@node.data) <- phy@node.label
             phytr <- DropTip(phy,tip,trim.internal, subtree, root.edge)

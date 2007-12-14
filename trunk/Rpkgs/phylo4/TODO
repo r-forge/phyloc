@@ -1,6 +1,6 @@
+
 replacement methods
    (in root.edge<- style, perhaps also setRoot style)
-  
 
 summary: if tip and node don't have identical colnames,
    don't try to get alldata
@@ -12,7 +12,7 @@ ORDER: cladewise, pruningwise, drag reorder from ape
 
 match w/ OUCH:  root node doesn't have corresponding
    entry in the edge matrix: ouch adds a row to the edge matrix
-   (1-row data frame matching 
+   (1-row data frame matching node column info)
 
 rewrite methods in native phylo4 as necessary/desirable
 
@@ -29,6 +29,9 @@ writing an [ accessor method
 check multiPhylo!
 "unpack"/"pack" methods
 
+lapply/multiple-tree methods, or at least documentation
+  on how to do it
+
 tree walking/generic manipulation methods
 
 TreeLib wrapper???
@@ -38,4 +41,11 @@ I/O
 more tree manipulation methods
 compare: Mesquite, ape (check O'Meara list)
 
-change name to phylobase)
+change name to phylobase
+
+compare Sidlauskas wiki documentation, how would
+one do it in phylo4?
+
+digits= arg for some summaries etc.?
+
+add vector method for data in phylo4d constructor

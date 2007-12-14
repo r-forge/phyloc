@@ -122,18 +122,6 @@ setMethod("NodeLabels","phylo4", function(x) {
   x@node.label
 })
 
-## setAs only works among S4 classes ...
-## this doesn't work since phylo is not an S4 class
-##   setAs("phylo","phylo4",
-##         function(from) {
-##           new("phylo4",
-##               edge=x$edge,
-##               edge.length=x$edge.length,
-##               Nnode=x$Nnode,
-##               tip.label=x$tip.label)
-##         })
-## }
-
 ## convert from phylo4 to phylo
 setAs("phylo","phylo4",
       function(from,to) {
@@ -176,6 +164,13 @@ setAs("phylo4","phylo",
             edge.length=from@edge.length,
             Nnode=from@Nnode,
             tip.label=from@tip.label)
+  class(y) <- "phylo"
+  y
+})
+
+setAs("phylo4d","phylo",
+      function(from,to) {
+  y <- phylo4d(from,tip.data=data.frame())
   class(y) <- "phylo"
   y
 })
@@ -359,14 +354,10 @@ setMethod("tdata","phylo4d", function(x,which="tip",...) {
 
 
 
-## I think node = internal nodes only, and edge = tips+nodes, right?
-## I'm just a little confused as to why your tdata has options "tip", "allnode", and "edge"? The last two seem redundant.
-## Marguerite
 setMethod("summary", "phylo4d", function(object){
   x <- object
   tdata(x, "tip") -> tips
   tdata(x, "allnode") -> allnodes
-  tdata(x, "edge") -> edges
   cat("Phylogenetic tree with", phylo4::nTips(x), " species and", nNodes(x), "internal nodes\n\n")
   cat("  Tree plus data object of type:", class(x), "\n")
   cat("  Species Names                :", labels(x), "\n")
@@ -384,11 +375,6 @@ setMethod("summary", "phylo4d", function(object){
   if (nrow(allnodes)>0) 
     {
       cat("\nNodes: data.frame with", nEdges(x), "species and internal nodes and", ncol(allnodes), "variables \n")                  ## May have to fix once  Node=Edge issue is settled
-      print(summary(allnodes))
-    }
-  if (nrow(edges)>0) 
-    {
-      cat("\nNodes: data.frame with", nEdges(x), "internal nodes and ", ncol(edges), "variables \n")                             ## May have to fix once  Node=Edge issue is settled
       print(summary(allnodes))
     }
   
