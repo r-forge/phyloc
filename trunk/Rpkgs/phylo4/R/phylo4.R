@@ -78,6 +78,8 @@ setGeneric("isRooted", function(x) {
 
 
 setMethod("isRooted","phylo4", function(x) {
+  # hack to avoid failure on an empty object
+  if(nTips(x)==0) return(FALSE)  
   !is.na(x@root.edge) ||  ## root edge explicitly defined
   ## HACK: make sure we find the right "nTips"
   tabulate(edges(x)[, 1])[phylo4::nTips(x)+1] <= 2
@@ -348,7 +350,7 @@ if (nrow(nodes) > 0)
 {
   cat("\nNodes: data.frame with", nNodes(object), "internal nodes and", ncol(nodes), "variables \n\n")                  ## May have to fix once  Node=Edge issue is settled
   print(summary(nodes))
-} else {cat('\nObject contains no node data.')}
+} else {cat('\nObject contains no node data.\n')}
 
 }) # end summary phylo4d
 
