@@ -81,6 +81,7 @@ mesquiteApply.AncestralStateCategChar <- function(mesquite=.mesquite(),
                                  charIndex=charIndex,
                                  taxaBlock=taxaBlock,
                                  runnerMethod="ancestralStatesCategorical",
+                                 castMatrixType="mesquite/categ/lib/CategoricalData",
                                  module.script=module.script);
 }
 
@@ -114,6 +115,7 @@ ancestralStatesCategorical <-  function(tree,
                                            charIndex=charIndex,
                                            taxaBlock=taxaBlock,
                                            runnerMethod="ancestralStatesCategorical",
+
                                            module.script=script);
   result
 }
