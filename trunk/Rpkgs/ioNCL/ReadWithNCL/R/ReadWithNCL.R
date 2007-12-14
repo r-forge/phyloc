@@ -140,24 +140,8 @@ NexusToPhylo4D <- function(fileToRead,multi=FALSE) {
 #it returns a list of phylo4D objects if the nexus file has more than one or multi==TRUE
 #Note that a list of phylo4D objects is not the same as a multiphylo4d object
 	output<-c("Failure")
-	characters<-c("Failure")
-#	filename<-fileToRead
-#	params <- list(filename=fileToRead)
-	
-# Check that params is properly formatted.
-#	if(!is.list(params) || length(params) == 0) {
-#		stop("The params parameter must be a non-empty list")
-#	}
-	
 	tipdata<-NexusToDataFrame(fileToRead);
-#	intreesstring <- .Call("ReadTreesWithNCL", params,
-#						   PACKAGE="ReadWithNCL")
-	
-#intreesphylolist <- read.nexustreestring(intreesstring)
 	intreesphylolist<-NexusToPhylo4(fileToRead,multi=TRUE);
-#print(tipdata)
-#print(intreesphylolist)
-#print(intreesphylolist[[1]])
 	if (length(intreesphylolist)>1 || multi) {
 		output<-list()
 		for (i in 1:length(intreesphylolist)) {

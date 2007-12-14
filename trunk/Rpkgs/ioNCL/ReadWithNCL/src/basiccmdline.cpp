@@ -456,7 +456,7 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 					nexuscharacters+=',';
 				}
 			}
-			nexuscharacters+="))";
+			nexuscharacters+="), stringsAsFactors=FALSE)";
 			
 		}
 		else if (3==characters->GetDataType()) { //rna
@@ -464,6 +464,49 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 		else if (4==characters->GetDataType()) { //nucleotide
 		}
 		else if (5==characters->GetDataType()) { //protein
+			nexuscharacters+="data.frame(";
+			nexuscharacters+="aa_alignment_1=c(";
+			
+			
+			if (allchar) {
+				nchartoreturn=characters->GetNCharTotal();
+			}
+			else {
+				nchartoreturn=characters->GetNChar();
+			}
+			for (int taxon=0;taxon<ntax;taxon++) {
+				nexuscharacters+='"';
+				for (int character=0; character<nchartoreturn; character++) { 
+					int numstates=characters->GetNumStates(taxon,character);
+					if (characters->IsGapState(taxon,character)) {
+						nexuscharacters+="-";
+					}
+					else if (characters->IsMissingState(taxon,character)) {
+						nexuscharacters+="?";
+					}
+					else if ( numstates == 1) {
+						nexuscharacters+=characters->GetState(taxon,character,0);
+					}
+					else {
+						nexuscharacters+="X";
+					}
+				}
+				nexuscharacters+='"';
+				if (taxon+1<ntax) {
+					nexuscharacters+=',';
+				}
+			}
+			
+			nexuscharacters+="), row.names=c(";
+			for (int taxon=0;taxon<ntax;taxon++) {
+				nexuscharacters+='"';
+				nexuscharacters+=characters->GetTaxonLabel(taxon);
+				nexuscharacters+='"';
+				if (taxon+1<ntax) {
+					nexuscharacters+=',';
+				}
+			}
+			nexuscharacters+="), stringsAsFactors=FALSE)";
 		}
 		else if (6==characters->GetDataType()) { //continuousnexuscharacters+="data.frame(";
 			
