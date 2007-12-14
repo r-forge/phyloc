@@ -2,9 +2,9 @@ Package: ReadWithNCL
 Title: Package to read Nexus datafiles with NCL
 Version: 0.1
 Date: 2007-12-12
-Author: O'Meara and Zwickl <zwickl@nescent.org>
-Maintainer: O'Meara and Zwickl <zwickl@nescent.org>
-Description:  Prototype function to read Nexus files with the Nexus Class Library and pass data back to R in simple character strings
+Author: Brian O'Meara <bcomeara@nescent.org> and Derrick Zwickl <zwickl@nescent.org>
+Maintainer: Brian O'Meara <bcomeara@nescent.org>
+Description:  Package to read Nexus files with the Nexus Class Library and pass data back to R in simple character strings using Rcpp
 Depends: R (>= 2.0.0)
 SystemRequirements: None
 License: LGPL Version 2.1 or later
