@@ -81,7 +81,7 @@ stopMesquiteModule <- function(module){
 #==== Gets from Mesquite a list of modules available for a particular duty
 availableMesquiteModules <- function(dutyName){
   moduleList <- .jcall(.mesquite(),
-                     "[Lmesquite/lib/Listable;",
+                     "[S",
                      "modulesWithDuty",
                      dutyName);
   moduleList
@@ -108,5 +108,20 @@ showDuties <- function(){
                      "[S",
                      "dutyClasses");
   dutyList
+}
+
+#==== Returns commands of a particular module
+getCommands <- function(module){
+  com <- .jcall(.mesquite(),
+                     "[S",
+                     "commandsOfModule",
+                     module);
+  com
+}
+
+#==== Shows commands of a particular module
+showCommands <- function(module){
+	c <- getCommands(module)
+	cat(c,sep="\n")
 }
 

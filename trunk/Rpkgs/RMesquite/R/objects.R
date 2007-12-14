@@ -1,12 +1,26 @@
 #=================== Harvesting Data Objects from Mesquite ==================
 
-#==== Asks Mesquite to read a file.  Currently only NEXUS permitted
+#==== Asks Mesquite to read a file.  Format is by default nexus; otherwise currently use name of Mesquite module that does interpretation (e.g., "#InterpretFastaDNA")
 mesquiteReadFile <- function(mesquite,path,format="NEXUS"){
   project <- .jcall(.mesquite(),
                     "Lmesquite/lib/MesquiteProject;",
                     "readFile",
                     path, format)
   project
+}
+
+#==== Asks Mesquite about the contents of a project.  Not all elements listed yet
+getProjectContents <- function(project){
+	taxaBlocks <- .jcall(.mesquite(), "[S", "projectContents", project)
+	
+	taxaBlocks
+	
+}
+
+#==== Asks Mesquite to show the contents of a project.  Not all elements listed yet
+showProjectContents <- function(project){
+	c <- getProjectContents(project)
+	cat(c,sep="\n")
 }
 
 #==== Gets taxa (OTU) blocks in project in Mesquite
