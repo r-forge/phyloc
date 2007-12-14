@@ -1,4 +1,2 @@
-RcppExample             Rcpp R/C++ interface example
-RcppTemplateDemo        Run RcppTemplate demos Interactively
 RcppTemplateVersion     Display version info for package and for
                         Rcpp/RcppTemplate

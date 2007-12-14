@@ -1,13 +1,10 @@
 useDynLib(ReadWithNCL)
 
-export(RcppExample,
-	ReadWithNCLVersion,
+export(ReadWithNCLVersion,
 	RcppVersion,
        NexusToPhylo4,
        read.nexustreestring,
        NexusToDataFrame,
        NexusToPhylo4D,	
-       print.RcppExample,
-       RcppTemplateDemo,
-	ReadWithNCL
+   	ReadWithNCL
 	)

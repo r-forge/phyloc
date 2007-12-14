@@ -250,6 +250,7 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 	int ntax = taxa->GetNumTaxonLabels(); 
 	if (!characters->IsEmpty())
 	{
+		//characters->Report(cerr);
 		if (1==characters->GetDataType()) { //standard datatype
 		//if((characters->GetDatatypeName())=="standard") { 
 			//nexuscharacters=characters->GetDatatypeName();
