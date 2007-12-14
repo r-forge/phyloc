@@ -509,7 +509,8 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 			nexuscharacters+="), stringsAsFactors=FALSE)";
 		}
 		else if (6==characters->GetDataType()) { //continuousnexuscharacters+="data.frame(";
-			
+			nexuscharacters+="data.frame(";
+
 			if (allchar) {
 				nchartoreturn=characters->GetNCharTotal();
 			}
