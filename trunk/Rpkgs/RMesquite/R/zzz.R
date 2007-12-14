@@ -1,6 +1,9 @@
 .First.lib <- function(lib,pkg) {
   require(rJava);
+  op <- options();
+  options(java.parameters=c("-Djava.awt.headless=true",op$java.parameters));
   .jpackage(pkg);
+  options(op); # restore what we found
 }
 
 ## Ideally we would want to clean up behind ourselves on exit, but at
