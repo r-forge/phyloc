@@ -6,19 +6,15 @@
   Basic checks on the validity of S4 phylogenetic plus data objects
 }
 \usage{
-check_data(object,
-		use.tip.names=TRUE,
-		missing.tip.data=c("fail","OK","warn"),
-		extra.tip.data=c("fail","OK","warn"),
-		missing.tip.names=c("fail","OK","warn"),
-		use.node.names=FALSE,
-		missing.node.data=c("OK","warn","fail"),		
-		extra.node.data=c("OK","warn","fail"),												
-		missing.node.names=c("OK","warn","fail"),\dots)
-attach_data(object,
-    use.tip.names=TRUE,
-		use.node.names=FALSE,
-		use.edge.names=FALSE,\dots)
+check_data(object, use.tip.names = TRUE, missing.tip.data = c("fail",
+    "OK", "warn"), extra.tip.data = c("fail", "OK", "warn"),
+    default.tip.names = c("warn", "OK", "fail"), use.node.names = FALSE,
+    missing.node.data = c("OK", "warn", "fail"), extra.node.data = c("OK",
+        "warn", "fail"), default.node.names = c("warn", "OK",
+        "fail"), \dots)
+
+attach_data(object, use.tip.names = TRUE, use.node.names = FALSE,
+    use.edge.names = FALSE, \dots)
 }
 
 \arguments{
@@ -26,13 +22,14 @@ attach_data(object,
   \item{use.tip.names}{Use tip data names if present (default=\code{TRUE})}
   \item{missing.tip.data}{Can tip data taxa be a subset of tree taxa? (default=\code{fail})}
   \item{extra.tip.data}{Can tip data taxa be a superset of tree taxa? (default=\code{fail})}
-  \item{missing.tip.names}{Can tip data be supplied without taxa names? (default=\code{fail})}
-  \item{use.node.names}{Use node data names if present (default=\code{FALSE})}
+  \item{default.tip.names}{PLACE COMMERCIAL HERE}
+  \item{use.node.names}{PLACE COMMERCIAL HERE}
+  \item{missing.node.data}{Can node data taxa be a subset of tree taxa?
+    (default=\code{fail})}
+  \item{extra.node.data}{Can node data taxa be a superset of tree taxa?
+    (default=\code{fail})}
+  \item{default.node.names}{PLACE COMMERCIAL HERE}
   \item{use.edge.names}{Use edge data names if present (default=\code{FALSE})}
-  \item{missing.node.data}{Can node data taxa be a subset of tree taxa? (default=\code{fail})}
-  \item{extra.node.data}{Can node data taxa be a superset of tree taxa? (default=\code{fail})}
-  \item{missing.node.names}{Can node data be supplied without taxa
-    names? (default=\code{fail})}
   \item{\dots}{Further arguments (for consistency)}
 }
 \value{
