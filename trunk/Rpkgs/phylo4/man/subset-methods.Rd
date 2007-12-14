@@ -17,20 +17,22 @@
   }
 }
 \note{At the moment, this simply wraps \code{ape::drop.tip}.
-    Renamed from \code{drop.tip} to \code{prune} in order to
-    avoid conflicts with ape.}
-  \usage{
+  Renamed from \code{drop.tip} to \code{prune} in order to
+  avoid conflicts with ape.}
+\usage{
 \S4method{subset}{phylo4}(x, tips.include=NULL, tips.exclude=NULL,
 node.subtree=NULL, \dots)
 
-\S4method{subset}{phylo4d}()
+\S4method{subset}{phylo4d}(x,tips.include=NULL,tips.exclude=NULL,node.subtree=NULL, \dots)
 
-\S4method{subset}{phylo}()
+\S4method{subset}{phylo}(x,tips.include=NULL,tips.exclude=NULL,node.subtree=NULL, \dots)
 }
 \arguments{
-  \item{phy}{an object of class \code{"phylo4"}}
-  \item{tip}{a vector of mode numeric or character specifying the tips
-    to delete}
+  \item{x}{an object of class \code{"phylo4"}, \code{"phylo"} or \code{"phylo4d"}}
+  \item{tips.include}{PLACE COMMERCIAL HERE}
+  \item{tips.exclude}{PLACE COMMERCIAL HERE}
+  \item{node.subtree}{PLACE COMMERCIAL HERE}
+  \item{\dots}{further arguments to be passed to other methods}
 }
 \details{
   To be described.
@@ -39,7 +41,6 @@ node.subtree=NULL, \dots)
   first case, it gives the labels of the tips to be deleted; in the
   second case the numbers of these labels in the vector
   \code{phy\$tip.label} are given
-
 }
 \value{
   an object of class \code{"phylo4"}
