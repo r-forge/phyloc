@@ -79,7 +79,7 @@ setGeneric("isRooted", function(x) {
 
 setMethod("isRooted","phylo4", function(x) {
   # hack to avoid failure on an empty object
-  if(nTips(x)==0) return(FALSE)  
+  if(phylo4::nTips(x)==0) return(FALSE)  
   !is.na(x@root.edge) ||  ## root edge explicitly defined
   ## HACK: make sure we find the right "nTips"
   tabulate(edges(x)[, 1])[phylo4::nTips(x)+1] <= 2
