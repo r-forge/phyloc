@@ -19,7 +19,7 @@ hasSingles <- function(object) {
 }
 
 
-### TO BE FINISHED
+### TO BE FINISHED - Thibaut
 
 # Returns a vector of logical 
 # TRUE = this edge goes from an internal node to another
