@@ -61,4 +61,7 @@ one do it in phylo4?
 
 digits= arg for some summaries etc.?
 
-should tdata simply rbind tip and node data!>>>>>>> .r206
+should tdata simply rbind tip and node data!
+
+phylo4 constructor should have its own method manpage (currently is
+   inside the class doc)
