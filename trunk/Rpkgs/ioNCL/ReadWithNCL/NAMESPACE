@@ -2,6 +2,7 @@ useDynLib(ReadWithNCL)
 
 export(RcppExample,
        NexusToPhylo4,
+       read.nexustreestring,
        NexusToDataFrame,
        NexusToPhylo4D,	
        print.RcppExample,

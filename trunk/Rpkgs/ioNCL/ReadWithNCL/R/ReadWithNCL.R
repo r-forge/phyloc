@@ -105,11 +105,11 @@ NexusToPhylo4 <- function(fileToRead,multi=FALSE) {
 	if (length(intreesphylolist)>1 || multi) {
 		trees<-list()
 		for (i in 1:length(intreesphylolist)) {
-			trees[[i]]<-new("phylo4",as.phylo4(intreesphylolist[[i]]));
+			trees[[i]]<-as(intreesphylolist[[i]], "phylo4");
 		}
 	}
 	else {
-		trees<-new("phylo4",as.phylo4(intreesphylolist[[1]]));
+		trees<-as(intreesphylolist[[1]], "phylo4");
 	}
 	trees
 }
@@ -141,29 +141,31 @@ NexusToPhylo4D <- function(fileToRead,multi=FALSE) {
 #Note that a list of phylo4D objects is not the same as a multiphylo4d object
 	output<-c("Failure")
 	characters<-c("Failure")
-	filename<-fileToRead
-	params <- list(filename=fileToRead)
+#	filename<-fileToRead
+#	params <- list(filename=fileToRead)
 	
 # Check that params is properly formatted.
-	if(!is.list(params) || length(params) == 0) {
-		stop("The params parameter must be a non-empty list")
-	}
+#	if(!is.list(params) || length(params) == 0) {
+#		stop("The params parameter must be a non-empty list")
+#	}
 	
-	incharsstring <- .Call("ReadCharsWithNCL",params,
-						   PACKAGE="ReadWithNCL")
-	tipdata<-eval(incharsstring);
-	intreesstring <- .Call("ReadTreesWithNCL", params,
-						   PACKAGE="ReadWithNCL")
+	tipdata<-NexusToDataFrame(fileToRead);
+#	intreesstring <- .Call("ReadTreesWithNCL", params,
+#						   PACKAGE="ReadWithNCL")
 	
-	intreesphylolist <- read.nexustreestring(intreesstring)
+#intreesphylolist <- read.nexustreestring(intreesstring)
+	intreesphylolist<-NexusToPhylo4(fileToRead,multi=TRUE);
+#print(tipdata)
+#print(intreesphylolist)
+#print(intreesphylolist[[1]])
 	if (length(intreesphylolist)>1 || multi) {
 		output<-list()
 		for (i in 1:length(intreesphylolist)) {
-			output[[i]]<-new("phylo4d",intreesphylolist[[i]],tipdata)
+			output[[i]]<-phylo4d(as(intreesphylolist[[i]], "phylo4"), tip.data = tipdata)
 		}
 	}
 	else {
-		output<-new("phylo4d",intreesphylolist[[i]],tipdata)
+		output<-phylo4d(as(intreesphylolist[[1]], "phylo4"), tip.data = tipdata)
 	}
 	output
 }
