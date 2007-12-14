@@ -276,8 +276,8 @@ setClass("phylo4d",
                         node.data="data.frame"),
 ##                        edgedata="data.frame"),
          prototype = list( tip.data = data.frame(NULL),
-           node.data = data.frame(NULL),
-           all.data = data.frame(NULL) ),
+           node.data = data.frame(NULL) ),
+           ##all.data = data.frame(NULL) ),
          validity = function(object) {
            ## FIXME: finish this by intercepting FALSE, char string, etc.
            check1 <- check_data(object)
