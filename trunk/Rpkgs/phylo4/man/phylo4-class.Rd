@@ -3,17 +3,13 @@
 \alias{phylo4}
 \alias{phylo-class}
 \alias{phylo4-class}
-\alias{phylo4d-class}
 \alias{multiPhylo-class}
 \alias{multiPhylo4-class}
 \alias{$,phylo4-method}
 \alias{print,phylo4-method}
 \alias{show,phylo4-method}
-\alias{show,phylo4d-method}
 \alias{summary,phylo4-method}
-\alias{summary,phylo4d-method}
 \alias{names,phylo4-method}
-\alias{names,phylo4d-method}
 \title{phylo4 and extended classes}
 \description{Classes for phylogenetic trees}
 \section{Objects from the Class}{
@@ -27,10 +23,6 @@
     \item{\code{Nnode}:}{Integer: number of nodes}
     \item{\code{tip.label}:}{Character vector of tip labels}
     \item{\code{root.edge}:}{Integer: root edge (NA if none)}
-    \item{\code{tipdata}:}{(phylo4d) data frame for traits of tips}
-    \item{\code{nodedata}:}{(phylo4d) data frame for traits of internal
-      nodes}
-    \item{\code{edgedata}:}{(phylo4d) data frame for traits of edges}
     \item{\code{phylolist}:}{(multiPhylo4) list of phylogenetic trees (each of which
     may be of type \code{phylo4d}, containing node and/or edge data)}
 }
