@@ -40,6 +40,10 @@ Implement "data class" by wrapping data.frame and
 writing an [ accessor method; reconsider this general
 topic -- is there 
 
+
+extend classes: should have both multiPhylo4 (no data)
+and multiPhylo4d (with data)
+
 check multiPhylo! "unpack"/"pack" methods,
 ctree method
 
