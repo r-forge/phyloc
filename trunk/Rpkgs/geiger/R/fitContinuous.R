@@ -275,6 +275,14 @@ function(ds, print=TRUE)
 		start=log(c(tv*2000, 1000))
 		outTries[[2]]<-optim(foo, p=start, lower=lower, upper=upper, method="L")
 	
+		# Third one: try OUCH answer as a starting point
+		ot<- ape2ouch(tree, data=y)
+	       w.ouch<- hansen.fit(ot$d, ot$node, ot$ancestor, ot$time, interval=c(0.01,10))
+		start=log(c(w.ouch$sigma^2, w.ouch$alpha))
+		lower<-start-1
+		upper<-start+1
+		outTries[[3]]<-optim(foo, p=start, lower=lower, upper=upper, method="L")
+	
 		# Try ten random ones
 		for(i in 1:10){
 			while(1) {
@@ -282,7 +290,7 @@ function(ds, print=TRUE)
 				lower=c(runif(2, min=-20, max=-1))
 				upper=lower+runif(2, min=0, max=10)
 				start=c(runif(1, min=lower[1], max=upper[1]), runif(1, min=lower[2], max=upper[2]))
-				te<-try(outTries[[i+2]]<-optim(foo, p=start, lower=lower, upper=upper, method="L"), silent=T)
+				te<-try(outTries[[i+3]]<-optim(foo, p=start, lower=lower, upper=upper, method="L"), silent=T)
 				if(class(te)!="try-error") break
 				}
 				
@@ -297,16 +305,15 @@ function(ds, print=TRUE)
 				lower=c(-20, -20)
 				upper=c(10, 10)
 				start=c(stry[i], atry[i])
-				te<-try(outTries[[i+12]]<-optim(foo, p=start, lower=lower, upper=upper, method="L"), silent=T)
+				te<-try(outTries[[i+13]]<-optim(foo, p=start, lower=lower, upper=upper, method="L"), silent=T)
 				if(class(te)!="try-error") break
 				}
 				
 		}
 		
-		# Get solution from OUCH and try that one
 		
 		
-		ntries<-22
+		ntries<-23
 		ltry<-numeric(ntries)
 		lsol<-matrix(nrow= ntries, ncol=2)
 		for(j in 1:ntries) {
