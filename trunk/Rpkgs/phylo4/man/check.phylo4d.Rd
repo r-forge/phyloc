@@ -56,10 +56,13 @@ p4d <- phylo4d(p4,dat)
 p4d.sorted <- phylo4d(p4,dat[5:1,])
 try(p4d.nonames <- phylo4d(p4,dat.defaultnames))
 p4d.nonames <- phylo4d(p4,dat.defaultnames,use.tip.names=FALSE)
-try(p4d.subset <- phylo4d(p4,dat.subset))
-p4d.subset <- phylo4d(p4,dat.subset,missing.tip.data="OK")
+\dontrun{
+p4d.subset <- phylo4d(p4,dat.subset)
+}
+\dontrun{p4d.subset <- phylo4d(p4,dat.subset,missing.tip.data="OK")
 try(p4d.superset <- phylo4d(p4,dat.superset))
 p4d.superset <- phylo4d(p4,dat.superset,extra.tip.data="OK")
+}
 #create phylo4d objects with node data
 nod.dat <- data.frame(a=rnorm(4),b=rnorm(4))
 p4d.nod <- phylo4d(p4,node.data=nod.dat,which="node")
