@@ -21,9 +21,15 @@ setMethod("subset", "phylo4",
     }
     
     if (!is.null(mrca)) {
+      
+      if (length(mrca) != 2) {
+        return(paste("MRCA subset requires 2 terminal taxa, you supplied",length(mrca)))
+      }
+      
       if (is.numeric(mrca)) {
         mrca <- x@tip.label[mrca]
       }
+      
      list.nodes<-list(2)
      m<-1:length(x@tip.label)
      

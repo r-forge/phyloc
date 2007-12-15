@@ -7,7 +7,7 @@
 \alias{subset,phylo4d-method}
 \title{Methods for creating subsets of phylogenies}
 \description{
-  Methods for creating subsets of phylogenies, based on pruning a tree to a set of terminal taxa, eventually to include pruning to include MRCA of taxa sets or based on a subtree rooted at a given node.
+  Methods for creating subsets of phylogenies, based on pruning a tree to include or exclude a set of terminal taxa, to include all descendants of the MRCA of two taxa, or eventually to a subtree rooted at a given node.
 }
 \section{Methods}{
   \describe{
@@ -31,7 +31,7 @@
   \item{tips.include}{A vector containing tips to include in the pruned tree}
   \item{tips.exclude}{A vector containing tips to exclude from the pruned tree}
   \item{mrca}{Prune tree to include all descendents of the most recent common ancestor of the specified taxa}
-  \item{node.subtree}{Not implemented yet. Evenetually will allow pruning to all descendents of a specified node}
+  \item{node.subtree}{Not implemented yet. Evenetually will allow pruning to all descendants of a specified node}
   \item{\dots}{further arguments to be passed to other methods}
 }
 \details{

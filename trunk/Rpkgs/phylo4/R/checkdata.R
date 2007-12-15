@@ -22,7 +22,7 @@ check_data <- function(object,
 		default.node.names=c("warn","OK","fail"),...)							 
 
 {
-		
+
 	## tip default: use names, require names, must match exactly
 	#use.tip.names=match.arg(use.tip.names)
 	missing.tip.data <- match.arg(missing.tip.data)
@@ -47,11 +47,10 @@ check_data <- function(object,
 		if (all(row.names(object@tip.data) == 1:length(row.names(object@tip.data)))) {
 				#no tip.names
 				if (default.tip.names == "fail") {
-					stop("Tip data have default names and may not match tip labels. Consider using the use.tip.names=FALSE option.")
+					stop("Tip data have default names and may not match tree tip labels. Consider using the use.tip.names=FALSE option.")
 				}
 				else if (default.tip.names == "warn") {
-					warning("Tip data have default names and may not match tip labels. Consider using the use.tip.names=FALSE option.")
-					return(TRUE)
+					warning("Tip data have default names and may not match tree tip labels. Consider using the use.tip.names=FALSE option.")
 				}
 			}
 			
@@ -62,45 +61,58 @@ check_data <- function(object,
 				##names are perfect match - ok
 				return(TRUE)
 			}
-			else {
+			else
+			{
 				#we know the tree taxa and tip.data taxa are not a perfect match
-				#if tree taxa are subset of tip.data, check missing.tip arg and act accordingly
-				if (!all(row.names(object@tip.data) %in% object@tip.label)) {
+				
+				#if tip.data taxa are subset of tree taxa, check missing.tip.data arg and act accordingly
+				if (!all(object@tip.label %in% row.names(object@tip.data))) {
 					#we know it's not an exact match - we have missing.tip.data - take action
-					#fail
-					if (missing.tip.data == "fail") {
-						stop("Tip data names are a subset of phylo4 tip labels.")
+					if (!any(object@tip.label %in% row.names(object@tip.data))) {
+						if (missing.tip.data == "fail") {
+							stop("Tip data names do not match tree tip labels.")
+						}
+						else if (missing.tip.data == "warn") {
+							warning("Tip data names do not match tree tip labels.")
+						}
+					
 					}
-					#warn
-					else if (missing.tip.data == "warn") {
-						warning("Tip data names are a subset of phylo4 labels.")
-						return(TRUE)
+					else
+					{
+						if (missing.tip.data == "fail") {
+							stop("Tip data names are a subset of tree tip labels.")
+						}
+						else if (missing.tip.data == "warn") {
+							warning("Tip data names are a subset of tree tip labels.")
+						}
 					}
 					#else ok
 				}
-				#if tip.data taxa are subset of tree taxa, check extra.tip arg and act accordingly
-				if (!all(object@tip.label %in% row.names(object@tip.data))) {
+				
+				#if tree taxa are subset of tip.data, check extra.tip arg and act accordingly
+				if (!all(row.names(object@tip.data) %in% object@tip.label)) {
 					#we know it's not an exact match - we have extra.tip.data - take action
 					#fail
 					if (extra.tip.data == "fail") {
-						stop("Tip data are a superset of phylo4 tips.")
+						stop("Tip data names are a superset of tree tip labels.")
 					}
+					#warn
 					else if (extra.tip.data == "warn") {
-						warning("Tip data are a superset of phylo4 tips.")
-						return(TRUE)
+						warning("Tip data names are a superset of phylo4 labels.")
 					}
 					#else ok
 				}
+				
 				return(TRUE)
 			} 
 		}
-	else
-	{
-		#don't use tip names or attempt to sort - but check to make sure dimensions match
-		if (!(phylo4::nTips(object)==dim(object@tip.data)[1])) {
-			stop("Ignoring tip data names. Number of tip data do not match number of phylo4 tips.")
+		else
+		{
+			#don't use tip names or attempt to sort - but check to make sure dimensions match
+			if (!(phylo4::nTips(object)==dim(object@tip.data)[1])) {
+				stop("Ignoring tip data names. Number of tip data do not match number of tree tips.")
+			}
 		}
-	}
 	}
 
 	## node data checks
@@ -110,14 +122,16 @@ check_data <- function(object,
 		if (use.node.names) {
 		
 		#check for default names
-		if (all(row.names(object@node.data) == 1:length(row.names(object@node.data)))) {
+		#could be 1:nTips or nTips+1:nEdges
+		if (all(row.names(object@node.data) == 1:length(row.names(object@node.data))) 
+					|| all(row.names(object@node.data) == (phylo4::nTips(object)+1):nEdges(object)))
+		{
 				#no node.names
 				if (default.node.names == "fail") {
 					stop("Node data have default names and may not match node labels. Consider using the use.node.names=FALSE option.")
 				}
 				else if (default.node.names == "warn") {
 					warning("Node data have default names and may not match node labels. Consider using the use.node.names=FALSE option.")
-					return(TRUE)
 				}
 			}
 			
@@ -127,46 +141,59 @@ check_data <- function(object,
 				##names are perfect match - ok
 				return(TRUE)
 			}
-			else {
+			else
+			{
 				#we know the tree taxa and node.data taxa are not a perfect match
-				#if tree taxa are subset of node.data, check missing.node arg and act accordingly
+				
+				#if node.data taxa are subset of tree taxa, check missing.node.data arg and act accordingly
+				if (!all(object@node.label %in% row.names(object@node.data))) {
+					#we know it's not an exact match - we have missing.node.data - take action
+					if (!any(object@node.label %in% row.names(object@node.data))) {
+						if (missing.node.data == "fail") {
+							stop("Node data names do not match tree node labels.")
+						}
+						else if (missing.node.data == "warn") {
+							warning("Node data names do not match tree node labels.")
+						}
+					
+					}
+					else
+					{
+						if (missing.node.data == "fail") {
+							stop("Node data names are a subset of tree node labels.")
+						}
+						else if (missing.node.data == "warn") {
+							warning("Node data are a subset of phylo4 node labels.")
+						}
+					}
+					#else ok
+				}
+				
+				#if tree taxa are subset of node.data, check extra.node arg and act accordingly
 				if (!all(row.names(object@node.data) %in% object@node.label)) {
 					#we know it's not an exact match - we have missing.node.data - take action
 					#fail
-					if (missing.node.data == "fail") {
-						stop("Node data names are a subset of phylo4 node labels.")
+					if (extra.node.data == "fail") {
+						stop("Node data names are a superset of tree node labels.")
 					}
 					#warn
-					else if (missing.node.data == "warn") {
-						warning("Node data names are a subset match phylo4 labels.")
-						return(TRUE)
-					}
-					#else ok
-				}
-				#if node.data taxa are subset of tree taxa, check extra.node arg and act accordingly
-				if (!all(object@node.label %in% row.names(object@node.data))) {
-					#we know it's not an exact match - we have extra.node.data - take action
-					#fail
-					if (extra.node.data == "fail") {
-						stop("Node data are a superset of phylo4 nodes.")
-					}
 					else if (extra.node.data == "warn") {
-						warning("Node data are a superset of phylo4 nodes.")
-						return(TRUE)
+						warning("Node data names are a superset of tree node labels.")
 					}
 					#else ok
 				}
+				
 				return(TRUE)
 			} 
 		}
-	else
-	{
-		#don't use node names or attempt to sort - but check to make sure dimensions match
-		if (!(phylo4::nNodes(object)==dim(object@node.data)[1])) {
-			stop("Ignoring node data names. Number of node data do not match number of phylo4 nodes.")
+		else
+		{
+			#don't use node names or attempt to sort - but check to make sure dimensions match
+			if (!(phylo4::nNodes(object)==dim(object@node.data)[1])) {
+				stop("Ignoring node data names. Number of node data do not match number of tree nodes.")
+			}
 		}
 	}
-}
 
 }
 
