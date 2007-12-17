@@ -54,7 +54,7 @@
 \examples{
 library(ape)
 example(read.tree)
-phylo4d(as(tree.owls.bis,"phylo4"),data.frame(wing=1:3))
+try(phylo4d(as(tree.owls.bis,"phylo4"),data.frame(wing=1:3)), silent=TRUE)
 phylo4d(as(tree.owls.bis,"phylo4"),data.frame(wing=1:3), use.tip.names=FALSE)
 }
 \keyword{misc}
