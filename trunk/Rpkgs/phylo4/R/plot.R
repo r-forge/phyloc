@@ -28,7 +28,8 @@ setGeneric("plot")
 setMethod("plot",signature(x="phylo4",y="missing"), function(x,...){
   if(!require(ape)) stop("the ape package is required")
   x <- as(x, "phylo")
-  plot(x, ...)
+  res <- plot(x, ...)
+  return(invisible(res))
 }) # end plot phylo4
 
 
@@ -42,8 +43,9 @@ setMethod("plot", signature(x="phylo4d",y="missing"), function(x, type=c("symbol
   dat <- tdata(x, which="tip")
   x <- as(x,"phylog")
   type <- match.arg(type)
-
-  if(ncol(dat)==1 | type=="synbols"){
+  if(ncol(dat)>1 & type=="symbols") type <- "squares" 
+  
+  if(ncol(dat)==1 | type=="symbols"){
 
     res <- symbols.phylog(x, squares=dat[,1], ...)
     
