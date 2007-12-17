@@ -1,21 +1,21 @@
 \name{plot for phylo4 and phylo4d}
 \docType{methods}
-\alias{plot-phylo4-methods}
-\alias{plot-phylo4d-methods}
+\alias{plot,phylo4-methods}
+\alias{plot,phylo4d-methods}
 \title{Plot a phylogenetic tree alone or with data}
 \description{
   These methods display graphics for objects of class \code{phylo4} and
-  \linkS4Class{phylo4d}.
+  \linkS4class{phylo4d}.
   They are currently wrappers to \code{plot.phylo} from the \code{ape}
-  package (for \linkS4Class{phylo4} objects) and to various graphics from the
-  \code{ade4} package (for \linkS4Class{phylo4d} objects).
+  package (for \linkS4class{phylo4} objects) and to various graphics from the
+  \code{ade4} package (for \linkS4class{phylo4d} objects).
 }
 \section{Methods}{
   \describe{
-\item{x = "phylo4", y = "missing"}{plots a tree  of class \linkS4Class{phylo4}}
+\item{x = "phylo4", y = "missing"}{plots a tree  of class \linkS4class{phylo4}}
 
 \item{x = "phylo4d", y = "missing"}{plots a tree with one or more
-  quantitative traits contained in a \linkS4Class{phylo4d} object.}
+  quantitative traits contained in a \linkS4class{phylo4d} object.}
 
    }
  }
@@ -25,7 +25,7 @@
 
 }
 \arguments{
-  \item{x}{an object of class \linkS4Class{phylo4} or \linkS4Class{phylo4d}}
+  \item{x}{an object of class \linkS4class{phylo4} or \linkS4class{phylo4d}}
   \item{type}{a character string giving the type of graphic to be drawn:
   "symbols" is used for a single variable; "squares" and "dotchart" are
   used for multivariate methods.}
