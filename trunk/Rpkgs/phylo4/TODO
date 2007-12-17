@@ -20,6 +20,7 @@
 * tree walking/generic manipulation methods
 * compare: Mesquite, ape (check O'Meara list)
 * change name to phylobase
+* test the new plot functions 
 
 ## I/O
 ------
