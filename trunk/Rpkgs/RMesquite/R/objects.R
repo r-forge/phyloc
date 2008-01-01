@@ -201,7 +201,38 @@ as.phylo.jobjRef <- function(from) {
   phylo
 }
 
-#========================== Giving Data To Mesquite ========================
+## Initial suggestion (hack) by Ben Bolker for converting to
+## phylo4. We wait with this until we are comfortable with having a
+## dependency on phylobase.
+##
+## setAs("jobjRef","phylo4",
+##       function(from,to) {
+##           if (.jclassOf(from,package.path=FALSE) != "MesquiteTree") {
+##               stop("can't coerce Java object of type ",
+##                    .jclassOf(from)," to type phylo4");
+##           }
+##           mRoot <- .jcall(from,"I","getRoot");
+##           numNodes <- .jcall(from,"I","numberOfNodesInClade",mRoot);
+##           numTerminals <- .jcall(from,"I","numberOfTerminalsInClade",mRoot);
+##           mAPE <- .jnew("mesquite/rmLink/common/APETree",
+##                         .jcast(from,"mesquite/lib/Tree"));
+##           edge.matrix <- .jcall(trApe,"[[I","getEdgeMatrix");
+##           phylo4(edge=matrix(
+##                    c(.jevalArray(edge.matrix[[1]]),
+##                      .jevalArray(edge.matrix[[2]])),
+##                    ncol=2),
+##                  edge.length=.jcall(mAPE,"[D","getEdgeLengths"),
+##                  tip.label=.jcall(mAPE,
+##                    "[Ljava/lang/String;","getTipLabels"),
+##                  ## don't know whether any of these three elements
+##                  ## can be pulled out of a jobjRef or not
+##                  node.label=NULL,
+##                  edge.label=NULL,
+##                  root.edge=NA
+##                  )
+##       });
+
+                                        #========================== Giving Data To Mesquite ========================
 
 # ==== Creates taxa block in Mesquite with taxon names as indicated by
 # the array
