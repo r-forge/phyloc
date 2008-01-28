@@ -162,6 +162,9 @@ RcppExport SEXP ReadCharsWithNCL(SEXP params) {
 		// Get parameters in params - only 1 is gotten now
 		RcppParams rparam(params);
 		string filename = rparam.getStringValue("filename");
+		bool allchar = rparam.getBoolValue("allchar");
+		bool levelsall=rparam.getBoolValue("levelsall");
+		bool polymorphictomissing=rparam.getBoolValue("polymorphictomissing");
 		
 		BASICCMDLINE reader;
 		
@@ -171,7 +174,7 @@ RcppExport SEXP ReadCharsWithNCL(SEXP params) {
 		reader.Initialize(const_cast < char* > (filename.c_str()));
 		
 		NxsString charStringNxs;
-		reader.RReturnCharacters(charStringNxs,false, true, false);
+		reader.RReturnCharacters(charStringNxs,allchar, polymorphictomissing, levelsall);
 		string charString=charStringNxs.c_str();
 		
 		// Build result set to be returned as a list to R.

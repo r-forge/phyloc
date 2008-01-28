@@ -246,6 +246,54 @@ void BASICCMDLINE::HandleReturnData(
 }
 
 void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, bool polymorphictomissing, bool levelsall) {
+	if (!taxa->IsEmpty())
+	{
+		cerr << "\n  TAXA block found" << endl;
+		taxa->Report(cerr);
+		if (logf_open)
+			taxa->Report(logf);
+	}
+	
+	if (!trees->IsEmpty())
+	{
+		cerr << "\n  TREES block found" << endl;
+		trees->Report(cerr);
+		if (logf_open)
+			trees->Report(logf);
+	}
+	
+	if (!assumptions->IsEmpty())
+	{
+		cerr << "\n  ASSUMPTIONS block found" << endl;
+		assumptions->Report(cerr);
+		if (logf_open)
+			assumptions->Report(logf);
+	}
+	
+	if (!distances->IsEmpty())
+	{
+		cerr << "\n  DISTANCES block found" << endl;
+		distances->Report(cerr);
+		if (logf_open)
+			distances->Report(logf);
+	}
+	
+	if (!characters->IsEmpty())
+	{
+		cerr << "\n  CHARACTERS block found" << endl;
+		characters->Report(cerr);
+		if (logf_open)
+			characters->Report(logf);
+	}
+	
+	if (!data->IsEmpty())
+	{
+		cerr << "\n  DATA block found" << endl;
+		data->Report(cerr);
+		if (logf_open)
+			data->Report(logf);
+	}
+	
 	int nchartoreturn=0;
 	int ntax = taxa->GetNumTaxonLabels(); 
 	if (!characters->IsEmpty())
@@ -540,7 +588,7 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 				nexuscharacters+="c(";
 				for (int taxon=0;taxon<ntax;taxon++) {
 					double state=characters->GetSimpleContinuousValue(taxon,character);
-					//cout<<"State at "<<taxon+1<<" char "<<character+1<<" = "<<state<<endl;
+					cout<<"State at "<<taxon+1<<" char "<<character+1<<" = "<<state<<endl;
 					if (state==DBL_MAX) {
 							nexuscharacters+="NA";
 					}
@@ -576,6 +624,54 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 }
 
 void BASICCMDLINE::RReturnTrees(NxsString & nexustrees) {
+	if (!taxa->IsEmpty())
+	{
+		cerr << "\n  TAXA block found" << endl;
+		taxa->Report(cerr);
+		if (logf_open)
+			taxa->Report(logf);
+	}
+	
+	if (!trees->IsEmpty())
+	{
+		cerr << "\n  TREES block found" << endl;
+		trees->Report(cerr);
+		if (logf_open)
+			trees->Report(logf);
+	}
+	
+	if (!assumptions->IsEmpty())
+	{
+		cerr << "\n  ASSUMPTIONS block found" << endl;
+		assumptions->Report(cerr);
+		if (logf_open)
+			assumptions->Report(logf);
+	}
+	
+	if (!distances->IsEmpty())
+	{
+		cerr << "\n  DISTANCES block found" << endl;
+		distances->Report(cerr);
+		if (logf_open)
+			distances->Report(logf);
+	}
+	
+	if (!characters->IsEmpty())
+	{
+		cerr << "\n  CHARACTERS block found" << endl;
+		characters->Report(cerr);
+		if (logf_open)
+			characters->Report(logf);
+	}
+	
+	if (!data->IsEmpty())
+	{
+		cerr << "\n  DATA block found" << endl;
+		data->Report(cerr);
+		if (logf_open)
+			data->Report(logf);
+	}
+	
 	int ntax = taxa->GetNumTaxonLabels(); 
 
 	if (!trees->IsEmpty())
@@ -602,6 +698,54 @@ void BASICCMDLINE::RReturnTrees(NxsString & nexustrees) {
 }
 
 void BASICCMDLINE::RReturnDistances(NxsString  & nexusdistances) {
+	if (!taxa->IsEmpty())
+	{
+		cerr << "\n  TAXA block found" << endl;
+		taxa->Report(cerr);
+		if (logf_open)
+			taxa->Report(logf);
+	}
+	
+	if (!trees->IsEmpty())
+	{
+		cerr << "\n  TREES block found" << endl;
+		trees->Report(cerr);
+		if (logf_open)
+			trees->Report(logf);
+	}
+	
+	if (!assumptions->IsEmpty())
+	{
+		cerr << "\n  ASSUMPTIONS block found" << endl;
+		assumptions->Report(cerr);
+		if (logf_open)
+			assumptions->Report(logf);
+	}
+	
+	if (!distances->IsEmpty())
+	{
+		cerr << "\n  DISTANCES block found" << endl;
+		distances->Report(cerr);
+		if (logf_open)
+			distances->Report(logf);
+	}
+	
+	if (!characters->IsEmpty())
+	{
+		cerr << "\n  CHARACTERS block found" << endl;
+		characters->Report(cerr);
+		if (logf_open)
+			characters->Report(logf);
+	}
+	
+	if (!data->IsEmpty())
+	{
+		cerr << "\n  DATA block found" << endl;
+		data->Report(cerr);
+		if (logf_open)
+			data->Report(logf);
+	}
+	
 	int ntax = taxa->GetNumTaxonLabels(); 
 
 	if (!distances->IsEmpty())

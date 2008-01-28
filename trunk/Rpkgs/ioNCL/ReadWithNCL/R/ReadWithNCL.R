@@ -114,13 +114,13 @@ NexusToPhylo4 <- function(fileToRead,multi=FALSE) {
 	trees
 }
 
-NexusToDataFrame <- function(fileToRead) {
+NexusToDataFrame <- function(fileToRead,allchar=FALSE, polymorphictomissing=TRUE, levelsall=TRUE) {
 #This returns a single phylo4D object if the nexus file has one tree; 
 #it returns a list of phylo4D objects if the nexus file has more than one or multi==TRUE
 #Note that a list of phylo4D objects is not the same as a multiphylo4d object
 	output<-c("Failure")
 	filename<-fileToRead
-	params <- list(filename=fileToRead)
+	params <- list(filename=fileToRead, allchar=allchar, polymorphictomissing=polymorphictomissing, levelsall=levelsall)
 	
 # Check that params is properly formatted.
 	if(!is.list(params) || length(params) == 0) {
@@ -135,12 +135,12 @@ NexusToDataFrame <- function(fileToRead) {
 }
 
 
-NexusToPhylo4D <- function(fileToRead,multi=FALSE) {
+NexusToPhylo4D <- function(fileToRead,multi=FALSE,allchar=FALSE, polymorphictomissing=TRUE, levelsall=TRUE) {
 #This returns a single phylo4D object if the nexus file has one tree; 
 #it returns a list of phylo4D objects if the nexus file has more than one or multi==TRUE
 #Note that a list of phylo4D objects is not the same as a multiphylo4d object
 	output<-c("Failure")
-	tipdata<-NexusToDataFrame(fileToRead);
+	tipdata<-NexusToDataFrame(fileToRead,allchar, polymorphictomissing, levelsall);
 	intreesphylolist<-NexusToPhylo4(fileToRead,multi=TRUE);
 	if (length(intreesphylolist)>1 || multi) {
 		output<-list()
