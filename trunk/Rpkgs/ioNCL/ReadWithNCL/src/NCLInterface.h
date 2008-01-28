@@ -102,6 +102,7 @@ class BASICCMDLINE
 		virtual bool		UserQuery(NxsString mb_message, NxsString mb_title, BASICCMDLINE::UserQueryEnum mb_choices = BASICCMDLINE::uq_ok);
 		void				HandleReturnData(NxsToken& token);
 		NxsString			ReturnDataForR(bool allchar, bool polymorphictomissing, bool levelsall);
+		NxsString			RemoveUnderscoresAndSpaces(NxsString input);
 		void				RReturnCharacters(NxsString & nexuscharacters, bool allchar, bool polymorphictomissing, bool levelsall);
 		void				RReturnTrees(NxsString & nexustrees);
 		void				RReturnDistances(NxsString & nexusdistances);
@@ -176,6 +177,8 @@ inline void BASICCMDLINE::ExecuteStopping()
 inline void	BASICCMDLINE::OutputComment(const NxsString &)
 	{
 	}
+
+
 
 #endif
 

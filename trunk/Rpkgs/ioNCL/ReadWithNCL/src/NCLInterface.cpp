@@ -347,7 +347,7 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 			nexuscharacters+=", row.names=c(";
 			for (int taxon=0;taxon<ntax;taxon++) {
 				nexuscharacters+='"';
-				nexuscharacters+=characters->GetTaxonLabel(taxon);
+				nexuscharacters+=RemoveUnderscoresAndSpaces(characters->GetTaxonLabel(taxon));
 				nexuscharacters+='"';
 				if (taxon+1<ntax) {
 					nexuscharacters+=',';
@@ -458,7 +458,7 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 			nexuscharacters+="), row.names=c(";
 			for (int taxon=0;taxon<ntax;taxon++) {
 				nexuscharacters+='"';
-				nexuscharacters+=characters->GetTaxonLabel(taxon);
+				nexuscharacters+=RemoveUnderscoresAndSpaces(characters->GetTaxonLabel(taxon));
 				nexuscharacters+='"';
 				if (taxon+1<ntax) {
 					nexuscharacters+=',';
@@ -504,7 +504,7 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 			nexuscharacters+="), row.names=c(";
 			for (int taxon=0;taxon<ntax;taxon++) {
 				nexuscharacters+='"';
-				nexuscharacters+=characters->GetTaxonLabel(taxon);
+				nexuscharacters+=RemoveUnderscoresAndSpaces(characters->GetTaxonLabel(taxon));
 				nexuscharacters+='"';
 				if (taxon+1<ntax) {
 					nexuscharacters+=',';
@@ -557,7 +557,7 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 			nexuscharacters+=", row.names=c(";
 			for (int taxon=0;taxon<ntax;taxon++) {
 				nexuscharacters+='"';
-				nexuscharacters+=characters->GetTaxonLabel(taxon);
+				nexuscharacters+=RemoveUnderscoresAndSpaces(characters->GetTaxonLabel(taxon));
 				nexuscharacters+='"';
 				if (taxon+1<ntax) {
 					nexuscharacters+=',';
@@ -571,6 +571,7 @@ void BASICCMDLINE::RReturnCharacters(NxsString & nexuscharacters, bool allchar, 
 				message="Error: character matrix loaded, but does not match any category (dna, standard, etc.)";
 			PrintMessage();
 		}
+		nexuscharacters=RemoveUnderscoresAndSpaces(nexuscharacters);
 	}
 }
 
@@ -623,7 +624,7 @@ void BASICCMDLINE::RReturnDistances(NxsString  & nexusdistances) {
 		nexusdistances+="L, Labels = c(";
 		for (int taxon=0; taxon<ntax;taxon++) {
 			nexusdistances+='"';
-			nexusdistances+=taxa->GetTaxonLabel(taxon);
+			nexusdistances+=RemoveUnderscoresAndSpaces(taxa->GetTaxonLabel(taxon));
 			nexusdistances+='"';
 			if (taxon+1<ntax) {
 				nexusdistances+=", ";
@@ -661,7 +662,7 @@ NxsString BASICCMDLINE::ReturnDataForR(bool allchar, bool polymorphictomissing, 
 		
 		for (int taxon=0;taxon<ntax;taxon++) {
 			outputforR+='"';
-			outputforR+=characters->GetTaxonLabel(taxon);
+			outputforR+=RemoveUnderscoresAndSpaces(characters->GetTaxonLabel(taxon));
 			outputforR+='"';
 			if (taxon+1<ntax) {
 				outputforR+=',';
@@ -802,7 +803,7 @@ NxsString BASICCMDLINE::ReturnDataForR(bool allchar, bool polymorphictomissing, 
 		outputforR+="L, Labels = c(";
 		for (int taxon=0; taxon<ntax;taxon++) {
 			outputforR+='"';
-			outputforR+=taxa->GetTaxonLabel(taxon);
+			outputforR+=RemoveUnderscoresAndSpaces(taxa->GetTaxonLabel(taxon));
 			outputforR+='"';
 			if (taxon+1<ntax) {
 				outputforR+=", ";
@@ -1648,4 +1649,16 @@ int main(int argc, char *argv[])
 	basiccmdline.Run(infile_name);
 	
 	return 0;
+}
+
+NxsString BASICCMDLINE::RemoveUnderscoresAndSpaces(NxsString input)
+{
+	while (input.find( "_", 0 ) != string::npos ) {
+		input.erase((input.find( "_", 0 )),1);
+	}
+	while (input.find( " ", 0 ) != string::npos ) {
+		input.erase((input.find( " ", 0 )),1);
+	}
+	input+="";
+	return input;
 }
