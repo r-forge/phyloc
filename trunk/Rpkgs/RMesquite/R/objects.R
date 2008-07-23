@@ -55,7 +55,7 @@ getNumberOfTrees <- function(treeVector){
 
 #==== Gets tree #treeIndex from Mesquite tree vector and returns as phylo object
 getPhyloTreeFromVector <- function(treeVector, treeIndex){
-	treeString <- .jcall(.mesquite(), "S", "getTree", tv, as.integer(treeIndex))
+	treeString <- .jcall(.mesquite(), "S", "getTree", treeVector, as.integer(treeIndex))
 	eval(parse(text = paste("tree <- ", treeString, sep="")))
 	tree
 }
@@ -189,7 +189,7 @@ as.phylo.jobjRef <- function(from) {
   numTerminals <- .jcall(from,"I","numberOfTerminalsInClade",mRoot);
   mAPE <- .jnew("mesquite/rmLink/common/APETree",
                 .jcast(from,"mesquite/lib/Tree"));
-  edge.matrix <- .jcall(trApe,"[[I","getEdgeMatrix");
+  edge.matrix <- .jcall(mAPE,"[[I","getEdgeMatrix");
   phylo <- list(edge=matrix(
                   c(.jevalArray(edge.matrix[[1]]),
                     .jevalArray(edge.matrix[[2]])),
@@ -232,7 +232,7 @@ as.phylo.jobjRef <- function(from) {
 ##                  )
 ##       });
 
-                                        #========================== Giving Data To Mesquite ========================
+#========================== Giving Data To Mesquite ========================
 
 # ==== Creates taxa block in Mesquite with taxon names as indicated by
 # the array
@@ -281,7 +281,12 @@ mesquiteTree <- function(mesquite=.mesquite(),
                          taxaBlock=NULL,
                          blockName=NULL){
   if (is.character(tree)) {
-    tree <- read.tree(text=tree);
+    tr <- read.tree(text=tree);
+    if (is.null(tr)) {
+      # would be really nice if APE gave us an error message rather than NULL
+      stop("character string \"",tree,"\" failed to parse using APE\n");
+    }
+    tree <- tr;
   }
   if (class(tree) != "phylo") {
     stop("tree argument must be string or class phylo, not ",class(tree),"\n");
